@@ -38,6 +38,7 @@ jobs:
       - uses: ./.github/actions/setup-gradle-build
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       # :app:lintDebug checks the app and every module it depends on together (checkDependencies), which is what
       # unused resources need.
       - name: Spotless (ktlint) and Android lint
@@ -70,6 +71,7 @@ jobs:
       - uses: ./.github/actions/setup-gradle-build
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       # Unit tests of every module (debug variant only, see build-logic), screenshot tests against the committed
       # references and coverage per module. verifyAndRecord fails on a changed screenshot like verify, and also
       # writes the new image to src/test/screenshots. Main runs it too, so its cache entries fit PR runs.
@@ -194,6 +196,7 @@ jobs:
       - uses: ./.github/actions/setup-gradle-build
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
       # Badging: permissions, SDK levels, features, exported components and queries of the APK testers
       # get, compared with the reviewed app/badging/debug-badging.txt. A library or manifest change
       # that adds any of these fails here until the file is updated in the PR. See Badging.kt.
