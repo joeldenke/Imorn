@@ -1,0 +1,168 @@
+# Sends the debug app (se.imorn.debug) to testers via Firebase App Distribution on every push to
+# main, i.e. every merged PR (or when run manually from the Actions tab). The release build (R8) is built too,
+# so R8 problems show up at merge; it is signed only when the release key exists. Release notes list every change
+# since the last successful distribution.
+#
+# Authenticates to Google Cloud with Workload Identity Federation: no JSON key is stored.
+# scripts/bootstrap-firebase.sh creates the Google side and prints the Firebase/GCP variables.
+# Required, under repo Settings → Secrets and variables → Actions:
+#   Variable FIREBASE_APP_ID                 e.g. 1:1234567890:android:abc123 (for se.imorn.debug)
+#   Variable FIREBASE_TESTER_GROUPS          Firebase group alias(es), e.g. "testers"
+#   Variable GCP_WORKLOAD_IDENTITY_PROVIDER  projects/<number>/locations/global/workloadIdentityPools/github/providers/imorn
+#   Variable GCP_SERVICE_ACCOUNT             github-distribute@<project>.iam.gserviceaccount.com
+# Optional, signs the release build when all four are set:
+#   Secret   IMORN_RELEASE_KEYSTORE_BASE64  base64 of the release keystore (.jks)
+#   Secret   IMORN_RELEASE_STORE_PASSWORD   keystore password
+#   Secret   IMORN_RELEASE_KEY_PASSWORD     key password
+#   Variable IMORN_RELEASE_KEY_ALIAS        key alias, e.g. "imorn"
+name: Distribute to testers
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never run two distributions at once; queue them instead of cancelling.
+concurrency:
+  group: distribute
+  cancel-in-progress: false
+
+env:
+  FIREBASE_TOOLS_VERSION: 15.33.0
+
+jobs:
+  distribute:
+    name: Build and distribute
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: firebase
+    permissions:
+      contents: read
+      actions: read # finds the last successful distribution for the release notes
+      id-token: write # lets the job request a GitHub OIDC token for Workload Identity Federation
+    steps:
+      - name: Check configuration
+        id: config
+        env:
+          IMORN_RELEASE_KEYSTORE_BASE64: ${{ secrets.IMORN_RELEASE_KEYSTORE_BASE64 }}
+          IMORN_RELEASE_STORE_PASSWORD: ${{ secrets.IMORN_RELEASE_STORE_PASSWORD }}
+          IMORN_RELEASE_KEY_PASSWORD: ${{ secrets.IMORN_RELEASE_KEY_PASSWORD }}
+          IMORN_RELEASE_KEY_ALIAS: ${{ vars.IMORN_RELEASE_KEY_ALIAS }}
+          FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
+          FIREBASE_TESTER_GROUPS: ${{ vars.FIREBASE_TESTER_GROUPS }}
+          GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          GCP_SERVICE_ACCOUNT: ${{ vars.GCP_SERVICE_ACCOUNT }}
+        run: |
+          missing=0
+          for name in FIREBASE_APP_ID FIREBASE_TESTER_GROUPS GCP_WORKLOAD_IDENTITY_PROVIDER GCP_SERVICE_ACCOUNT; do
+            [ -n "${!name}" ] || { echo "::error title=Missing configuration::$name is not set"; missing=1; }
+          done
+          [ "$missing" = 0 ] || echo "::error::Firebase/GCP variables come from scripts/bootstrap-firebase.sh"
+
+          signing=true
+          for name in IMORN_RELEASE_KEYSTORE_BASE64 IMORN_RELEASE_STORE_PASSWORD IMORN_RELEASE_KEY_PASSWORD \
+                      IMORN_RELEASE_KEY_ALIAS; do
+            [ -n "${!name}" ] || signing=false
+          done
+          [ "$signing" = true ] || echo "::notice title=Release unsigned::Release key not configured, release APK stays unsigned"
+          echo "release-signing=$signing" >> "$GITHUB_OUTPUT"
+          exit $missing
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history, so the release notes can list everything since the last build
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-gradle-build
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
+
+      - name: Decode release keystore
+        if: steps.config.outputs.release-signing == 'true'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.IMORN_RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
+          chmod 600 "$RUNNER_TEMP/release.jks"
+
+      - name: Build debug and release APKs
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          IMORN_RELEASE_STORE_PASSWORD: ${{ secrets.IMORN_RELEASE_STORE_PASSWORD }}
+          IMORN_RELEASE_KEY_PASSWORD: ${{ secrets.IMORN_RELEASE_KEY_PASSWORD }}
+          IMORN_RELEASE_KEY_ALIAS: ${{ vars.IMORN_RELEASE_KEY_ALIAS }}
+        run: |
+          set -o pipefail
+          if [ -f "$RUNNER_TEMP/release.jks" ]; then
+            export IMORN_RELEASE_KEYSTORE="$RUNNER_TEMP/release.jks"
+          else
+            unset IMORN_RELEASE_STORE_PASSWORD IMORN_RELEASE_KEY_PASSWORD IMORN_RELEASE_KEY_ALIAS
+          fi
+          ./gradlew :app:assembleDebug :app:assembleRelease 2>&1 | tee build.log
+
+      - name: Verify release signature
+        if: steps.config.outputs.release-signing == 'true'
+        run: |
+          apksigner=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          "$apksigner" verify --print-certs app/build/outputs/apk/release/app-release.apk | grep -i 'certificate'
+
+      - name: Annotate failures
+        if: failure()
+        run: |
+          [ -f build.log ] || exit 0
+          { grep -E '^e: ' build.log; grep -A3 '^\* What went wrong' build.log | grep -vE '^\* What went wrong|^--$|^\s*$'; } \
+            | grep -v '^> Task ' | awk '!seen[$0]++' | head -10 \
+            | while IFS= read -r line; do echo "::error title=Gradle::${line}"; done || true
+
+      # Lists what landed on main since the last build testers got. Only successful runs on main
+      # count, so a failed distribution's changes roll into the next one.
+      - name: Write release notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prev=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/distribute.yml/runs?branch=main&status=success&per_page=1" \
+            --jq '.workflow_runs[0].head_sha // empty' || true)
+          scripts/release-notes.sh "$GITHUB_SHA" "$prev" > release-notes.txt
+          cat release-notes.txt
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22
+
+      # Exchanges the GitHub OIDC token for short-lived Google credentials and exports
+      # GOOGLE_APPLICATION_CREDENTIALS, which firebase-tools picks up.
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT }}
+
+      - name: Upload to Firebase App Distribution
+        env:
+          APP_ID: ${{ vars.FIREBASE_APP_ID }}
+          GROUPS: ${{ vars.FIREBASE_TESTER_GROUPS }}
+        run: |
+          npx --yes "firebase-tools@${FIREBASE_TOOLS_VERSION}" appdistribution:distribute \
+            app/build/outputs/apk/debug/app-debug.apk \
+            --app "$APP_ID" \
+            --groups "$GROUPS" \
+            --release-notes-file release-notes.txt
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"
+
+      # The R8 mapping file is needed to deobfuscate crash stack traces from this build.
+      - name: Upload APKs and R8 mapping
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: imorn-${{ github.run_number }}
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/mapping/release/mapping.txt
+          retention-days: 90

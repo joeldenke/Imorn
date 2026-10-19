@@ -7,5 +7,9 @@ local.properties
 .DS_Store
 release-notes.txt
 
+# The Firebase config is per project and is never committed. The committed example is
+# google-services.example.json; drop your own copy in app/google-services.json (see docs/firebase.md).
+google-services.json
+
 # Python packages used by one-off tools; never commit them.
 *.whl
