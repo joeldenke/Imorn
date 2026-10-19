@@ -1,0 +1,44 @@
+pluginManagement {
+    // Convention plugins (imorn.android.*). See build-logic/README.md.
+    includeBuild("build-logic")
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+    }
+}
+
+rootProject.name = "Imorn"
+
+// Type-safe module references: implementation(projects.core.designsystem).
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+include(":app")
+
+include(":core:coach")
+include(":core:data")
+include(":core:designsystem")
+include(":core:navigation")
+include(":core:ui")
+
+include(":feature:today")

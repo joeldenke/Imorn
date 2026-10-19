@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today_screen_title">Imorn</string>
+    <string name="today_next_step_label">Next step</string>
+    <string name="today_next_step">Book the moving van</string>
+    <string name="project_goal">Move to a new apartment in October</string>
+
+    <string name="assistant_title">Assistant</string>
+    <string name="assistant_checking">Checking whether the on-device assistant is available…</string>
+    <string name="assistant_unavailable">The on-device assistant is not available on this device.</string>
+    <string name="assistant_downloadable">The on-device assistant can be downloaded.</string>
+    <string name="assistant_downloading">Downloading the on-device assistant…</string>
+    <string name="assistant_available">The on-device assistant is ready. Everything it writes stays on this phone.</string>
+    <string name="assistant_writing">Writing…</string>
+    <string name="assistant_failed">The assistant could not write anything. Please try again.</string>
+    <string name="assistant_ask">Explain the next step</string>
+    <string name="assistant_download">Download the assistant</string>
+</resources>
