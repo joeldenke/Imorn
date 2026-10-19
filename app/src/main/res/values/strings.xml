@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Not translated: brand. -->
+    <string name="app_name" translatable="false">Imorn</string>
+    <string name="nav_today">Today</string>
+</resources>
