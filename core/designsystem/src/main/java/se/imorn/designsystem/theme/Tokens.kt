@@ -16,7 +16,7 @@ object ImornSpacing {
     val xl = 32.dp
 }
 
-// Corner radius from the base 14 dp, as in Novila's "Skog & sol" language.
+// Corner radius from the base 14 dp: soft, never pill-shaped except where Material asks for it.
 internal val ImornShapes = Shapes(
     extraSmall = RoundedCornerShape(6.dp),
     small = RoundedCornerShape(10.dp),
