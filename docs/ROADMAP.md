@@ -1,284 +1,357 @@
-# Imorn — Android Development Roadmap
+# Imorn – roadmap
 
-«En sak i taget. Allt på ett ställe.
+> *Det finns en dag imorgon.* En sak i taget, allt på ett ställe, och minnena på köpet.
 
-Imorn is an Android app for managing life's projects, staying on top of tasks and deadlines, organizing important documents, and preserving personal memories along the way.
+Imorn hjälper vem som helst att ta sig igenom livets stora projekt – flytta, sälja huset, renovera, få barn, ta
+hand om ett dödsbo – utan att tappa kontrollen och utan att glömma det som var fint på vägen. Appen vet vad som
+brukar behöva göras, länkar rätt till myndigheten, påminner i god tid (även om det dröjer ett år), tolkar brevet du
+inte förstår, och gör till sist hela resan till ett minne du kan dela med familjen.
 
-The initial release focuses on moving home as the first project template. Users can create a project, follow an editable checklist, receive reminders, attach photos and notes, and revisit the entire process through a chronological timeline.
+Den här filen är både produktvisionen och utvecklingsplanen. De färdiga mallarna, med steg och länkar, finns i
+[templates.md](templates.md). Innehållssystemet (mallar och länkar som uppdateras utan ny app) beskrivs i
+[content-system.md](content-system.md).
 
-Initial priorities: reliability, a clear user experience, local-first storage, and minimal friction when capturing information.»
+---
 
-## Development principles
+## 1. Känslan
 
-- Build a working Android application incrementally.
-- Keep the initial release fully usable without an account or backend.
-- Use Android platform APIs for notifications, photos, camera access, and file handling.
-- Separate UI, business logic, and persistence.
-- Keep project data and media associated with the correct project.
-- Avoid unnecessary permissions.
-- Add automated tests alongside important functionality.
-- Do not introduce cloud synchronization, AI, or subscriptions before the core experience is validated.
+Imorn ska kännas som en lugn vän som har gjort det här förut.
 
-## Initial technology stack
+| Princip | Vad det betyder i appen |
+| --- | --- |
+| **En sak i taget** | Startskärmen visar aldrig mer än tre saker. Resten finns, men den skriker inte. |
+| **Imorgon är okej** | Varje påminnelse har knappen *Imorgon*. Att skjuta upp är ett val, inte ett misslyckande. Inga streaks, ingen skuld, inga röda siffror. |
+| **Kontroll utan arbete** | Mallarna gör jobbet: du väljer "Vi ska flytta 1 mars" och har en färdig plan på tio sekunder. |
+| **Allt är ett minne** | När du bockar av ett steg kan du spara ett foto av det. Checklistan blir berättelsen. |
+| **För vem som helst** | Stor text, enkel svenska, uppläsning, TalkBack, fungerar offline och utan konto. En 19-åring och en 84-åring ska båda klara första flytten respektive dödsboet. |
+| **Ditt, på din telefon** | Allt ligger lokalt tills du själv väljer att dela. Brev med personnummer lämnar aldrig enheten. |
 
-Area | Technology
---- | ---
-Language | Kotlin
-UI | Jetpack Compose
-Design system | Own tokens and `Imorn*` components in `:core:designsystem`, Material 3 inside it only
-Navigation | Navigation Compose
-Architecture | ViewModel, repositories, unidirectional UI state
-Async operations | Kotlin Coroutines and Flow
-Local database | Room
-Preferences | DataStore
-Background work | WorkManager
-Image selection | Android Photo Picker
-Camera | Camera intent initially; CameraX if in-app capture requires it
-Dependency injection | Constructor injection initially; Hilt if project complexity justifies it
-Testing | JUnit, Compose UI testing, Android instrumented tests
-CI | GitHub Actions
-Distribution | Google Play internal or closed testing
+Gryning-paletten bär betydelse och används konsekvent: **indigo** är framtiden och överblicken (det som ska göras),
+**aprikos** är nuet och vägen (det som händer nu), **rosa** är minnena (det som har varit).
 
-Use stable, mutually compatible dependency versions and a version catalog in gradle/libs.versions.toml.
+Ton i texterna: varm, kort, aldrig byråkratisk. "Dags att göra flyttanmälan. Det tar fem minuter." – inte
+"Påminnelse: Flyttanmälan ska inkomma till Skatteverket".
 
-## Phase 0 — Repository and Android foundation
+---
 
-Goal: Establish a reproducible Android development environment and a maintainable application structure.
+## 2. Kärnkonceptet: kapitel med en nu-linje
 
-Tasks
-- [ ] Inspect the existing repository and Gradle configuration.
-- [ ] Confirm the Android application module and package name.
-- [ ] Configure Kotlin, Android Gradle Plugin, and Java toolchain compatibility.
-- [ ] Configure minimum and target SDK versions.
-- [ ] Set up Jetpack Compose and Material 3.
-- [ ] Establish the application theme, typography, spacing, and color tokens.
-- [ ] Add the initial navigation graph.
-- [ ] Create a basic app shell with placeholder screens.
-- [ ] Configure debug and release build variants.
-- [ ] Add .gitignore entries for local builds, IDE files, and secrets.
-- [ ] Add a GitHub Actions workflow for building and testing.
-- [ ] Document local setup and build commands in README.md.
+Allt i Imorn är ett **kapitel** i livet: *Flytten till Gävle*, *Badrummet*, *Lilla Elsa*, *Mammas dödsbo*.
 
-Suggested package structure:
-app/src/main/java/<package>/ with app/, core/{database,designsystem,navigation,util}/, feature/{home,projects,tasks,reminders,timeline,memories,settings}/, and AndroidManifest.xml; app/src/test/. Adjust to the existing codebase; avoid empty abstractions without a current use case.
+Ett kapitel är **en enda tidslinje** med en lysande **nu-linje** i mitten:
 
-Acceptance criteria
-- [ ] The app builds successfully from a clean checkout.
-- [ ] The app launches on an Android emulator.
-- [ ] Navigation between placeholder screens works.
-- [ ] Unit tests execute in CI.
-- [ ] No credentials or signing secrets are committed.
+```
+   ┌──────────────────────────────────────────────┐
+   │  ○  15 mars   Tillträde                 (indigo, framtid)
+   │  ○  1 mars    Flyttdag – boka hiss
+   │  ○  22 feb    Säga upp elavtalet
+   │  ●  Imorgon   Gör flyttanmälan      [Gör nu]   ← nästa steg
+ ══╪══ NU ════════════════════════════════════════  (aprikos)
+   │  ◆  igår      Packade köket  [foto: 14 lådor] (rosa, minne)
+   │  ✓  10 feb    Flyttfirma bokad   [kvitto]
+   │  ◆  2 feb     Första visningen  [foto: tomma vardagsrummet]
+   └──────────────────────────────────────────────┘
+```
 
-## Phase 1 — Data model and local persistence
+- **Ovanför nu-linjen**: stegen som väntar (checklistan), sorterade på tid.
+- **Under nu-linjen**: det som har hänt – avbockade steg, foton, anteckningar, kvitton, brev.
+- **Checklistan och tidslinjen är samma data**, två vyer: *Lista* (grupperad i faser, för att beta av) och
+  *Tidslinje* (för att se helheten och minnas). Inget dubbelarbete.
+- Ett avbockat steg **faller ner genom nu-linjen** och blir ett minne. Animationen är kort, lugn och sker en gång.
 
-Goal: Make project data reliable before adding complex UI or media handling.
+### Byggstenarna
 
-Data entities (starting point; use Room entities, relations, foreign keys, indexes, explicit migrations; store dates consistently, preferably epoch millis or a clearly defined date/time model):
+| Byggsten | Vad det är | Exempel |
+| --- | --- | --- |
+| **Kapitel** | Ett livsprojekt, skapat från en mall eller tomt | Flytten, Sälja huset |
+| **Ankardatum** | De datum allt annat räknas från | Flyttdag, tillträde, beräknad förlossning |
+| **Fas** | En grupp steg | Planera, Papper, Packa, Flyttdagen, Efteråt |
+| **Steg** | Något att göra. Har tid (fast eller relativ ett ankare), länkar, ansvarig, foto-uppmaning | "Gör flyttanmälan" (ankare: flyttdag −7 d) |
+| **Minne** | Foto, anteckning, röstanteckning, före/efter-par | "Sista kvällen i gamla lägenheten" |
+| **Papper** | Dokument, kvitto, kontrakt, inskannat brev – privat som standard | Köpekontrakt, offert, brev från Försäkringskassan |
+| **Lång tråd** | Ett steg långt fram, som överlever att kapitlet är "klart" | Deklarera försäljningen i maj nästa år |
+| **Länk** | En referens till myndighet eller tjänst, hämtad ur länkregistret | Skatteverket – flyttanmälan |
 
-Project: id, title, description, templateId, startDate, targetDate, status, createdAt, updatedAt
-Task: id, projectId, title, description, category, dueDate, isCompleted, completedAt, sortOrder, createdAt, updatedAt
-TimelineEntry: id, projectId, type, title, description, occurredAt, createdAt, updatedAt
-Attachment: id, projectId, timelineEntryId, type, displayName, localPath, mimeType, createdAt
-Reminder: id, taskId, scheduledAt, isEnabled, notificationId
+### Relativ tid och ankare
 
-Tasks
-- [ ] Add Room and configure the database.
-- [ ] Implement entities and DAOs.
-- [ ] Add foreign keys and indexes.
-- [ ] Implement repository interfaces and Room-backed implementations.
-- [ ] Expose observable data using Flow.
-- [ ] Add database migration infrastructure.
-- [ ] Define deletion behavior for projects and related records.
-- [ ] Add repository tests.
-- [ ] Verify data survives process termination and app restarts.
+Mallarnas steg anges relativt ett ankare: `flyttdag − 6 veckor`, `tillträde + 3 månader`, `nästa år, april`.
+Flyttas flyttdagen, flyttas hela planen – utom de steg användaren har satt ett eget datum på. Ankare kan vara
+okända ("vi vet inte när än"): då visas stegen i ordning utan datum, och appen frågar efter datumet vid rätt tillfälle.
 
-Acceptance criteria: CRUD works locally and related data cannot become orphaned through normal application operations.
+---
 
-## Phase 2 — Projects and project overview
+## 3. Fem flöden som gör Imorn unikt
 
-Goal: Allow users to create and manage real-life projects.
+### 3.1 Starta ett kapitel på tio sekunder
+1. *Nytt kapitel* → "Vad händer?" → stora kort: Flytta, Sälja bostad, Renovera, Vänta barn …
+2. Två–fyra frågor som formar planen: "Hyresrätt, bostadsrätt eller hus?", "Har ni barn som byter skola?",
+   "Flyttfirma eller själva?"
+3. Ett ankardatum.
+4. Klart: planen är byggd, de tre första stegen syns på startskärmen. Frågorna gömmer de steg som inte gäller –
+   användaren ser aldrig 80 punkter, bara de som är relevanta.
 
-Tasks
-- [ ] Build the home screen.
-- [ ] Display active projects.
-- [ ] Display an appropriate empty state when no projects exist.
-- [ ] Build the create-project screen.
-- [ ] Add project title and optional description.
-- [ ] Support optional start and target dates.
-- [ ] Add the initial Moving Home template.
-- [ ] Build the project overview screen.
-- [ ] Display project progress and remaining tasks.
-- [ ] Support project editing.
-- [ ] Support project completion and archiving.
-- [ ] Confirm destructive actions.
-- [ ] Add UI and ViewModel tests.
+### 3.2 Fånga på vägen
+En stor **+**-knapp, alltid nåbar med tummen, med fyra val: **Fota**, **Steg**, **Anteckning**, **Brev**.
+- När ett steg bockas av med en foto-uppmaning i mallen ("Fota mätarställningen", "Fota tomma rummet") frågar
+  appen en gång: *Vill du spara ett foto?* Ett tryck öppnar kameran.
+- **Före/efter** för renovering: ett "Före"-foto blir en mall. När du tar "Efter" visas det gamla fotot som en
+  halvgenomskinlig hinna i sökaren, så vinkeln blir samma. Resultatet är en skjutreglage-jämförelse i tidslinjen.
+- Röstanteckning med automatisk text (på enheten) för den som inte vill skriva.
 
-Acceptance criteria: a user can create a moving project, open it, edit its details, and return to it after restarting the app.
+### 3.3 Brevtolken – "Jag fattar inte det här brevet"
+1. *Brev* → dokumentskannern (ML Kit Document Scanner: rak beskärning, ingen kamerabehörighet behövs).
+2. Texten läses på enheten (ML Kit Text Recognition).
+3. Imorn hittar avsändare, datum, belopp, OCR/bankgiro och sista dag – deterministiskt och testat.
+4. Känns avsändare och brevtyp igen (innehållspaketets **brevtyper**, skrivna av människor) visas en färdig
+   förklaring på enkel svenska: *"Det här är ett slutskattebesked. Du ska få tillbaka 3 214 kr. Du behöver inte göra
+   något."*
+5. Finns Gemini Nano på telefonen kan den dessutom förklara det okända med egna ord – alltid märkt som AI, alltid
+   med "kontrollera mot brevet".
+6. Ett tryck: **Lägg till som steg** med sista dagen som deadline, i rätt kapitel (eller i *Livet i stort*).
+7. *Läs upp* finns alltid.
 
-## Phase 3 — Checklists and task management
+Brevet stannar på telefonen. Appen svarar aldrig på brevet, betalar aldrig och ger aldrig juridiska råd; den säger
+vad brevet verkar vara, vad som brukar behöva göras, och länkar till avsändaren.
 
-Goal: Make the app useful for managing the actual work involved in a project.
+### 3.4 Långa trådar – det man glömmer efter ett år
+Det farligaste i livsprojekt är inte flyttdagen, utan det som händer långt efter:
+- Sälja huset → **deklarera vinsten** (K5/K6) våren året efter, uppskov, dolda fel i upp till tio år.
+- Renovera → **garanti och reklamation** för hantverkarens arbete, spara ROT-underlaget, egenkontrollerna för våtrum.
+- Barn → namnet ska anmälas inom tre månader, föräldradagar som förfaller vid en viss ålder.
+- Dödsbo → bouppteckning, deklaration för dödsboet, arvskifte.
 
-Tasks
-- [ ] Implement task creation and editing.
-- [ ] Support task descriptions.
-- [ ] Add task categories.
-- [ ] Support due dates.
-- [ ] Support task completion and reopening.
-- [ ] Display completed and incomplete task counts.
-- [ ] Sort tasks by due date and custom order.
-- [ ] Filter tasks by status or category.
-- [ ] Add custom tasks to template-generated checklists.
-- [ ] Support task deletion.
-- [ ] Update project progress reactively.
-- [ ] Add unit tests for task and progress logic.
+När ett kapitel avslutas frågar Imorn: *"Det finns 3 saker längre fram. Ska jag hålla koll på dem?"* Kapitlet blir
+**vilande**, inte borta. Trådarna visas i *Längre fram* på startskärmen när de närmar sig, och kapitlet vaknar med
+en lugn notis när det är dags.
 
-Initial moving template categories: Planning; Contracts and administration; Packing; Moving day; Cleaning and inspection; Settling into the new home. Template tasks must be editable; the app should not imply a checklist covers every legal or administrative requirement.
+**Glömskeskydd** utan tjat:
+- Högst en–två notiser per dag; flera påminnelser samma dag blir en.
+- *Veckan som kommer* – en notis på söndag kväll med det viktigaste, valfri.
+- Ett steg som passerat sitt datum frågar en gång: *Klart? · Imorgon · Nytt datum · Gäller inte*. Sedan tyst.
+- Steg med hårda deadlines (märkta i mallen) får en extra påminnelse dagen före – bara de.
 
-Acceptance criteria: users can manage a complete checklist, and changes are immediately reflected in the project overview.
+### 3.5 Minnen och familjen
+- **Minnesboken**: när ett kapitel avslutas (eller när som helst) gör Imorn en vacker sammanfattning – omslag,
+  före/efter, de bästa fotona, valda anteckningar, datum. Dela som bildserie eller PDF via vanliga delningen. Inga
+  papper och inga kvitton följer med, bara det som är märkt som minne.
+- **För ett år sedan**: en gång ibland – "För ett år sedan bar ni in den första lådan i nya huset." Kan stängas av.
+- **Familjen** (senare fas, kräver konto): bjud in till ett kapitel som *Läsare* (mormor ser minnena) eller
+  *Medhjälpare* (syskonen delar på dödsboets steg). Steg kan tilldelas: "Erik ringer banken".
+- **Släktens tidslinje**: kapitel som delas i familjen bildar tillsammans en tidslinje över generationer – flyttar,
+  barn, bröllop, hus. Det är Imorns långsiktiga själ: *vardagens projekt blir familjens historia*.
+- **Visningslänk för den utan app**: mormor öppnar minnesboken i webbläsaren, utan konto (fas 8).
 
-## Phase 4 — Reminders and deadlines
+---
 
-Goal: Help users remember important tasks without overwhelming them with notifications.
+## 4. Livsfaser – rätt mallar till rätt person
 
-Tasks
-- [ ] Add reminder scheduling to eligible tasks.
-- [ ] Create notification channels.
-- [ ] Request notification permission on supported Android versions when needed.
-- [ ] Implement a notification receiver or suitable scheduling mechanism.
-- [ ] Use WorkManager for appropriate deferrable background work.
-- [ ] Use exact alarms only if a genuine exact-time requirement justifies the additional permission and policy considerations.
-- [ ] Cancel and reschedule notifications when tasks change.
-- [ ] Cancel notifications when tasks are completed or deleted.
-- [ ] Handle time zones and date changes.
-- [ ] Add notification preference controls.
-- [ ] Test permission denial and notification behavior after device restarts.
+Onboardingen frågar inte om ålder, utan *"Vad stämmer på dig just nu?"* (flera val). Livsfasen styr bara vilka
+mallar som föreslås först och vilka säsongstips som visas; allt finns alltid tillgängligt i biblioteket.
 
-Acceptance criteria: a user can schedule a reminder, receive it when Android permits, and cancel or update it without leaving stale notifications behind. Document Android background execution limitations in app and developer documentation.
+| Livsfas | Vanligast att vilja göra | Mallar som föreslås först |
+| --- | --- | --- |
+| **Ny på egen hand** (ca 18–25) | Första lägenheten, plugga, första jobbet, körkort | Första egna boendet, Börja plugga (CSN), Ta körkort, Nytt jobb, Deklarera första gången |
+| **Bygga upp** (ca 25–40) | Köpa bostad, flytta ihop, barn, bröllop, renovera, hund | Köpa bostad, Flytta, Vänta barn, Gifta sig, Renovera badrum/kök, Skaffa hund |
+| **Mitt i livet** (ca 40–60) | Större boende, renovera, barn flyttar hemifrån, hjälpa föräldrar | Sälja bostad, Renovera, Barnet flyttar hemifrån, Hjälpa en förälder, Byta jobb |
+| **Nästa kapitel** (ca 60+) | Gå i pension, flytta till mindre, framtidsfullmakt, testamente | Gå i pension, Flytta till mindre, Framtidsfullmakt och testamente, Rensa och ge bort |
+| **Ny i Sverige** | Folkbokföring, personnummer, id, bank, vård | Ny i Sverige (med enkel svenska och fler språk) |
+| **Något tungt har hänt** | Separation, en närstående har dött, jobbet försvann | När någon har dött, Separation, Förlora jobbet – med extra varsam ton |
 
-## Phase 5 — Photos, notes, and documents
+**Säsongstips** (lugna kort, högst ett i veckan): deklarationen på våren, vinterdäck på hösten, se över
+försäkringar och abonnemang i januari, rensa förråd på våren. Varje tips kan bli ett steg med ett tryck.
 
-Goal: Make it easy to preserve both practical evidence and personal memories.
+Rekommendationerna är deterministiska regler i innehållspaketet (livsfas × säsong × befintliga kapitel), testade –
+ingen modell gissar vad du borde göra.
 
-Tasks
-- [ ] Add a quick-add action from the project screen.
-- [ ] Add text notes.
-- [ ] Select existing images through Android Photo Picker.
-- [ ] Add photo capture through the system camera intent.
-- [ ] Evaluate CameraX if a custom in-app camera experience is needed.
-- [ ] Add titles and descriptions to attachments.
-- [ ] Support receipt and document attachments.
-- [ ] Store media using a documented local storage strategy.
-- [ ] Handle URI permissions and inaccessible files.
-- [ ] Generate image thumbnails where useful.
-- [ ] Add media deletion and cleanup logic.
-- [ ] Prevent accidental deletion of files still referenced by records.
-- [ ] Test large images, low storage, and process recreation.
+---
 
-Storage requirements
-- Keep media references associated with their project and timeline entry.
-- Do not rely on temporary content URIs remaining accessible indefinitely.
-- Copy files into app-controlled storage when long-term access requires it.
-- Use app-private storage for private content unless the user explicitly exports or shares it.
-- Avoid broad photo-library permissions when the Android Photo Picker is sufficient.
-- Explain what will happen to local media when a project is deleted.
+## 5. Innehållssystemet – mallar och länkar som lever
 
-Acceptance criteria: a user can add a photo, note, or document to a project and access it again after restarting the app.
+Kort version (detaljer i [content-system.md](content-system.md)):
 
-## Phase 6 — Unified project timeline
+- Mallar, länkregister, brevtyper och säsongstips är **data**, inte kod: JSON i mappen `content/` i repot.
+- Varje länk finns **en gång** i länkregistret (`links.json`) och refereras med id från mallarna. Byter
+  Skatteverket adress rättas den på ett ställe, och alla användares kapitel får rätt länk utan uppdatering.
+- **CI validerar** varje ändring: schema, att alla länk-id finns, att texter finns på svenska och engelska,
+  och att alla länkar svarar.
+- **En schemalagd länkkontroll** varje vecka öppnar ett issue om en länk har slutat fungera.
+- Vid merge till `main` **publiceras ett signerat innehållspaket** till Firebase Hosting (via samma Workload
+  Identity Federation som App Distribution använder, inga nycklar). Appen hämtar det med vanlig HTTPS i bakgrunden,
+  verifierar signaturen och använder det. Ingen Firebase-SDK och ingen spårning i appen.
+- Appen har alltid **ett inbakat paket** i APK:n, så allt fungerar offline och vid första start.
+- En mall som uppdateras **ändrar aldrig användarens kapitel** utan lov: länkar uppdateras alltid, nya steg visas
+  som "2 nya tips i mallen – lägg till?".
+- Ägaren kan redigera mallar och länkar **från mobilen** i GitHubs webbredigerare → PR → grönt → merge → ute hos
+  alla inom ett dygn.
 
-Goal: Bring practical progress and personal memories together into one chronological view.
+---
 
-Tasks
-- [ ] Build the timeline screen.
-- [ ] Combine timeline entries, photos, notes, and completed tasks.
-- [ ] Sort entries chronologically.
-- [ ] Support date and time formatting using the user's locale.
-- [ ] Display photo thumbnails.
-- [ ] Open full-size photos.
-- [ ] Display document and note entries.
-- [ ] Support editing and deleting entries.
-- [ ] Add empty and loading states.
-- [ ] Optimize image loading and list performance.
-- [ ] Test projects with many timeline entries.
+## 6. Faser
 
-Example timeline: March 2 First visit to the new home, Photo: The empty living room; March 5 Moving company booked; March 8 Started packing, Photo: First boxes; March 10 Receipt: Moving supplies; March 15 Moving day; March 16 First breakfast in the new home.
+Varje fas slutar med något en riktig människa kan använda. Ordningen är vald så att *Flytta* fungerar helt först,
+och att mallformatet är det slutliga redan från början (inbakat), så att fjärruppdateringen i fas 4 bara är ett nytt
+sätt att leverera samma data.
 
-Acceptance criteria: the timeline presents a coherent history of the project, combining tasks and memories without duplicating or losing records.
+### Fas 0 – Grunden *(i stort sett klar)*
+- [x] Gradle med convention plugins, versionskatalog, Isolated Projects
+- [x] CI (format och lint, tester med skärmdumpar, bygge och badging), App Distribution via WIF
+- [x] Designsystemet *Gryning* (Figtree, `Imorn*`-komponenter, Material 3 bara i `:core:designsystem`)
+- [x] Navigation 3, Metro, Gemini Nano-assistent som bara förklarar
+- [ ] `CLAUDE.md` för Imorn (regler som i Novila: designsystem, inga hårdkodade texter, logik i rena Kotlin-moduler)
+- [ ] `ArchitectureTest`: features beror inte på varandra, inga Material-importer i features, strängar i resurser
 
-## Phase 7 — Polish, accessibility, and MVP testing
+### Fas 1 – Kärnan: kapitel, steg och nu-linjen
+**Mål:** någon kan planera och genomföra en hel flytt i Imorn, offline.
+- [ ] `:core:model` (ren Kotlin): `Chapter`, `Anchor`, `Phase`, `Step`, `Entry`, `RelativeTime`, `LinkRef`,
+      planering av relativa datum (`schedule()`), framsteg – enhetstestat
+- [ ] `:core:content` (ren Kotlin): mallformatet v1, parser, validering, `instantiate(template, answers, anchors)`
+- [ ] `:core:database`: Room med explicita migrationer, främmande nycklar, testade DAO:er
+- [ ] Inbakat innehållspaket med mallen **Flytta** och länkregistret
+- [ ] `:feature:today` blir *Imorgon*: högst tre saker – nästa steg per kapitel, det som är försenat, *Längre fram*
+- [ ] `:feature:chapters`: skapa kapitel från mall (frågor + ankare), kapitlets översikt, redigera, avsluta, vila, radera
+- [ ] `:feature:timeline`: Lista och Tidslinje med nu-linje, bocka av, flytta steg, egna steg
+- [ ] Steg-detalj: beskrivning, länkkort till myndigheten, "varför", anteckning
+- [ ] Tomma lägen och onboarding light (namn, livsfas)
 
-Goal: Make the first release reliable enough for real users.
+### Fas 2 – Fånga på vägen
+**Mål:** kapitlet blir en berättelse, inte bara en lista.
+- [ ] Snabb-+ med Fota, Steg, Anteckning
+- [ ] Foton via Photo Picker och kamera-intent, kopierade till appens privata lagring, miniatyrer
+- [ ] Foto-uppmaning när ett steg med `photoPrompt` bockas av
+- [ ] Papper: PDF och bilder som dokument, märkta privata, egen flik i kapitlet
+- [ ] Före/efter-par med jämförelsereglage; hinna i sökaren (CameraX, kräver `CAMERA` – ägarens ok)
+- [ ] Röstanteckningar med text på enheten (utvärdera)
+- [ ] Radering som städar filer, och tydligt vad som händer med foton när ett kapitel raderas
 
-Tasks
-- [ ] Test the complete moving workflow.
-- [ ] Add UI tests for critical journeys.
-- [ ] Test database migrations.
-- [ ] Test task scheduling and notifications.
-- [ ] Test media access and deletion.
-- [ ] Handle offline usage and app restarts.
-- [ ] Review accessibility labels and touch target sizes.
-- [ ] Verify light and dark themes if both are supported.
-- [ ] Review Swedish text, formatting, and localization.
-- [ ] Add crash reporting only with appropriate privacy disclosures.
-- [ ] Check performance on lower-end Android devices.
-- [ ] Review privacy and data deletion behavior.
-- [ ] Prepare internal or closed beta distribution.
+### Fas 3 – Påminnelser och långa trådar
+**Mål:** inget viktigt glöms, även ett år senare – och ingen känner sig tjatad på.
+- [ ] `:core:reminders` med WorkManager (samma mönster som Novila: ett engångsjobb, lägger nästa själv, inga exakta larm)
+- [ ] Notisbudget: sammanslagning per dag, tysta timmar, *Imorgon*-knapp i notisen
+- [ ] Försenat-flödet: Klart · Imorgon · Nytt datum · Gäller inte
+- [ ] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
+- [ ] *Veckan som kommer* (valfri söndagsnotis)
+- [ ] Widget (Glance): nästa steg + snabbfoto
+- [ ] Omstart, tidszoner, sommartid och ändrade ankare testade
 
-Critical user journeys: 1. Create a moving project. 2. Complete and reschedule tasks. 3. Set and receive a reminder. 4. Attach a photo and a receipt. 5. Reopen the project and inspect the timeline. 6. Delete a project and verify the documented deletion behavior.
+### Fas 4 – Levande innehåll och mallbiblioteket
+**Mål:** ägaren uppdaterar mallar och länkar utan ny app; biblioteket täcker livets vanligaste projekt.
+- [ ] `content/` i repot, JSON Schema, validering i CI, signering, publicering till Firebase Hosting
+- [ ] Veckovis länkkontroll som öppnar issue
+- [ ] Appen: hämtning i bakgrunden (WorkManager, ETag, signaturkontroll, reserv till inbakat paket)
+- [ ] **Beslut:** `INTERNET`-behörigheten tillbaka, bara för innehållet (ägarens ok, badging, integritetspolicy)
+- [ ] Mallbibliotek med sök, kategorier och livsfaser
+- [ ] Mall-uppdateringar: länkar automatiskt, nya steg som förslag
+- [ ] Säsongstips
+- [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna
 
-Acceptance criteria: all critical journeys pass, there are no known critical data-loss bugs, and beta users can use the app without developer assistance.
+### Fas 5 – Brevtolken
+**Mål:** vem som helst kan fota ett obegripligt brev och veta vad som behöver göras.
+- [ ] Dokumentskanner och textigenkänning på enheten
+- [ ] `:core:letters` (ren Kotlin): avsändare, datum, belopp, OCR, sista dag – testat med anonymiserade exempel
+- [ ] Brevtyper i innehållspaketet (de 30 vanligaste breven från Skatteverket, Försäkringskassan, CSN,
+      Kronofogden, Pensionsmyndigheten, Transportstyrelsen, kommunen, vården)
+- [ ] Gemini Nano-förklaring som tillägg, med AI-märkning; aldrig beslut, aldrig belopp den hittar på
+- [ ] *Läs upp*, *Enkel svenska*, *Lägg till som steg*
+- [ ] Integritet: brevbilder krypterade i privat lagring, aldrig i minnesboken, aldrig delade
 
-## Phase 8 — Post-MVP development
+### Fas 6 – Minnen utan konto
+**Mål:** dela det fina utan att dela det privata.
+- [ ] Minnesboken: generering, redigering (välj foton), export som bilder/PDF, delningsdialog
+- [ ] *För ett år sedan* och kapitlets årsdag
+- [ ] Säkerhetskopia: Androids egen backup för databasen; export/import av ett kapitel som fil
 
-Prioritize these features only after evaluating feedback and usage.
+### Fas 7 – Familjen
+**Mål:** livsprojekt görs sällan ensam.
+- [ ] **Beslut:** konto (Firebase Auth med Google och lösenordsnyckel), Firestore + Cloud Storage, region i EU
+- [ ] Dela kapitel: Läsare / Medhjälpare / Ägare, inbjudningslänk, återkalla
+- [ ] Tilldela steg till personer, notis till den som fått steget
+- [ ] Separata delningsnivåer: minnen delas, papper aldrig utan uttryckligt val per dokument
+- [ ] Synk med offline-först och konfliktregler (sista skrivning per fält; avbockning vinner)
+- [ ] Säkerhetsregler testade i CI mot Firebase-emulatorn
+- [ ] Släktens tidslinje
+- [ ] Radera konto och all molndata; integritetspolicy, Data safety
 
-Backup and synchronization
-- [ ] Design account and identity requirements.
-- [ ] Define a backend and synchronization model.
-- [ ] Implement secure authentication if needed.
-- [ ] Synchronize project metadata.
-- [ ] Synchronize media with explicit storage and privacy rules.
-- [ ] Handle conflicts and offline changes.
-- [ ] Implement backup and restore.
-- [ ] Add account and data deletion flows.
+### Fas 8 – Bredare
+- [ ] Fler språk för innehållet (engelska först, sedan arabiska, somaliska, persiska, ukrainska – där behovet av
+      brevtolken är störst)
+- [ ] Webbvisning av minnesboken för den utan app
+- [ ] Surfplatta och vikbara (adaptiva layouter)
+- [ ] Mallar från användare? Bara efter granskning, aldrig fritt publicerade
 
-Collaboration
-- [ ] Share a project with another person.
-- [ ] Define viewer and editor permissions.
-- [ ] Assign tasks to collaborators.
-- [ ] Synchronize task and timeline changes.
-- [ ] Handle revoked access and shared-media permissions.
+---
 
-Advanced features
-- [ ] Add more project templates.
-- [ ] Add search across tasks and attachments.
-- [ ] Export a project timeline.
-- [ ] Generate a visual project recap.
-- [ ] Evaluate AI-assisted task suggestions.
-- [ ] Evaluate premium storage and advanced project features.
+## 7. Arkitektur
 
-## Engineering Definition of Done
-- [ ] Acceptance criteria are met.
-- [ ] Relevant unit and UI tests pass.
-- [ ] UI state is handled correctly across lifecycle events.
-- [ ] Loading, empty, and error states are implemented.
-- [ ] Data is persisted and validated where appropriate.
-- [ ] Permissions and privacy implications are reviewed.
-- [ ] Accessibility has been considered.
-- [ ] No secrets are committed.
-- [ ] Documentation is updated where needed.
-- [ ] CI passes.
+Samma ryggrad som i dag (Metro, Navigation 3, en ViewModel per skärm, tillståndslösa skärmar). Nya moduler:
 
-## MVP Release Criteria
-- [ ] A user can create and manage a project.
-- [ ] Project checklists and progress work reliably.
-- [ ] Task reminders can be scheduled and managed.
-- [ ] Users can attach photos, notes, and documents.
-- [ ] The timeline combines practical and personal entries.
-- [ ] Data persists locally across app restarts.
-- [ ] Critical user journeys pass testing.
-- [ ] Data deletion and media storage behavior are documented.
-- [ ] Beta feedback has been reviewed and critical issues resolved.
+| Modul | Typ | Ansvar |
+| --- | --- | --- |
+| `:core:model` | ren Kotlin | Kapitel, steg, ankare, relativ tid, framsteg, notisbudget |
+| `:core:content` | ren Kotlin | Mallformat, länkregister, brevtyper, validering, mallinstansiering, versionsjämförelse |
+| `:core:letters` | ren Kotlin | Utvinning ur brevtext, matchning mot brevtyper |
+| `:core:database` | Android | Room, DAO:er, migrationer, repositories |
+| `:core:media` | Android | Foton, miniatyrer, privat lagring, städning |
+| `:core:reminders` | Android | WorkManager, notiser, kanaler |
+| `:core:contentsync` | Android | Hämta och verifiera innehållspaket (fas 4) |
+| `:core:capture` | Android | Dokumentskanner, textigenkänning (fas 5) |
+| `:feature:today` | feature | *Imorgon* |
+| `:feature:chapters` | feature | Skapa, översikt, avsluta |
+| `:feature:timeline` | feature | Lista, tidslinje, steg-detalj |
+| `:feature:library` | feature | Mallbiblioteket |
+| `:feature:letters` | feature | Brevtolken |
+| `:feature:memories` | feature | Minnesboken, för ett år sedan |
+| `:feature:settings`, `:feature:onboarding`, `:feature:widget` | feature | Som i Novila |
 
-Product north star: Imorn helps people stay in control of life's important projects while preserving the memories that make those experiences meaningful. Build the smallest reliable Android experience first. Add complexity only when users demonstrate a real need for it.
+Regler som följer med från Novila:
+- All logik som går att testa utan Android ligger i rena Kotlin-moduler och testas på sekunder.
+- Planen är alltid deterministisk. Gemini Nano **förklarar** (assistentens kommentar, brevets innebörd) men
+  **bestämmer aldrig** steg, datum eller belopp.
+- Inga hårdkodade texter; mallarnas texter kommer ur innehållspaketet, appens egna ur `strings.xml`.
+- Nya behörigheter (`INTERNET`, `CAMERA`, `POST_NOTIFICATIONS`) kräver ägarens ok och syns i badging.
+
+---
+
+## 8. Beslut som behövs från ägaren
+
+| # | Beslut | Rekommendation | När |
+| --- | --- | --- | --- |
+| 1 | `INTERNET` tillbaka för innehållspaketet | Ja, men bara HTTPS till en egen domän, inga SDK:er. Användaren kan stänga av uppdateringar. | Fas 4 |
+| 2 | Var paketet ligger | Firebase Hosting i `imorn-app` (CDN, gratis nivå räcker länge, WIF finns redan) | Fas 4 |
+| 3 | `CAMERA` för före/efter-hinnan | Ja, frågas först när användaren tar ett efter-foto | Fas 2 |
+| 4 | Konto och moln för familjen | Firebase Auth + Firestore + Storage i EU-region; utvärdera ändpunktskryptering för papper | Fas 7 |
+| 5 | Juridisk ton | Mallar är "vanliga steg", aldrig "allt du måste". Fast text: *Imorn ersätter inte rådgivning.* | Fas 1 |
+| 6 | Vem granskar innehållet | Ägaren + en checklista per mall (källa, datum, granskad av); `reviewedAt` i varje mall | Fas 4 |
+
+---
+
+## 9. Risker
+
+- **Fel information** (en regel ändras): varje steg med en regel länkar till källan, mallar har `reviewedAt`,
+  länkkontrollen larmar, och fjärruppdatering gör att rättelser når ut på ett dygn.
+- **Länkröta**: länkregister + veckovis kontroll + rotdomän som reserv om en djuplänk dör.
+- **Notiströtthet**: notisbudget, sammanslagning, ingen notis som inte kan bli ett ett-tryck-svar.
+- **Gemini Nano finns inte på alla telefoner**: allt fungerar utan; brevtyperna är skrivna av människor.
+- **Känsliga data** (personnummer i brev, dödsbo): lokalt, krypterat, aldrig i delning som standard.
+- **Andras bilder i familjedelning**: tydligt vem som ser vad, och den som laddat upp kan alltid ta bort.
+- **Omfång**: varje mall ska vara bra, inte heltäckande. Hellre 15 utmärkta än 60 halvbra.
+
+---
+
+## 10. Hur vi vet att det fungerar
+
+- **Nordstjärna:** kapitel som når sitt ankardatum utan en missad hård deadline.
+- Andel avbockade steg som får ett foto eller en anteckning (minnen på köpet).
+- Hur många som kommer tillbaka till ett vilande kapitel när en lång tråd vaknar.
+- Brev som blir ett steg efter tolkningen.
+- Delade minnesböcker.
+- Kvalitativt: "Jag kände att jag hade koll" i betatesternas svar.
+
+Allt mäts bara via egna betatester och frivillig feedback tills ägaren beslutar annat – ingen analys-SDK.
+
+---
+
+## Definition of done (varje PR)
+- Kriterierna i fasen uppfyllda, logik enhetstestad, skärmar med previews och skärmdumpar
+- Laddning, tomt läge och fel hanterade; data överlever omstart
+- Behörigheter och integritet granskade; tillgänglighet (TalkBack, stor text, kontrast) kontrollerad
+- Inga hemligheter i repot, dokumentationen uppdaterad, CI grönt

@@ -1,4 +1,5 @@
 # Imorn
 There is another day tomorrow 
 
-See the [Android development roadmap](docs/ROADMAP.md) and the [Firebase setup](docs/firebase.md).
+See the [roadmap](docs/ROADMAP.md), the [template catalog](docs/templates.md), the
+[content system](docs/content-system.md) and the [Firebase setup](docs/firebase.md).
