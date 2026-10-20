@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,6 +15,7 @@ import se.imorn.designsystem.component.ImornBodyText
 import se.imorn.designsystem.component.ImornButton
 import se.imorn.designsystem.component.ImornCard
 import se.imorn.designsystem.component.ImornScaffold
+import se.imorn.designsystem.component.ImornText
 import se.imorn.designsystem.theme.ImornTheme
 import se.imorn.feature.today.R
 import se.imorn.ui.PreviewData
@@ -42,7 +42,7 @@ fun TodayScreen(
             verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
         ) {
             ImornCard(modifier = Modifier.fillMaxWidth()) {
-                Text(
+                ImornText(
                     text = stringResource(R.string.today_next_step_label),
                     style = ImornTheme.typography.labelLarge,
                     color = ImornTheme.colors.onSurfaceVariant,
@@ -50,7 +50,7 @@ fun TodayScreen(
                 ImornBodyText(text = stringResource(R.string.today_next_step))
             }
             ImornCard(modifier = Modifier.fillMaxWidth()) {
-                Text(
+                ImornText(
                     text = stringResource(R.string.assistant_title),
                     style = ImornTheme.typography.titleMedium,
                     color = ImornTheme.colors.onSurface,
@@ -61,7 +61,7 @@ fun TodayScreen(
                     ImornBodyText(text = stringResource(R.string.assistant_writing))
                 }
                 if (state.failed) {
-                    Text(
+                    ImornText(
                         text = stringResource(R.string.assistant_failed),
                         style = ImornTheme.typography.bodyMedium,
                         color = ImornTheme.colors.error,

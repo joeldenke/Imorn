@@ -25,7 +25,7 @@ Area | Technology
 --- | ---
 Language | Kotlin
 UI | Jetpack Compose
-Design system | Material 3
+Design system | Own tokens and `Imorn*` components in `:core:designsystem`, Material 3 inside it only
 Navigation | Navigation Compose
 Architecture | ViewModel, repositories, unidirectional UI state
 Async operations | Kotlin Coroutines and Flow

@@ -8,11 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import se.imorn.designsystem.theme.ImornTheme
 
@@ -81,13 +82,19 @@ fun ImornButton(
     }
 }
 
+/** Text with a required style from [ImornTheme.typography], so text never falls back to Material's defaults. */
+@Composable
+fun ImornText(
+    text: String,
+    style: TextStyle,
+    modifier: Modifier = Modifier,
+    color: Color = ImornTheme.colors.onSurface,
+) {
+    Text(text = text, style = style, color = color, modifier = modifier)
+}
+
 /** Body text that follows the app typography and color. */
 @Composable
 fun ImornBodyText(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyLarge,
-        color = ImornTheme.colors.onSurface,
-        modifier = modifier,
-    )
+    ImornText(text = text, style = ImornTheme.typography.bodyLarge, modifier = modifier)
 }

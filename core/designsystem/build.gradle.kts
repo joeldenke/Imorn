@@ -5,9 +5,11 @@ plugins {
 }
 
 dependencies {
-    // api: ImornTheme exposes Material 3 types (ColorScheme, Typography, Shapes) and Compose UI
-    // types in its public API, so consumers need them on their compile classpath.
+    // api: the public API exposes Compose UI and Foundation types (Modifier, TextStyle, shapes, layouts).
     api(platform(libs.compose.bom))
-    api(libs.compose.material3)
+    api(libs.compose.foundation)
     api(libs.compose.ui)
+    // implementation: Material 3 stays inside this module. ImornTheme and the Imorn* components expose only Imorn
+    // types, so feature code can't import Material and it can be replaced component by component.
+    implementation(libs.compose.material3)
 }

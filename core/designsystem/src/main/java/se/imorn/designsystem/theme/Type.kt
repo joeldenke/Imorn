@@ -1,6 +1,7 @@
 package se.imorn.designsystem.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -8,6 +9,26 @@ import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import se.imorn.designsystem.R
+
+/** Imorn's type scale, read through ImornTheme.typography. The theme hands the same styles to Material components. */
+@Immutable
+data class ImornTypography(
+    val displayLarge: TextStyle,
+    val displayMedium: TextStyle,
+    val displaySmall: TextStyle,
+    val headlineLarge: TextStyle,
+    val headlineMedium: TextStyle,
+    val headlineSmall: TextStyle,
+    val titleLarge: TextStyle,
+    val titleMedium: TextStyle,
+    val titleSmall: TextStyle,
+    val bodyLarge: TextStyle,
+    val bodyMedium: TextStyle,
+    val bodySmall: TextStyle,
+    val labelLarge: TextStyle,
+    val labelMedium: TextStyle,
+    val labelSmall: TextStyle,
+)
 
 // Imorn's typeface is Figtree (SIL Open Font License, licenses/Figtree-OFL.txt): friendly and clear, bundled as one
 // variable font so it works offline and every weight comes from the same file. Screens never name it; they read
@@ -27,8 +48,9 @@ private val Figtree = FontFamily(
 
 private fun TextStyle.withFigtree(weight: FontWeight? = fontWeight) = copy(fontFamily = Figtree, fontWeight = weight)
 
-internal val ImornTypography = Typography().run {
-    copy(
+// Material's sizes and line heights, in Figtree.
+internal val ImornTextStyles = Typography().run {
+    ImornTypography(
         displayLarge = displayLarge.withFigtree(FontWeight.Bold),
         displayMedium = displayMedium.withFigtree(FontWeight.Bold),
         displaySmall = displaySmall.withFigtree(FontWeight.Bold),
@@ -46,3 +68,21 @@ internal val ImornTypography = Typography().run {
         labelSmall = labelSmall.withFigtree(FontWeight.Medium),
     )
 }
+
+internal fun ImornTypography.toMaterial() = Typography(
+    displayLarge = displayLarge,
+    displayMedium = displayMedium,
+    displaySmall = displaySmall,
+    headlineLarge = headlineLarge,
+    headlineMedium = headlineMedium,
+    headlineSmall = headlineSmall,
+    titleLarge = titleLarge,
+    titleMedium = titleMedium,
+    titleSmall = titleSmall,
+    bodyLarge = bodyLarge,
+    bodyMedium = bodyMedium,
+    bodySmall = bodySmall,
+    labelLarge = labelLarge,
+    labelMedium = labelMedium,
+    labelSmall = labelSmall,
+)
