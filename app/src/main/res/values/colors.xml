@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The launcher icon's plate, Night in the design system (Color.kt). Keep the two in step. -->
+    <color name="ic_launcher_background">#FF1D2A5E</color>
+    <!-- The window background before Compose draws: the light scheme's background in Color.kt. -->
+    <color name="imorn_background">#FFFBF8FD</color>
+</resources>

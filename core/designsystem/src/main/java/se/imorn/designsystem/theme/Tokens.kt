@@ -28,7 +28,7 @@ data class ImornShapes(
     val extraLarge: CornerBasedShape,
 )
 
-// Corner radius from the base 14 dp, as in Novila's "Skog & sol" language.
+// Corner radius from the base 14 dp: soft, never pill-shaped except where Material asks for it.
 internal val ImornCorners = ImornShapes(
     extraSmall = RoundedCornerShape(6.dp),
     small = RoundedCornerShape(10.dp),
