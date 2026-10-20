@@ -19,8 +19,6 @@ plugins {
     alias(libs.plugins.kover) apply false
     alias(libs.plugins.metro) apply false
     alias(libs.plugins.spotless)
-    // On the classpath for every module; :app applies it only when google-services.json is present.
-    alias(libs.plugins.google.services) apply false
 }
 
 // Formatting and ktlint for every Kotlin file in the repo, configured from .editorconfig.

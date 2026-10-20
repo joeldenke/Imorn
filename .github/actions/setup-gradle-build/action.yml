@@ -10,26 +10,9 @@ inputs:
       cache, so CI skips configuration when build files didn't change. Optional.
     required: false
     default: ""
-  google-services-json:
-    description: >-
-      secrets.GOOGLE_SERVICES_JSON: the base64 of app/google-services.json (base64 -w0 app/google-services.json).
-      It is written to app/google-services.json so :app applies the google-services plugin. Optional: without it
-      nothing is written and the app builds without Firebase. See docs/firebase.md.
-    required: false
-    default: ""
 runs:
   using: composite
   steps:
-    # Before Gradle, so the google-services plugin sees the file. Nothing is written when the secret is unset,
-    # which is how a fork or a repo that has not set it yet builds.
-    - name: Google Services config
-      if: inputs.google-services-json != ''
-      shell: bash
-      env:
-        GOOGLE_SERVICES_JSON: ${{ inputs.google-services-json }}
-      run: |
-        printf '%s' "$GOOGLE_SERVICES_JSON" | base64 --decode > "$GITHUB_WORKSPACE/app/google-services.json"
-
     - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
       with:
         distribution: temurin

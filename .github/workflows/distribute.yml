@@ -79,7 +79,6 @@ jobs:
       - uses: ./.github/actions/setup-gradle-build
         with:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-          google-services-json: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
       - name: Decode release keystore
         if: steps.config.outputs.release-signing == 'true'

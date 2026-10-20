@@ -18,9 +18,8 @@
 #
 # Finally it sets the GitHub Actions variables with gh, or prints them if gh is not logged in.
 #
-# This does NOT download google-services.json. After it runs, open the Firebase console, download the
-# config for the Android apps, and follow docs/firebase.md (place it in app/ and/or set the
-# GOOGLE_SERVICES_JSON secret). Both package names below must end up in that file.
+# No JSON anywhere: no service account key is created and no google-services.json is needed (the app
+# uses no Firebase SDK; App Distribution only needs the app id).
 set -euo pipefail
 
 PROJECT_ID="${1:-${PROJECT_ID:-}}"
@@ -30,8 +29,8 @@ GITHUB_REPO="joeldenke/Imorn"
 # Numeric repo id survives renames and transfers, unlike the name.
 GITHUB_REPO_ID="1425129397"
 GITHUB_ENVIRONMENT="firebase"
-# Both applicationIds the one google-services.json must cover: :app has applicationId "se.imorn" and the debug
-# build type adds ".debug". Registering only one makes the google-services plugin fail on the other variant.
+# Both applicationIds: :app has applicationId "se.imorn" and the debug build type adds ".debug". Testers get
+# the debug one; the release one is registered for when release builds are distributed too.
 ANDROID_PACKAGES=("se.imorn" "se.imorn.debug")
 ANDROID_DISPLAY_NAMES=("Imorn" "Imorn (debug)")
 TESTER_GROUP="testers"
@@ -117,8 +116,7 @@ find_app_id() {
     api GET "$FIREBASE_API/projects/$PROJECT_ID/androidApps?pageSize=100" |
         jq -r --arg pkg "$1" '[.apps[]? | select(.packageName == $pkg) | .appId][0] // empty'
 }
-# The App Distribution app id is the debug one; the release one is registered so the downloaded
-# google-services.json covers both build types.
+# The App Distribution app id is the debug one.
 DEBUG_APP_ID=""
 for i in "${!ANDROID_PACKAGES[@]}"; do
     pkg="${ANDROID_PACKAGES[$i]}"
