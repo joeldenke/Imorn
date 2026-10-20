@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The window theme, shown before Compose draws (the launch and splash screen). Its colors are the design system's
+  background (Color.kt, ImornLightColors and ImornDarkColors), so the app opens without a flash of another color.
+-->
+<resources>
+    <style name="Theme.Imorn" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/imorn_background</item>
+    </style>
+</resources>
