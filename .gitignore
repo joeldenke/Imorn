@@ -7,9 +7,10 @@ local.properties
 .DS_Store
 release-notes.txt
 
-# The Firebase config is per project and is never committed. The committed example is
-# google-services.example.json; drop your own copy in app/google-services.json (see docs/firebase.md).
+# Imorn uses no google-services.json and no service account keys (Workload Identity Federation only, see
+# docs/firebase.md). Ignored so neither is ever committed by accident.
 google-services.json
+*-service-account*.json
 
 # Python packages used by one-off tools; never commit them.
 *.whl

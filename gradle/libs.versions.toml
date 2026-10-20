@@ -16,9 +16,7 @@ kotlinxSerialization = "1.11.0"
 kotlinxCoroutines = "1.11.0"
 # Gemini Nano on the device through AICore, for the assistant's message. See GeminiNanoLanguageModel.
 mlkitGenaiPrompt = "1.0.0-beta2"
-# Firebase: the google-services plugin generates the Firebase resources from google-services.json (per project,
-# never committed; see docs/firebase.md) and the BoM pins the versions of the Firebase Android SDKs.
-googleServices = "4.5.0"
+# Firebase: the BoM pins the versions of the Firebase Android SDKs. No google-services plugin; see docs/firebase.md.
 firebaseBom = "35.0.2"
 junit = "4.13.2"
 robolectric = "4.17"
@@ -88,9 +86,6 @@ roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-# Reads app/google-services.json and generates the Firebase resources. Applied only when that file exists
-# (see app/build.gradle.kts), so a checkout without it still builds.
-google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 
 # Convention plugins from build-logic (no version: they come from the included build).
 imorn-android-application = { id = "imorn.android.application" }

@@ -4,14 +4,6 @@ plugins {
     alias(libs.plugins.imorn.android.unittest)
 }
 
-// The Google Services plugin reads google-services.json and generates the Firebase resources (google_app_id …)
-// from it. That file is per Firebase project and is never committed (see .gitignore and docs/firebase.md), so the
-// plugin is applied only when it exists: a fresh clone, or CI before the GOOGLE_SERVICES_JSON secret is set, still
-// builds — just without Firebase. Drop the file in app/ (or let CI write it) and it activates.
-if (file("google-services.json").exists()) {
-    apply(plugin = libs.plugins.google.services.get().pluginId)
-}
-
 imorn {
     activity()
     navigation()
@@ -32,7 +24,7 @@ dependencies {
     implementation(libs.androidx.navigation3.ui)
 
     // Firebase platform BoM: pins the versions of the Firebase SDKs added under it. No service SDK is declared
-    // yet — the ported setup only uses Firebase App Distribution from CI, which needs none. Add e.g.
-    // `implementation(libs.firebase.analytics)` here (no version) when a service is wanted; see docs/firebase.md.
+    // yet — Imorn only uses Firebase App Distribution from CI, which needs none. There is deliberately no
+    // google-services.json or google-services plugin; see docs/firebase.md before adding a service SDK.
     implementation(platform(libs.firebase.bom))
 }
