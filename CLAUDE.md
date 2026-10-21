@@ -48,13 +48,20 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   Android Keystore); en fil som inte går att öppna läses som tom. Tills första läsningen är klar är värdet `null`
   och `MainActivity` ritar inget, så temat aldrig blinkar. Här finns också `GeminiNanoLanguageModel` (bunden som
   `LanguageModel`).
-- `:core:model` – ren Kotlin: `AppSettings` och `ThemeMode`. Här hamnar kapitlens modell i Fas 1.
+- `:core:model` – ren Kotlin: kapitlen (`Chapter`, `Anchor`, `Phase`, `Step`, `Entry`, `LinkRef`), `RelativeTime`
+  (dag från ett ankare: dagar, månader eller "nästa år, april") och planen (`Plan.kt`: `dateOf`, `upcoming`,
+  `timeline` runt nu-linjen, ändringar som `complete` och `withAnchor`), `tomorrowPlan` för *Imorgon* (högst tre
+  saker: det försenade, sedan nästa steg per kapitel; långa trådar under *Längre fram*), samt `AppSettings`.
+  Ett eget datum på ett steg vinner alltid och står kvar när ankaret flyttas; okända ankare ger steg utan datum i
+  mallens ordning.
+- `:core:content` – ren Kotlin: innehållsformatet v1 (`Template`, `Link`, kotlinx.serialization), `ContentPack`,
+  `ContentValidator` och `instantiate` (mall + svar + ankardatum → `Chapter`). Se `docs/content-system.md`.
 - `build-logic` – inkluderat bygge med convention plugins (`imorn.*`) och `imorn { }`, se `build-logic/README.md`
 - `tools/icon` – `render_icon.py` ritar appikonens reserver, se *Appikonen* under Regler.
+- `content/` – innehållspaketet: `links.json` (länkregistret) och `templates/*.json` (mallarna, i dag Flytta).
+  `BundledContentTest` i `:core:content` validerar det i CI (`imorn { bundledContent() }`).
 
-Planerat enligt roadmapen (Fas 1): kapitlens modell i `:core:model` (`Chapter`, `Anchor`, `Phase`, `Step`, `Entry`,
-`RelativeTime` …), `:core:content` (mallformatet och `instantiate`), `:core:database` (Room), `:feature:chapters`
-och `:feature:timeline`.
+Planerat enligt roadmapen (Fas 1): `:core:database` (Room), `:feature:chapters` och `:feature:timeline`.
 
 Beroenden går nedåt: `:app` → `:feature:*` → `:core:ui`/`:core:navigation`/`:core:designsystem` → ren Kotlin.
 Strängar och ikoner ligger i modulen som använder dem; det flera moduler använder ligger i `:core:ui`.
@@ -156,6 +163,11 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
   `python3 tools/icon/render_icon.py`, som ritar WebP-reserverna i `mipmap-*dpi` (Firebase App Distribution kan
   inte visa en adaptiv ikon) och Play-ikonen `docs/play-icon.png`. Rita aldrig om dem för hand.
 - **Inga emojis i UI:t**, och inte i assistentens svar.
+- **Innehåll:** mallar och länkar är data i `content/`, aldrig kod. Id:n är för evigt (ett steg byter text, aldrig
+  id; ett borttaget markeras `retired`). Varje text finns på svenska och engelska. Belopp, procentsatser och tak
+  skrivs aldrig in i stegen; länken till källan gäller. Mallar beskriver vanliga steg, aldrig "allt du måste".
+- **Planen är deterministisk:** mallen, svaren och ankarna bestämmer stegen och datumen, testat i `:core:model` och
+  `:core:content`. Ingen modell föreslår steg eller datum.
 - **Inga hårdkodade texter:** all text som visas eller läses upp kommer från `strings.xml`. Engelska i `values/`;
   svenska i `values-sv/` när den läggs till (då även i `localeFilters` i `imorn.android.application`). Symboler och
   enheter markeras `translatable="false"`.

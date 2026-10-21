@@ -36,6 +36,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 
 include(":core:coach")
+include(":core:content")
 include(":core:data")
 include(":core:designsystem")
 include(":core:model")

@@ -1,0 +1,507 @@
+{
+  "id": "move",
+  "version": 1,
+  "title": {
+    "sv": "Flytta",
+    "en": "Moving"
+  },
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife",
+    "next-chapter",
+    "new-in-sweden"
+  ],
+  "anchors": [
+    {
+      "id": "moveDay",
+      "label": {
+        "sv": "Flyttdag",
+        "en": "Moving day"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "housing",
+      "text": {
+        "sv": "Vad flyttar du från?",
+        "en": "What are you moving from?"
+      },
+      "options": [
+        {
+          "id": "rental",
+          "label": {
+            "sv": "Hyresrätt",
+            "en": "Rented flat"
+          }
+        },
+        {
+          "id": "condo",
+          "label": {
+            "sv": "Bostadsrätt",
+            "en": "Owned flat"
+          }
+        },
+        {
+          "id": "house",
+          "label": {
+            "sv": "Hus",
+            "en": "House"
+          }
+        }
+      ]
+    },
+    {
+      "id": "kids",
+      "type": "bool",
+      "text": {
+        "sv": "Byter barnen skola eller förskola?",
+        "en": "Are the children changing school or preschool?"
+      }
+    },
+    {
+      "id": "support",
+      "type": "bool",
+      "text": {
+        "sv": "Får du bostadsbidrag eller studiemedel?",
+        "en": "Do you get housing allowance or student finance?"
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "plan",
+      "title": {
+        "sv": "Planera",
+        "en": "Plan"
+      },
+      "steps": [
+        {
+          "id": "terminate-lease",
+          "title": {
+            "sv": "Säg upp hyreskontraktet",
+            "en": "Give notice on the lease"
+          },
+          "why": {
+            "sv": "Uppsägningstiden står i kontraktet, ofta tre månader.",
+            "en": "The notice period is in the lease, often three months."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetMonths": -3
+          },
+          "when": {
+            "question": "housing",
+            "equals": "rental"
+          }
+        },
+        {
+          "id": "book-movers",
+          "title": {
+            "sv": "Boka flyttfirma eller släp",
+            "en": "Book movers or a trailer"
+          },
+          "why": {
+            "sv": "Be om två eller tre offerter och jämför vad som ingår.",
+            "en": "Ask for two or three quotes and compare what is included."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -56
+          },
+          "links": [
+            "konsumentverket.hallakonsument"
+          ]
+        },
+        {
+          "id": "school-place",
+          "title": {
+            "sv": "Ansök om plats i ny skola eller förskola",
+            "en": "Apply for a place at the new school or preschool"
+          },
+          "why": {
+            "sv": "Kommunen har ofta kö, så det lönar sig att söka tidigt.",
+            "en": "Municipalities often have a queue, so it pays to apply early."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -56
+          },
+          "links": [
+            "kommun.start"
+          ],
+          "when": {
+            "question": "kids",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "day-off",
+          "title": {
+            "sv": "Boka ledigt för flyttdagen",
+            "en": "Book time off for moving day"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -42
+          }
+        }
+      ]
+    },
+    {
+      "id": "papers",
+      "title": {
+        "sv": "Papper",
+        "en": "Paperwork"
+      },
+      "steps": [
+        {
+          "id": "address-change",
+          "title": {
+            "sv": "Gör flyttanmälan",
+            "en": "Report your move"
+          },
+          "why": {
+            "sv": "Tidigast fyra veckor före och senast en vecka efter flytten.",
+            "en": "At the earliest four weeks before and at the latest one week after the move."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -14
+          },
+          "hardDeadline": {
+            "anchor": "moveDay",
+            "offsetDays": 7
+          },
+          "links": [
+            "skatteverket.flytt"
+          ]
+        },
+        {
+          "id": "mail-forwarding",
+          "title": {
+            "sv": "Beställ eftersändning av post",
+            "en": "Order mail forwarding"
+          },
+          "why": {
+            "sv": "Valfritt, men bra det första halvåret.",
+            "en": "Optional, but useful for the first months."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -14
+          },
+          "links": [
+            "adressandring.eftersandning"
+          ]
+        },
+        {
+          "id": "electricity",
+          "title": {
+            "sv": "Teckna elavtal för nya adressen",
+            "en": "Get an electricity contract for the new address"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -28
+          },
+          "links": [
+            "energimarknadsbyran.start",
+            "elpriskollen.start"
+          ]
+        },
+        {
+          "id": "broadband",
+          "title": {
+            "sv": "Flytta bredbandet och säg upp det gamla",
+            "en": "Move your broadband and cancel the old one"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -28
+          }
+        },
+        {
+          "id": "home-insurance",
+          "title": {
+            "sv": "Flytta eller teckna hemförsäkring",
+            "en": "Move or take out home insurance"
+          },
+          "why": {
+            "sv": "Kolla att den gäller under själva flytten.",
+            "en": "Check that it covers the move itself."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -21
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "support-address",
+          "title": {
+            "sv": "Anmäl ny adress och hyra för bostadsbidrag eller studiemedel",
+            "en": "Report the new address and rent for housing allowance or student finance"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 0
+          },
+          "links": [
+            "fk.start",
+            "csn.start"
+          ],
+          "when": {
+            "question": "support",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "address-everywhere",
+          "title": {
+            "sv": "Byt adress hos bank, vård, jobb och prenumerationer",
+            "en": "Change your address with your bank, healthcare, work and subscriptions"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 7
+          }
+        }
+      ]
+    },
+    {
+      "id": "packing",
+      "title": {
+        "sv": "Packa",
+        "en": "Packing"
+      },
+      "steps": [
+        {
+          "id": "declutter",
+          "title": {
+            "sv": "Rensa: sälj, skänk och släng",
+            "en": "Declutter: sell, give away and throw out"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -42
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "boxes",
+          "title": {
+            "sv": "Skaffa flyttlådor, tejp och märkpenna",
+            "en": "Get moving boxes, tape and a marker"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -28
+          }
+        },
+        {
+          "id": "pack-early",
+          "title": {
+            "sv": "Packa det du inte behöver de närmaste veckorna",
+            "en": "Pack what you won't need in the coming weeks"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -21
+          }
+        },
+        {
+          "id": "first-night-bag",
+          "title": {
+            "sv": "Packa en väska för första natten",
+            "en": "Pack a bag for the first night"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -2
+          }
+        }
+      ]
+    },
+    {
+      "id": "moving-day",
+      "title": {
+        "sv": "Flyttdagen",
+        "en": "Moving day"
+      },
+      "steps": [
+        {
+          "id": "meter-readings",
+          "title": {
+            "sv": "Läs av el- och vattenmätare",
+            "en": "Read the electricity and water meters"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Fota mätarställningarna",
+            "en": "Photograph the meter readings"
+          }
+        },
+        {
+          "id": "empty-rooms",
+          "title": {
+            "sv": "Fota de tomma rummen i gamla bostaden",
+            "en": "Photograph the empty rooms in the old home"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Ta en bild av de tomma rummen",
+            "en": "Take a picture of the empty rooms"
+          }
+        },
+        {
+          "id": "keys-handed-over",
+          "title": {
+            "sv": "Lämna nycklarna och få en kvittens",
+            "en": "Hand over the keys and get a receipt"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Fota kvittensen",
+            "en": "Photograph the receipt"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cleaning",
+      "title": {
+        "sv": "Städa och besiktning",
+        "en": "Cleaning and inspection"
+      },
+      "steps": [
+        {
+          "id": "move-out-cleaning",
+          "title": {
+            "sv": "Flyttstäda",
+            "en": "Do the move-out cleaning"
+          },
+          "why": {
+            "sv": "Glöm inte ugnen, kylen, fönstren och golvbrunnarna.",
+            "en": "Don't forget the oven, fridge, windows and floor drains."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -1
+          }
+        },
+        {
+          "id": "move-out-inspection",
+          "title": {
+            "sv": "Avflyttningsbesiktning",
+            "en": "Move-out inspection"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 0
+          },
+          "when": {
+            "question": "housing",
+            "equals": "rental"
+          }
+        }
+      ]
+    },
+    {
+      "id": "settling-in",
+      "title": {
+        "sv": "Landa",
+        "en": "Settling in"
+      },
+      "steps": [
+        {
+          "id": "safety-check",
+          "title": {
+            "sv": "Testa brandvarnaren och leta upp huvudkranen och elcentralen",
+            "en": "Test the smoke alarm and find the main water valve and fuse box"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 1
+          },
+          "photoPrompt": {
+            "sv": "Fota var huvudkranen och elcentralen sitter",
+            "en": "Photograph where the main valve and fuse box are"
+          }
+        },
+        {
+          "id": "name-on-door",
+          "title": {
+            "sv": "Sätt namnet på dörren och brevlådan",
+            "en": "Put your name on the door and mailbox"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 1
+          }
+        },
+        {
+          "id": "first-breakfast",
+          "title": {
+            "sv": "Första frukosten i nya hemmet",
+            "en": "The first breakfast in the new home"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 1
+          },
+          "photoPrompt": {
+            "sv": "Spara ett foto från första frukosten",
+            "en": "Save a photo of the first breakfast"
+          }
+        }
+      ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "deposit-back",
+      "title": {
+        "sv": "Kolla att depositionen har kommit tillbaka",
+        "en": "Check that the deposit has come back"
+      },
+      "at": {
+        "anchor": "moveDay",
+        "offsetMonths": 1
+      },
+      "when": {
+        "question": "housing",
+        "equals": "rental"
+      }
+    },
+    {
+      "id": "electricity-review",
+      "title": {
+        "sv": "Se över elavtalet efter första fakturan",
+        "en": "Review the electricity contract after the first bill"
+      },
+      "at": {
+        "anchor": "moveDay",
+        "offsetMonths": 2
+      },
+      "links": [
+        "energimarknadsbyran.start"
+      ]
+    }
+  ]
+}

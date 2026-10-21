@@ -1,0 +1,450 @@
+{
+  "links": [
+    {
+      "id": "skatteverket.start",
+      "org": "Skatteverket",
+      "kind": "authority",
+      "url": "https://www.skatteverket.se/",
+      "fallbackUrl": "https://www.skatteverket.se/",
+      "title": {
+        "sv": "Skatteverket",
+        "en": "Swedish Tax Agency"
+      }
+    },
+    {
+      "id": "skatteverket.flytt",
+      "org": "Skatteverket",
+      "kind": "authority",
+      "url": "https://www.skatteverket.se/",
+      "fallbackUrl": "https://www.skatteverket.se/",
+      "title": {
+        "sv": "Gör flyttanmälan",
+        "en": "Report your move"
+      },
+      "searchHint": {
+        "sv": "flyttanmälan",
+        "en": "change of address"
+      }
+    },
+    {
+      "id": "skatteverket.rot",
+      "org": "Skatteverket",
+      "kind": "authority",
+      "url": "https://www.skatteverket.se/",
+      "fallbackUrl": "https://www.skatteverket.se/",
+      "title": {
+        "sv": "Rot- och rutavdrag",
+        "en": "ROT and RUT deductions"
+      },
+      "searchHint": {
+        "sv": "rot och rut",
+        "en": "ROT and RUT"
+      }
+    },
+    {
+      "id": "skatteverket.bostad",
+      "org": "Skatteverket",
+      "kind": "authority",
+      "url": "https://www.skatteverket.se/",
+      "fallbackUrl": "https://www.skatteverket.se/",
+      "title": {
+        "sv": "Sälja bostad och deklarera",
+        "en": "Selling a home and your tax return"
+      },
+      "searchHint": {
+        "sv": "sälja bostad, K5, K6, uppskov",
+        "en": "selling a home, K5, K6, deferral"
+      }
+    },
+    {
+      "id": "skatteverket.hindersprovning",
+      "org": "Skatteverket",
+      "kind": "authority",
+      "url": "https://www.skatteverket.se/",
+      "fallbackUrl": "https://www.skatteverket.se/",
+      "title": {
+        "sv": "Hindersprövning",
+        "en": "Marriage impediment check"
+      },
+      "searchHint": {
+        "sv": "hindersprövning",
+        "en": "impediment to marriage"
+      }
+    },
+    {
+      "id": "skatteverket.barn",
+      "org": "Skatteverket",
+      "kind": "authority",
+      "url": "https://www.skatteverket.se/",
+      "fallbackUrl": "https://www.skatteverket.se/",
+      "title": {
+        "sv": "Namn och föräldraskap",
+        "en": "Name and parenthood"
+      },
+      "searchHint": {
+        "sv": "namn på barn, föräldraskap",
+        "en": "child's name, parenthood"
+      }
+    },
+    {
+      "id": "skatteverket.dodsfall",
+      "org": "Skatteverket",
+      "kind": "authority",
+      "url": "https://www.skatteverket.se/",
+      "fallbackUrl": "https://www.skatteverket.se/",
+      "title": {
+        "sv": "Bouppteckning och dödsbo",
+        "en": "Estate inventory and estates"
+      },
+      "searchHint": {
+        "sv": "bouppteckning, dödsbo",
+        "en": "estate inventory"
+      }
+    },
+    {
+      "id": "adressandring.eftersandning",
+      "org": "Svensk Adressändring",
+      "kind": "service",
+      "url": "https://www.adressandring.se/",
+      "fallbackUrl": "https://www.adressandring.se/",
+      "title": {
+        "sv": "Eftersändning av post",
+        "en": "Mail forwarding"
+      },
+      "searchHint": {
+        "sv": "eftersändning",
+        "en": "mail forwarding"
+      }
+    },
+    {
+      "id": "fk.start",
+      "org": "Försäkringskassan",
+      "kind": "authority",
+      "url": "https://www.forsakringskassan.se/",
+      "fallbackUrl": "https://www.forsakringskassan.se/",
+      "title": {
+        "sv": "Försäkringskassan",
+        "en": "Swedish Social Insurance Agency"
+      },
+      "searchHint": {
+        "sv": "föräldrapenning, bostadsbidrag",
+        "en": "parental benefit, housing allowance"
+      }
+    },
+    {
+      "id": "csn.start",
+      "org": "CSN",
+      "kind": "authority",
+      "url": "https://www.csn.se/",
+      "fallbackUrl": "https://www.csn.se/",
+      "title": {
+        "sv": "CSN",
+        "en": "CSN, student finance"
+      }
+    },
+    {
+      "id": "lantmateriet.lagfart",
+      "org": "Lantmäteriet",
+      "kind": "authority",
+      "url": "https://www.lantmateriet.se/",
+      "fallbackUrl": "https://www.lantmateriet.se/",
+      "title": {
+        "sv": "Lagfart",
+        "en": "Title registration"
+      },
+      "searchHint": {
+        "sv": "lagfart",
+        "en": "title deed"
+      }
+    },
+    {
+      "id": "transportstyrelsen.start",
+      "org": "Transportstyrelsen",
+      "kind": "authority",
+      "url": "https://www.transportstyrelsen.se/",
+      "fallbackUrl": "https://www.transportstyrelsen.se/",
+      "title": {
+        "sv": "Transportstyrelsen",
+        "en": "Swedish Transport Agency"
+      },
+      "searchHint": {
+        "sv": "ägarbyte, körkort",
+        "en": "change of owner, driving licence"
+      }
+    },
+    {
+      "id": "polisen.pass",
+      "org": "Polisen",
+      "kind": "authority",
+      "url": "https://www.polisen.se/",
+      "fallbackUrl": "https://www.polisen.se/",
+      "title": {
+        "sv": "Pass och nationellt id-kort",
+        "en": "Passport and national ID card"
+      },
+      "searchHint": {
+        "sv": "pass och nationellt id-kort",
+        "en": "passport"
+      }
+    },
+    {
+      "id": "pensionsmyndigheten.start",
+      "org": "Pensionsmyndigheten",
+      "kind": "authority",
+      "url": "https://www.pensionsmyndigheten.se/",
+      "fallbackUrl": "https://www.pensionsmyndigheten.se/",
+      "title": {
+        "sv": "Pensionsmyndigheten",
+        "en": "Swedish Pensions Agency"
+      },
+      "searchHint": {
+        "sv": "ta ut pension",
+        "en": "take out your pension"
+      }
+    },
+    {
+      "id": "minpension.start",
+      "org": "minPension",
+      "kind": "public",
+      "url": "https://www.minpension.se/",
+      "fallbackUrl": "https://www.minpension.se/",
+      "title": {
+        "sv": "minPension",
+        "en": "minPension, your pensions in one place"
+      }
+    },
+    {
+      "id": "kronofogden.start",
+      "org": "Kronofogden",
+      "kind": "authority",
+      "url": "https://www.kronofogden.se/",
+      "fallbackUrl": "https://www.kronofogden.se/",
+      "title": {
+        "sv": "Kronofogden",
+        "en": "Swedish Enforcement Authority"
+      }
+    },
+    {
+      "id": "konsumentverket.hallakonsument",
+      "org": "Hallå konsument",
+      "kind": "consumer",
+      "url": "https://www.hallakonsument.se/",
+      "fallbackUrl": "https://www.hallakonsument.se/",
+      "title": {
+        "sv": "Hallå konsument",
+        "en": "Hallå konsument, consumer guidance"
+      }
+    },
+    {
+      "id": "arn.start",
+      "org": "Allmänna reklamationsnämnden",
+      "kind": "authority",
+      "url": "https://www.arn.se/",
+      "fallbackUrl": "https://www.arn.se/",
+      "title": {
+        "sv": "Allmänna reklamationsnämnden",
+        "en": "National Board for Consumer Disputes"
+      }
+    },
+    {
+      "id": "energimarknadsbyran.start",
+      "org": "Energimarknadsbyrån",
+      "kind": "consumer",
+      "url": "https://www.energimarknadsbyran.se/",
+      "fallbackUrl": "https://www.energimarknadsbyran.se/",
+      "title": {
+        "sv": "Energimarknadsbyrån",
+        "en": "Swedish Consumers' Energy Markets Bureau"
+      },
+      "searchHint": {
+        "sv": "byta elavtal",
+        "en": "change electricity contract"
+      }
+    },
+    {
+      "id": "elpriskollen.start",
+      "org": "Energimarknadsinspektionen",
+      "kind": "authority",
+      "url": "https://www.elpriskollen.se/",
+      "fallbackUrl": "https://www.elpriskollen.se/",
+      "title": {
+        "sv": "Elpriskollen",
+        "en": "Elpriskollen, compare electricity prices"
+      }
+    },
+    {
+      "id": "konsumenternas.start",
+      "org": "Konsumenternas",
+      "kind": "consumer",
+      "url": "https://www.konsumenternas.se/",
+      "fallbackUrl": "https://www.konsumenternas.se/",
+      "title": {
+        "sv": "Konsumenternas Bank- och finansbyrå och Försäkringsbyrå",
+        "en": "Consumers' banking and insurance bureaus"
+      },
+      "searchHint": {
+        "sv": "hemförsäkring, bolån",
+        "en": "home insurance, mortgage"
+      }
+    },
+    {
+      "id": "fmi.start",
+      "org": "Fastighetsmäklarinspektionen",
+      "kind": "authority",
+      "url": "https://www.fmi.se/",
+      "fallbackUrl": "https://www.fmi.se/",
+      "title": {
+        "sv": "Fastighetsmäklarinspektionen",
+        "en": "Swedish Estate Agents Inspectorate"
+      },
+      "searchHint": {
+        "sv": "anlita mäklare",
+        "en": "hiring an estate agent"
+      }
+    },
+    {
+      "id": "boverket.start",
+      "org": "Boverket",
+      "kind": "authority",
+      "url": "https://www.boverket.se/",
+      "fallbackUrl": "https://www.boverket.se/",
+      "title": {
+        "sv": "Boverket",
+        "en": "National Board of Housing, Building and Planning"
+      },
+      "searchHint": {
+        "sv": "bygglov",
+        "en": "building permit"
+      }
+    },
+    {
+      "id": "elsakerhetsverket.start",
+      "org": "Elsäkerhetsverket",
+      "kind": "authority",
+      "url": "https://www.elsakerhetsverket.se/",
+      "fallbackUrl": "https://www.elsakerhetsverket.se/",
+      "title": {
+        "sv": "Elsäkerhetsverket",
+        "en": "National Electrical Safety Board"
+      },
+      "searchHint": {
+        "sv": "elinstallatör, behörighet",
+        "en": "authorised electrician"
+      }
+    },
+    {
+      "id": "sakervatten.start",
+      "org": "Säker Vatten",
+      "kind": "service",
+      "url": "https://www.sakervatten.se/",
+      "fallbackUrl": "https://www.sakervatten.se/",
+      "title": {
+        "sv": "Säker Vatten",
+        "en": "Säker Vatten, safe wet rooms"
+      },
+      "searchHint": {
+        "sv": "våtrum, auktoriserat företag",
+        "en": "wet room, authorised company"
+      }
+    },
+    {
+      "id": "verksamt.start",
+      "org": "verksamt.se",
+      "kind": "authority",
+      "url": "https://www.verksamt.se/",
+      "fallbackUrl": "https://www.verksamt.se/",
+      "title": {
+        "sv": "verksamt.se",
+        "en": "verksamt.se, starting a business"
+      },
+      "searchHint": {
+        "sv": "starta företag",
+        "en": "start a business"
+      }
+    },
+    {
+      "id": "arbetsformedlingen.start",
+      "org": "Arbetsförmedlingen",
+      "kind": "authority",
+      "url": "https://www.arbetsformedlingen.se/",
+      "fallbackUrl": "https://www.arbetsformedlingen.se/",
+      "title": {
+        "sv": "Arbetsförmedlingen",
+        "en": "Swedish Public Employment Service"
+      }
+    },
+    {
+      "id": "akassan.start",
+      "org": "Sveriges a-kassor",
+      "kind": "public",
+      "url": "https://www.sverigesakassor.se/",
+      "fallbackUrl": "https://www.sverigesakassor.se/",
+      "title": {
+        "sv": "Sveriges a-kassor",
+        "en": "Swedish unemployment insurance funds"
+      }
+    },
+    {
+      "id": "1177.start",
+      "org": "1177",
+      "kind": "public",
+      "url": "https://www.1177.se/",
+      "fallbackUrl": "https://www.1177.se/",
+      "title": {
+        "sv": "1177",
+        "en": "1177, healthcare guide"
+      }
+    },
+    {
+      "id": "domstol.start",
+      "org": "Sveriges Domstolar",
+      "kind": "authority",
+      "url": "https://www.domstol.se/",
+      "fallbackUrl": "https://www.domstol.se/",
+      "title": {
+        "sv": "Sveriges Domstolar",
+        "en": "Swedish courts"
+      },
+      "searchHint": {
+        "sv": "bodelning, äktenskapsskillnad",
+        "en": "division of property, divorce"
+      }
+    },
+    {
+      "id": "kommun.start",
+      "org": "Din kommun",
+      "kind": "public",
+      "municipality": true,
+      "title": {
+        "sv": "Din kommun",
+        "en": "Your municipality"
+      }
+    },
+    {
+      "id": "krisinformation.start",
+      "org": "Krisinformation.se",
+      "kind": "authority",
+      "url": "https://www.krisinformation.se/",
+      "fallbackUrl": "https://www.krisinformation.se/",
+      "title": {
+        "sv": "Krisinformation.se",
+        "en": "Krisinformation.se, crisis information"
+      }
+    },
+    {
+      "id": "minameddelanden.start",
+      "org": "Mina meddelanden",
+      "kind": "authority",
+      "url": "https://www.minameddelanden.se/",
+      "fallbackUrl": "https://www.minameddelanden.se/",
+      "title": {
+        "sv": "Mina meddelanden",
+        "en": "Mina meddelanden, digital mailbox"
+      },
+      "searchHint": {
+        "sv": "digital brevlåda",
+        "en": "digital mailbox"
+      }
+    }
+  ]
+}
