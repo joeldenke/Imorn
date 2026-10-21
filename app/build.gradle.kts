@@ -17,6 +17,7 @@ dependencies {
     // Everything that contributes to the graph must be on the app's classpath, so Metro can find it.
     implementation(projects.core.coach)
     implementation(projects.core.data)
+    implementation(projects.core.database)
     implementation(projects.core.designsystem)
     implementation(projects.core.model)
     implementation(projects.core.navigation)
