@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Launcher icon foreground: a lowercase i whose dot is a crescent moon, the night before tomorrow, in white on the
-  flat Night plate (@color/ic_launcher_background). The mark sits inside the 66 dp safe zone, so every launcher mask
-  keeps it whole. After changing it, run tools/icon/render_icon.py for the raster fallbacks.
+  Launcher icon foreground: a lowercase i whose dot is the sun and whose stem is its reflection in still water,
+  in white on the flat Night plate (@color/ic_launcher_background). The mark sits inside the 66 dp safe zone, so
+  every launcher mask keeps it whole. After changing it, run tools/icon/render_icon.py for the raster fallbacks.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- The moon, the dot of the i. -->
+    <!-- The sun, the dot of the i. -->
     <path
         android:fillColor="#FFFFFFFF"
-        android:pathData="M52.25,27.53A10.5,10.5 0,1 0,63.03 41.12A8.8,8.8 0,0 1 52.25,27.53Z" />
-    <!-- The stem. -->
+        android:pathData="M45,38.5A9,9 0,1 0,63,38.5A9,9 0,1 0,45,38.5Z" />
+    <!-- Its reflection in the water, the stem: five lines from the sun's width down to a glint. -->
     <path
         android:fillColor="#FFFFFFFF"
-        android:pathData="M54,55A5.5,5.5 0,0 1 59.5,60.5V75.5A5.5,5.5 0,0 1 48.5,75.5V60.5A5.5,5.5 0,0 1 54,55Z" />
+        android:pathData="M46.8,53H61.2A1.8,1.8 0,0 1 61.2,56.6H46.8A1.8,1.8 0,0 1 46.8,53ZM48.65,59.5H59.35A1.65,1.65 0,0 1 59.35,62.8H48.65A1.65,1.65 0,0 1 48.65,59.5ZM50.3,65.5H57.7A1.5,1.5 0,0 1 57.7,68.5H50.3A1.5,1.5 0,0 1 50.3,65.5ZM51.75,71.1H56.25A1.35,1.35 0,0 1 56.25,73.8H51.75A1.35,1.35 0,0 1 51.75,71.1ZM52.9,76.3H55.1A1.2,1.2 0,0 1 55.1,78.7H52.9A1.2,1.2 0,0 1 52.9,76.3Z" />
 </vector>
