@@ -52,6 +52,7 @@ object ContentValidator {
                 duplicates(options.map { it.id }).forEach { add("$where: option $it appears more than once") }
                 options.forEach { addAll(it.label.missing("$where option ${it.id}")) }
             }
+
             QuestionType.YesNo -> if (options.isNotEmpty()) add("$where is yes or no, so it has no options")
         }
     }
@@ -95,6 +96,7 @@ object ContentValidator {
                     add("$where: $it is not an option of ${question.id}")
                 }
             }
+
             QuestionType.YesNo -> if (equals != null || isIn != null) add("$where: use isTrue on a yes-or-no question")
         }
     }

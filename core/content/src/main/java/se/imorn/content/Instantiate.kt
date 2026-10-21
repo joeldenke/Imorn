@@ -23,11 +23,13 @@ fun Condition?.appliesTo(answers: Map<String, Answer>): Boolean {
     if (this == null) return true
     return when (val answer = answers[question]) {
         null -> true
+
         is Answer.Choice -> when {
             equals != null -> answer.option == equals
             isIn != null -> answer.option in isIn
             else -> true
         }
+
         is Answer.YesNo -> isTrue == null || answer.value == isTrue
     }
 }
