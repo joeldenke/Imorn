@@ -4,7 +4,10 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.withType
 
 /**
  * `imorn.android.application`: the app module. Everything about the APK is decided here, so `app/build.gradle.kts`
@@ -59,6 +62,19 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             extensions.configure<ApplicationAndroidComponentsExtension> {
                 disableUnusedTests()
                 configureBadging(this)
+            }
+            // ArchitectureTest reads every module's sources and build file, so they are inputs of the app's tests:
+            // a change anywhere reruns it instead of reusing a cached result.
+            val root = isolated.rootProject.projectDirectory
+            val modules = listOf("core", "feature").flatMap { group ->
+                root.dir(group).asFile.listFiles().orEmpty().filter {
+                    it.isDirectory
+                }.map { root.dir("$group/${it.name}") }
+            }
+            tasks.withType<Test>().configureEach {
+                inputs.files(modules.map { it.dir("src/main") } + modules.map { it.file("build.gradle.kts") })
+                    .withPropertyName("architectureSources")
+                    .withPathSensitivity(PathSensitivity.RELATIVE)
             }
         }
     }

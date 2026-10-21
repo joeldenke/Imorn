@@ -192,13 +192,13 @@ Varje fas slutar med något en riktig människa kan använda. Ordningen är vald
 och att mallformatet är det slutliga redan från början (inbakat), så att fjärruppdateringen i fas 4 bara är ett nytt
 sätt att leverera samma data.
 
-### Fas 0 – Grunden *(i stort sett klar)*
+### Fas 0 – Grunden *(klar)*
 - [x] Gradle med convention plugins, versionskatalog, Isolated Projects
 - [x] CI (format och lint, tester med skärmdumpar, bygge och badging), App Distribution via WIF
 - [x] Designsystemet *Gryning* (Figtree, `Imorn*`-komponenter, Material 3 bara i `:core:designsystem`)
 - [x] Navigation 3, Metro, Gemini Nano-assistent som bara förklarar
-- [ ] `CLAUDE.md` för Imorn (regler som i Novila: designsystem, inga hårdkodade texter, logik i rena Kotlin-moduler)
-- [ ] `ArchitectureTest`: features beror inte på varandra, inga Material-importer i features, strängar i resurser
+- [x] `CLAUDE.md` för Imorn (regler som i Novila: designsystem, inga hårdkodade texter, logik i rena Kotlin-moduler)
+- [x] `ArchitectureTest`: features beror inte på varandra, inga Material-importer i features, strängar i resurser
 
 ### Fas 1 – Kärnan: kapitel, steg och nu-linjen
 **Mål:** någon kan planera och genomföra en hel flytt i Imorn, offline.

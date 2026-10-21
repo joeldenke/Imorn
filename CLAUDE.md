@@ -1,0 +1,183 @@
+# Imorn – instruktioner för Claude
+
+Imorn hjälper vem som helst genom livets stora projekt (flytta, renovera, få barn, ta hand om ett dödsbo) som
+*kapitel* med en nu-linje: stegen som väntar ovanför, det som har hänt (avbockat, foton, papper) under. Produktvisionen
+och planen finns i [docs/ROADMAP.md](docs/ROADMAP.md); mallarna i [docs/templates.md](docs/templates.md) och
+innehållssystemet i [docs/content-system.md](docs/content-system.md). Läs roadmapen innan du bygger en ny del, och
+bocka av punkten där i samma PR.
+
+Ägaren utvecklar enbart från mobilen: ingen Android Studio, ingen emulator, ingen lokal adb.
+CI är därför den enda sanningen om att något bygger och fungerar.
+
+Bygget, CI och reglerna kommer från Novila (samma ägare). När något saknas här: gör som Novila, och skriv in regeln
+här när den börjar gälla Imorn.
+
+## Stack
+- Kotlin 2.4 via AGP 9:s inbyggda Kotlin (ingen `kotlin-android` i modulerna), Gradle 9.8
+- Jetpack Compose med eget designsystem ovanpå Material 3 1.5 (beta), compileSdk/targetSdk 37, minSdk 26
+- Navigation 3 (`androidx.navigation3`) med en back stack per flik (i dag bara Idag)
+- Alla versioner i `gradle/libs.versions.toml`. Hårdkoda aldrig versioner i byggfiler.
+- DI med [Metro](https://zacsweers.github.io/metro/) (`dev.zacsweers.metro`, Kotlin-kompilatorplugin, ingen KSP).
+  Varje skärm har en egen ViewModel (`StateFlow`) i sin feature, skapad av Metro och scopad till sin Navigation 3-entry.
+  Ingen delad ViewModel. Skärmarna i `feature/*` är tillståndslösa.
+- Gemini Nano (ML Kit Prompt API via AICore) för assistenten, bara på enheten.
+
+## Struktur
+Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `:feature:today` → `se.imorn.feature.today`):
+- `:app` – bara skalet: `ImornApplication` (håller grafen), `MainActivity`, `ImornApp` (flikar och `NavDisplay`),
+  `navigation/TopLevelDestination` och `di/`: `AppGraph` (Metro-grafen, där källor väljs) och
+  `ImornViewModelFactory`. Ingen skärm, ViewModel eller logik som går att lägga i en modul.
+- `:feature:today` – Idag (blir *Imorgon* i Fas 1: högst tre saker). Varje feature äger sin navigation
+  (`navigation/`): `@Serializable`-rutter (`NavKey`) och `EntryProviderScope<NavKey>.<feature>Entry(...)`, som `:app`
+  lägger i sin `entryProvider`. Features beror aldrig på varandra (`ArchitectureTest`); flikbyten går via callbacks
+  från `:app`.
+- `:core:designsystem` – `se.imorn.designsystem`, enda modulen som använder Material 3 direkt
+  - `theme` – `ImornTheme`: färger (`ImornColors`, paletten *Gryning*), typografi (Figtree), former och spacing
+  - `component` – `Imorn*`-komponenter som wrappar Material 3 (`ImornScaffold`, `ImornCard`, `ImornButton`,
+    `ImornText` …)
+- `:core:ui` – det flera features delar, bl.a. `PreviewData` (samma person och projekt i alla previews)
+- `:core:navigation` – `NavigationState` (en back stack per flik) och `Navigator`
+- `:core:coach` – ren Kotlin: assistentens `LanguageModel`-gränssnitt och `AssistantPrompt` (bygger prompten och
+  tvättar svaret, enhetstestat). Se *Assistenten* under Regler.
+- `:core:data` – Android-sidan av datan: i dag `GeminiNanoLanguageModel` (bunden som `LanguageModel`). Här hamnar
+  lagringen när den kommer.
+- `build-logic` – inkluderat bygge med convention plugins (`imorn.*`) och `imorn { }`, se `build-logic/README.md`
+- `tools/icon` – `render_icon.py` ritar appikonens reserver, se *Appikonen* under Regler.
+
+Planerat enligt roadmapen (Fas 1): `:core:model` (ren Kotlin: `Chapter`, `Anchor`, `Phase`, `Step`, `Entry`,
+`RelativeTime` …), `:core:content` (mallformatet och `instantiate`), `:core:database` (Room), `:feature:chapters`
+och `:feature:timeline`.
+
+Beroenden går nedåt: `:app` → `:feature:*` → `:core:ui`/`:core:navigation`/`:core:designsystem` → ren Kotlin.
+Strängar och ikoner ligger i modulen som använder dem; det flera moduler använder ligger i `:core:ui`.
+
+## Arbetsflöde
+- Pusha aldrig direkt till `main`. Skapa en branch och öppna en PR.
+- **Commit-meddelanden, branchnamn, PR-titlar och PR-beskrivningar skrivs på engelska.**
+  PR-titeln (vid squash: commit-rubriken) blir en rad i testarnas release notes, så skriv den som en tydlig
+  sammanfattning. `scripts/release-notes.sh` listar allt på `main` sedan förra lyckade distributionen.
+- `CI`-workflowen måste vara grön innan PR:en är klar. Den kör tre jobb parallellt: Format and lint (`spotlessCheck`
+  och `:app:lintDebug`, alla moduler), Tests (`test verifyAndRecordRoborazziDebug koverXmlReportCoverage`) och Build
+  (`:app:assembleDebug :app:checkDebugBadging`); kontrollen *Lint, test and build* samlar dem och är den som krävs.
+  CI körs bara på PR:er mot `main` och på `main`, inte på en branch utan PR. Gemensamma steg ligger i
+  `.github/actions/`. Bygg aldrig egen cachelogik.
+- Kan din miljö inte nå Google Maven: öppna PR:en, följ körningen och rätta tills den är grön. Säg aldrig att något
+  fungerar utan grönt CI.
+- När PR:en mergas skickar `Distribute to testers` (`distribute.yml`) debug-APK:n (`se.imorn.debug`) via Firebase
+  App Distribution, autentiserad med Workload Identity Federation. Se `docs/firebase.md`; ändra setupen via
+  `scripts/bootstrap-firebase.sh` och håll den idempotent. Inga JSON-nycklar och ingen `google-services.json`.
+- `Record references` (`screenshots.yml`) spelar in skärmdumpar (`/record-screenshots`) eller badging
+  (`/record-badging`) som kommentar på en PR eller från Actions-fliken.
+
+## Kvalitet
+- **Lint-policy:** `lint.xml` i roten sätter projektets regler och orsaker. Höj inte lint-fel till varningar
+  och lägg inte till `@SuppressLint` utan att fråga ägaren.
+- **Kodstil:** `.editorconfig`. Inga wildcard-importer, trailing commas, max 120 tecken. Spotless med ktlint
+  kontrolleras i CI; `./gradlew spotlessApply` rättar.
+- **Lär av CI:** när CI hittar en ny typ av misstag, gör tre saker i samma PR. Fixa felet, lägg till regeln i
+  `lint.xml` (eller i `ArchitectureTest` om lint inte kan fånga det), och lägg till en rad under *Kända fallgropar*.
+- **Badging:** `app/badging/debug-badging.txt` är den granskade bilden av APK:n (paket, SDK-nivåer, behörigheter,
+  features, exporterade komponenter). Build-jobbet fallerar på minsta skillnad. Är ändringen avsiktlig: kommentera
+  `/record-badging` på PR:en och skriv i beskrivningen varför. Uppdatera aldrig filen bara för att få grönt; en ny
+  behörighet eller exporterad komponent kräver ägarens ok.
+
+### Kända fallgropar
+Misstag som redan har gjorts i Novila, med samma bygge. Gör dem inte här.
+- **Locale i composables:** använd aldrig `Locale.getDefault()` i en `@Composable` (lint `NonObservableLocale`).
+  Läs den med `LocalConfiguration.current.locales[0]`.
+- **Kotlin-version i AGP 9:** lägg aldrig till `org.jetbrains.kotlin.android`, inte heller med `apply false`.
+- **Robolectric:** tester körs mot API 36 via `src/test/resources/robolectric.properties` (på API 37 faller Compose
+  UI-tester). Nya moduler med Robolectric-tester behöver samma fil. Använd `imorn.android.unittest`, som sätter
+  JDK 21-flaggan Robolectric kräver, i stället för egen testkonfiguration.
+- **Modifier-parametrar:** en composable har bara en `Modifier`-parameter, och den heter `modifier`.
+- **Providers från tasks:** ge tasks vanliga värden (strängar) för sådant som bara är text, aldrig ett värde härlett
+  ur en `TaskProvider`; det ger ett dolt beroende på den tasken.
+- **Beroenden som bara debug får:** deklarera varje bibliotek en modul importerar direkt i modulen, även om
+  debug-bygget får det transitivt.
+- **Spotless och Isolated Projects:** ge Spotless filträd (`fileTree(...)`) som `target`, aldrig glob-strängar.
+- **GitHub API:** GraphQL och `gh pr create` fungerar inte i molnsessioner. Använd REST eller GitHub-MCP:n.
+
+## Googles Android-skills
+Använd rätt skill innan du ändrar respektive område: `agp-9-upgrade` (bygget, AGP/Kotlin/KSP), `edge-to-edge`
+(nya skärmar, listor, FAB:ar, textfält), `testing-setup`, `navigation-3`, `adaptive`,
+`jetpack-compose-performance`, `r8-analyzer`, `android-permissions-security` (före nya behörigheter, t.ex. kamera
+och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i Fas 3).
+
+## Gradle-bygget
+- Varje modul använder convention plugins: `imorn.android.application` (bara `:app`), `imorn.android.feature`
+  (`:feature:*`), `imorn.android.library` eller `imorn.jvm.library` (ren Kotlin), plus `imorn.android.compose` för
+  Compose. Tester: `imorn.android.unittest` (JUnit, Robolectric, Compose UI-tester, Kover) och
+  `imorn.android.screenshot` (Roborazzi, varje `@Preview` i modulen blir ett skärmdumpstest).
+  SDK-nivåer, Java-nivå, namespace, signering, lint och testuppsättning sätts bara i `build-logic`.
+- Modulens `build.gradle.kts` innehåller bara `plugins`, `imorn { }` och `dependencies`. Bibliotek som flera moduler
+  använder hämtas via `imorn { coroutines(); lifecycle(); … }` (`ImornExtension`); lägg till en funktion där hellre
+  än att kopiera beroenden. Metro: `imorn { metro() }` för moduler med `@Inject`-klasser, `imorn { viewModels() }`
+  för moduler med ViewModels. Lägg aldrig till Metro-pluginet eller `metrox`-artefakter direkt i en modul.
+- Logik utan Android blir en `imorn.jvm.library`-modul. Den kompilerar och testar utan resurser och Robolectric.
+- Isolated Projects är påslaget: aldrig `allprojects {}`, `subprojects {}`, `rootProject.<…>` eller `project(":x")`
+  för att läsa eller ändra en annan modul; beroenden deklareras med `projects.<…>`. Behövs en fil i roten, använd
+  `project.isolated.rootProject.projectDirectory`. `ksp.project.isolation.enabled=true` är satt för Room (Fas 1);
+  ta aldrig bort den. Sätt aldrig `workers.max` till 2 eller lägre (gradle#39040, bygget fryser).
+- Nya moduler: `include(...)` i `settings.gradle.kts`, beroende via `projects.<…>`.
+- Nya Gradle-plugins deklareras med `apply false` i rotens `build.gradle.kts`.
+
+## Tester
+- **Logik:** rena Kotlin-tester i `src/test`. **UI:** Compose UI-tester med `createComposeRule()` på Robolectric,
+  också i `src/test`. Ingen emulator behövs.
+- **Skärmdumpar:** varje `@Preview` testas mot referensbilder i modulens `src/test/screenshots`. Ändrar du UI med
+  flit: skriv `/record-screenshots` i PR-beskrivningen, så spelar CI in och pushar bilderna. Ta aldrig fram
+  referensbilder lokalt.
+- **Arkitektur:** `ArchitectureTest` i `:app` läser alla moduler och bevakar reglerna nedan som går att kontrollera
+  (Material 3 bara i designsystemet, inga hårdkodade texter, features beror inte på varandra, ViewModels via Metro
+  och aldrig i `:app`, ingen SharedPreferences). Ny regel som går att kontrollera i källkoden: lägg den där.
+
+## Regler
+- **Känslan:** en lugn vän som har gjort det här förut. Startskärmen visar högst tre saker. Att skjuta upp är ett
+  val: varje påminnelse har *Imorgon*. Inga streaks, ingen skuld, inga röda siffror. Texterna är varma, korta och
+  aldrig byråkratiska ("Dags att göra flyttanmälan. Det tar fem minuter.").
+- **Designsystem:** feature-kod använder bara `se.imorn.designsystem` och aldrig `androidx.compose.material3`
+  direkt. Saknas en komponent, lägg till en `Imorn*`-wrapper i `:core:designsystem` (`component/`). Wrappers
+  exponerar inga Material-typer. Använd `ImornTheme.colors/typography/spacing/shapes`, aldrig hårdkodade färger
+  eller dp-värden i features. Behövs en färgroll som saknas, lägg till den i `ImornColors` och `toImornColors()`.
+- **Gryning:** paletten bär betydelse och används konsekvent: **indigo** (primary) är framtiden och överblicken,
+  **aprikos** (secondary) är nuet och vägen, **rosa** (tertiary) är minnena. `Night` och `Dawn` är varumärkets
+  färger utanför schemat. Typsnittet Figtree är inbakat; ladda aldrig ner typsnitt i runtime.
+- **Appikonen:** ett vitt i på den enfärgade Night-plattan, där pricken är solen och stammen solens spegling i
+  vattnet. Vektorerna `app/src/main/res/drawable/ic_launcher_foreground.xml` och `…_monochrome.xml` och färgen
+  `ic_launcher_background` (lika med `Night` i `Color.kt`) är källan. Ändras de: kör
+  `python3 tools/icon/render_icon.py`, som ritar WebP-reserverna i `mipmap-*dpi` (Firebase App Distribution kan
+  inte visa en adaptiv ikon) och Play-ikonen `docs/play-icon.png`. Rita aldrig om dem för hand.
+- **Inga emojis i UI:t**, och inte i assistentens svar.
+- **Inga hårdkodade texter:** all text som visas eller läses upp kommer från `strings.xml`. Engelska i `values/`;
+  svenska i `values-sv/` när den läggs till (då även i `localeFilters` i `imorn.android.application`). Symboler och
+  enheter markeras `translatable="false"`.
+- **För vem som helst:** stor text, enkel svenska, TalkBack. `contentDescription` på ikoner, eller `null` när de är
+  dekorativa.
+- **Navigation:** nya skärmar blir en `@Serializable`-rutt som implementerar `NavKey` i featurens `navigation/`,
+  plus en `entry<…>` i featurens entry-funktion. Navigation inom en flik går via `Navigator`; till en annan flik
+  via callbacks som `:app` kopplar. Entryn hämtar sin ViewModel och skickar state och callbacks till en
+  tillståndslös skärm, så skärmen går att förhandsgranska.
+- **ViewModels och DI (Metro):** en ViewModel per skärm, i skärmens feature, aldrig i `:app` och aldrig delad.
+  Annotera `@ViewModelKey @ContributesIntoMap(AppScope::class) @Inject`; hämta den i entryn med `metroViewModel()`,
+  aldrig `viewModel()`. Det skärmar delar (lagring, källor) ligger i `:core:*` som `@SingleIn(AppScope::class)`.
+  Allt som bidrar till `AppScope` måste ligga på `:app`:s classpath (direkt `implementation`).
+- Logik som går att testa utan Android ligger i rena Kotlin-moduler (`imorn.jvm.library`) med enhetstester.
+- **Lagring:** aldrig SharedPreferences. Kapitel och steg hamnar i Room (`:core:database`, Fas 1) med explicita
+  migrationer; ändra aldrig schemat utan migration och test.
+- **Assistenten (Gemini Nano):** körs i AICore på telefonen; prompten lämnar aldrig enheten. Modellen får aldrig
+  bestämma planen, stegen, datum eller belopp: den förklarar bara fakta den får (`AssistantPrompt`), och svaret ska
+  märkas som AI när det visas. Att använda den till mer, eller byta till en molnmodell, kräver ägarens ok.
+- **Integritet:** allt ligger lokalt tills användaren själv väljer att dela. Brev och papper med personnummer lämnar
+  aldrig enheten. Appen har ingen `INTERNET`-behörighet: ML Kit drar in Googles telemetri, som ber om den, så den
+  tas bort i appens manifest (`tools:node="remove"`). Lägg aldrig tillbaka den utan ägarens ok; roadmapen tar det
+  beslutet i Fas 4 (innehållet) och Fas 7 (familjen). Inga analysverktyg eller Firebase-SDK:er i appen utan att
+  ägaren ber om det.
+- **Behörigheter:** varje ny behörighet (kamera, notiser …) kräver ägarens ok, skillen
+  `android-permissions-security` och en ny rad i badging. Fråga i sammanhanget, aldrig vid start.
+- **Påminnelser** (Fas 3): som i Novila, bara WorkManager, ett engångsjobb som lägger nästa själv. Inga periodiska
+  jobb, ingen tjänst i förgrunden och inga exakta larm.
+- `versionCode` sätts av CI. Ändra `versionName`-prefixet (`0.1`) bara vid större milstolpar.
+- Signering: `app/debug.keystore` är bara för debug-byggen. Release signeras med en hemlig nyckel som bara finns i
+  GitHub-hemligheterna. Lägg aldrig en release-nyckel eller dess lösenord i repot.
+- Nya beroenden: lägg dem i versionskatalogen och motivera dem i PR-beskrivningen.
+- Pinna GitHub Actions till commit-SHA med versionskommentar. Dependabot håller dem uppdaterade.
