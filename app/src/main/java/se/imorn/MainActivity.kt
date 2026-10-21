@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 import se.imorn.designsystem.theme.ImornTheme
 
@@ -18,8 +19,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val graph = (application as ImornApplication).graph
         val viewModelFactory = graph.metroViewModelFactory
+        val settingsStore = graph.settingsStore
         setContent {
-            val darkTheme = isSystemInDarkTheme()
+            // Nothing to show until the settings are read, a moment at app start, so the theme never flickers.
+            val settings = settingsStore.settings.collectAsStateWithLifecycle().value ?: return@setContent
+            val darkTheme = settings.theme.isDark(systemDark = isSystemInDarkTheme())
             // The system bars follow the app's theme, not the phone's, when the user picked light or dark.
             DisposableEffect(darkTheme) {
                 enableEdgeToEdge(
@@ -28,7 +32,7 @@ class MainActivity : ComponentActivity() {
                 )
                 onDispose { }
             }
-            ImornTheme(darkTheme = darkTheme) {
+            ImornTheme(darkTheme = darkTheme, dynamicColor = settings.dynamicColor) {
                 // metroViewModel() in each Navigation 3 entry creates its ViewModels with this factory.
                 CompositionLocalProvider(LocalMetroViewModelFactory provides viewModelFactory) {
                     ImornApp()

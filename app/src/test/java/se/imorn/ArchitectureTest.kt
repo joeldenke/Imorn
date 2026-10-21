@@ -1,0 +1,76 @@
+package se.imorn
+
+import org.junit.Assert.assertTrue
+import org.junit.Test
+import java.io.File
+
+/**
+ * Cheap guard rails enforced in CI, over every module's sources (the rules in CLAUDE.md):
+ * - Only :core:designsystem may use Material 3 directly; everything else uses Imorn components. (:core:designsystem
+ *   keeps material3 as an implementation dependency, but other libraries can bring it in transitively, so the
+ *   compiler alone can't enforce this.)
+ * - UI text comes from string resources, never string literals.
+ * - Features never depend on each other: the app connects them through navigation.
+ * - ViewModels belong to the feature that shows them and are created by Metro (`metroViewModel()`), scoped to their
+ *   Navigation 3 entry. No ViewModel in :app and no `viewModel()` without Metro's factory.
+ * - Nothing is saved in SharedPreferences.
+ *
+ * The sources are declared as inputs of the test task (imorn.android.application), so it reruns when they change.
+ */
+class ArchitectureTest {
+    // Gradle runs unit tests with the module directory as working directory.
+    private val root = File("..").canonicalFile
+
+    private fun modules(): List<File> = listOf("core", "feature").flatMap { group ->
+        File(root, group).listFiles().orEmpty().filter { File(it, "build.gradle.kts").isFile }
+    } + File(root, "app")
+
+    private fun sources(): List<File> = modules()
+        .filterNot { it.name == "designsystem" }
+        .flatMap {
+            File(it, "src/main").walkTopDown().filter { file -> file.isFile && file.extension == "kt" }.toList()
+        }
+
+    @Test fun `sources are found`() {
+        assertTrue("No sources under $root", sources().any { it.path.contains("feature") })
+    }
+
+    @Test fun `only the design system imports Material 3`() {
+        val offenders = sources().filter { file ->
+            file.readLines().any { it.trim().startsWith("import androidx.compose.material3") }
+        }
+        assertTrue("Use se.imorn.designsystem instead of Material 3 in: ${offenders.names()}", offenders.isEmpty())
+    }
+
+    @Test fun `no hardcoded text in UI code`() {
+        // Text(…), ImornText(…), ImornBodyText(…) and any other …Text( called with a string literal.
+        val literalText = Regex("""\b\w*Text\(\s*(text\s*=\s*)?"""")
+        val offenders = sources().filter { file -> file.readLines().any { literalText.containsMatchIn(it) } }
+        assertTrue("Use stringResource(...) instead of string literals in: ${offenders.names()}", offenders.isEmpty())
+    }
+
+    @Test fun `features do not depend on each other`() {
+        val offenders = File(root, "feature").listFiles().orEmpty().filter { feature ->
+            File(feature, "build.gradle.kts").takeIf { it.isFile }?.readText()?.contains("projects.feature.") == true
+        }
+        assertTrue("Connect features through navigation in :app instead: ${offenders.names()}", offenders.isEmpty())
+    }
+
+    @Test fun `ViewModels are created by Metro and live in features`() {
+        val plainViewModel = sources().filter { file ->
+            file.readLines().any { it.trim() == "import androidx.lifecycle.viewmodel.compose.viewModel" }
+        }
+        assertTrue("Use metroViewModel(), not viewModel(): ${plainViewModel.names()}", plainViewModel.isEmpty())
+        val inApp = sources().filter { it.startsWith(File(root, "app")) && it.readText().contains(": ViewModel()") }
+        assertTrue("Give each screen its own ViewModel in its feature instead of: ${inApp.names()}", inApp.isEmpty())
+    }
+
+    @Test fun `nothing is saved in SharedPreferences`() {
+        val offenders = sources().filter { file ->
+            file.readLines().any { "getSharedPreferences(" in it || "import android.content.SharedPreferences" in it }
+        }
+        assertTrue("Save through :core:data instead of SharedPreferences: ${offenders.names()}", offenders.isEmpty())
+    }
+
+    private fun List<File>.names() = joinToString { it.relativeTo(root).path }
+}
