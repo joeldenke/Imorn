@@ -1,0 +1,106 @@
+package se.imorn.data
+
+import android.content.Context
+import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
+import androidx.datastore.preferences.core.MutablePreferences
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import java.io.IOException
+
+/** The scope a store reads and writes in: the whole app's lifetime, off the main thread. */
+internal fun storeScope() = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+/**
+ * One Preferences DataStore file, [name]. Only one may exist per file in a process, so each store is a singleton in
+ * `AppScope`. The same store as Novila's, without its move from SharedPreferences (Imorn never had any).
+ *
+ * Reads are kept in memory as a [StateFlow], so a screen opened after the first read gets its data right away.
+ * Writes are queued and applied one at a time in [scope], like `SharedPreferences.apply()`: in order, and finished
+ * even when the ViewModel that asked for them is cleared.
+ *
+ * The snapshot is set from the value each write returns, in the same single consumer that runs the writes, instead of
+ * from `dataStore.data` re-emitting. `dataStore.data` can drop a write's emission when it is collected while that
+ * write is in flight (it starts its [kotlinx.coroutines.flow.dropWhile] from a version read before the write's new
+ * value is published), which left a screen waiting for a save that had already happened. The first read is also
+ * awaited before any write runs, so a write always reads what the last write left.
+ *
+ * The file is sealed with [cipher]; `name` is its associated data, so a sealed file cannot be swapped for another
+ * store's. A file that cannot be decrypted (a different key, a truncated write, an old backup) is replaced with
+ * empty data instead of leaving the screens waiting.
+ */
+internal class PreferencesStore(
+    context: Context,
+    name: String,
+    private val scope: CoroutineScope,
+    cipher: DatastoreCipher,
+) {
+    private val dataStore: DataStore<Preferences> = DataStoreFactory.create(
+        serializer = EncryptingPreferencesSerializer(
+            aead = { cipher.aead() },
+            associatedData = name.encodeToByteArray(),
+        ),
+        corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+        scope = scope,
+        produceFile = { context.preferencesDataStoreFile(name) },
+    )
+
+    /** The preferences as last read or written; null until the first read is done. */
+    private val latest = MutableStateFlow<Preferences?>(null)
+    private val writes = Channel<(MutablePreferences) -> Unit>(Channel.UNLIMITED)
+
+    init {
+        scope.launch {
+            // An unreadable file reads as empty instead of leaving the screens waiting.
+            latest.value = try {
+                dataStore.data.first()
+            } catch (e: IOException) {
+                emptyPreferences()
+            }
+            for (write in writes) {
+                // A write can fail for a reason the app cannot fix: the Keystore entry is gone, the disk is
+                // full. Crashing there would take the app down on every later save as well, and letting the
+                // exception end this consumer would drop every write after it in silence, so this one write is
+                // left out and the values as last read or written stay.
+                latest.value = try {
+                    dataStore.edit { write(it) }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    Log.w(TAG, "Could not save $name, keeping the values already saved", e)
+                    latest.value ?: emptyPreferences()
+                }
+            }
+        }
+    }
+
+    /** The saved preferences as [T], or null until the first read is done. */
+    fun <T : Any> snapshots(read: (Preferences) -> T): StateFlow<T?> =
+        latest
+            .map { preferences -> preferences?.let(read) }
+            .stateIn(scope, SharingStarted.Eagerly, null)
+
+    fun edit(write: (MutablePreferences) -> Unit) {
+        writes.trySend(write)
+    }
+
+    private companion object {
+        const val TAG = "PreferencesStore"
+    }
+}

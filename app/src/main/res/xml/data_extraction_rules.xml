@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  What Android Auto Backup and device-to-device transfer copy on Android 12 (API 31) and newer.
+  Older versions use backup_rules.xml; both files must stay in sync.
+
+  Imorn keeps everything on the device until the user chooses to share it, so nothing is copied to Google Drive
+  or handed to a new phone, as in Novila. Every domain is excluded, which covers :core:data's encrypted Preferences
+  DataStore files (files/datastore/) and their Tink keyset. The keyset is sealed with the Android Keystore's master
+  key, which cannot be backed up, so a restored copy could not be read here anyway. The roadmap's own backup (phase 6)
+  will change this file on purpose.
+
+  allowBackup stays "true": the exclusion is explicit, and turning it off also disables the device-transfer channel.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="root" path="." />
+        <exclude domain="file" path="." />
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="external" path="." />
+    </device-transfer>
+</data-extraction-rules>

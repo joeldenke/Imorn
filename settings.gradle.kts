@@ -38,6 +38,7 @@ include(":app")
 include(":core:coach")
 include(":core:data")
 include(":core:designsystem")
+include(":core:model")
 include(":core:navigation")
 include(":core:ui")
 

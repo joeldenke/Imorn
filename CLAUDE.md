@@ -20,6 +20,8 @@ här när den börjar gälla Imorn.
 - DI med [Metro](https://zacsweers.github.io/metro/) (`dev.zacsweers.metro`, Kotlin-kompilatorplugin, ingen KSP).
   Varje skärm har en egen ViewModel (`StateFlow`) i sin feature, skapad av Metro och scopad till sin Navigation 3-entry.
   Ingen delad ViewModel. Skärmarna i `feature/*` är tillståndslösa.
+- Data lokalt i Preferences DataStore, krypterad med Tink och en nyckel i Android Keystore (samma som Novila),
+  via storarna i `:core:data`. Kapitel och steg får Room i Fas 1.
 - Gemini Nano (ML Kit Prompt API via AICore) för assistenten, bara på enheten.
 
 ## Struktur
@@ -39,12 +41,18 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:core:navigation` – `NavigationState` (en back stack per flik) och `Navigator`
 - `:core:coach` – ren Kotlin: assistentens `LanguageModel`-gränssnitt och `AssistantPrompt` (bygger prompten och
   tvättar svaret, enhetstestat). Se *Assistenten* under Regler.
-- `:core:data` – Android-sidan av datan: i dag `GeminiNanoLanguageModel` (bunden som `LanguageModel`). Här hamnar
-  lagringen när den kommer.
+- `:core:data` – lagring i Preferences DataStore: `SettingsStore` (tema och bakgrundsfärger, `AppSettings`) är en
+  singleton i `AppScope` vars `StateFlow` får läsarna att läsa om efter en sparning. `PreferencesStore` (samma som
+  Novilas) håller datan i minnet och köar sparningar i storens egen scope, i ordning och klara även när ViewModeln
+  rensas. Filerna förseglas av `EncryptingPreferencesSerializer` med `KeystoreDatastoreCipher` (Tink, nyckeln i
+  Android Keystore); en fil som inte går att öppna läses som tom. Tills första läsningen är klar är värdet `null`
+  och `MainActivity` ritar inget, så temat aldrig blinkar. Här finns också `GeminiNanoLanguageModel` (bunden som
+  `LanguageModel`).
+- `:core:model` – ren Kotlin: `AppSettings` och `ThemeMode`. Här hamnar kapitlens modell i Fas 1.
 - `build-logic` – inkluderat bygge med convention plugins (`imorn.*`) och `imorn { }`, se `build-logic/README.md`
 - `tools/icon` – `render_icon.py` ritar appikonens reserver, se *Appikonen* under Regler.
 
-Planerat enligt roadmapen (Fas 1): `:core:model` (ren Kotlin: `Chapter`, `Anchor`, `Phase`, `Step`, `Entry`,
+Planerat enligt roadmapen (Fas 1): kapitlens modell i `:core:model` (`Chapter`, `Anchor`, `Phase`, `Step`, `Entry`,
 `RelativeTime` …), `:core:content` (mallformatet och `instantiate`), `:core:database` (Room), `:feature:chapters`
 och `:feature:timeline`.
 
@@ -162,8 +170,12 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
   aldrig `viewModel()`. Det skärmar delar (lagring, källor) ligger i `:core:*` som `@SingleIn(AppScope::class)`.
   Allt som bidrar till `AppScope` måste ligga på `:app`:s classpath (direkt `implementation`).
 - Logik som går att testa utan Android ligger i rena Kotlin-moduler (`imorn.jvm.library`) med enhetstester.
-- **Lagring:** aldrig SharedPreferences. Kapitel och steg hamnar i Room (`:core:database`, Fas 1) med explicita
-  migrationer; ändra aldrig schemat utan migration och test.
+- **Lagring:** aldrig SharedPreferences. Inställningar och små värden sparas i en store i `:core:data` ovanpå
+  `PreferencesStore` (krypterad DataStore, en `@SingleIn(AppScope::class)` per fil, testad med Robolectric och
+  `testCipher()`). Kapitel och steg hamnar i Room (`:core:database`, Fas 1) med explicita migrationer; ändra aldrig
+  schemat utan migration och test.
+- **Säkerhetskopia:** Auto Backup och flytt till ny telefon kopierar ingenting (`app/src/main/res/xml`, båda filerna
+  i synk); nyckeln ligger i Keystore och kan ändå inte följa med. Ändras det (Fas 6), ändras integritetstexten också.
 - **Assistenten (Gemini Nano):** körs i AICore på telefonen; prompten lämnar aldrig enheten. Modellen får aldrig
   bestämma planen, stegen, datum eller belopp: den förklarar bara fakta den får (`AssistantPrompt`), och svaret ska
   märkas som AI när det visas. Att använda den till mer, eller byta till en molnmodell, kräver ägarens ok.
