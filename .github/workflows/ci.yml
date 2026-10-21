@@ -5,6 +5,7 @@
 #     in one job so they share one setup.
 #   - Tests: unit and screenshot tests and coverage. When the PR description contains /record-screenshots, changed
 #     screenshots are recorded and pushed to the PR branch, and CI starts again on that commit.
+#   - Tests also fail when the build changes an exported Room schema (/record-schemas records it).
 #   - Build: the debug APK and its badging check.
 # "Lint, test and build" collects them and is the required status check in branch protection, so nothing red can
 # be merged.
@@ -77,6 +78,18 @@ jobs:
         run: |
           set -o pipefail
           ./gradlew test verifyAndRecordRoborazziDebug koverXmlReportCoverage --continue 2>&1 | tee build.log
+
+      # Room's exported schemas (core/*/schemas) are reviewed files, like the badging: a build that changes them (a
+      # new table, column or database version) fails here until /record-schemas commits them on the PR. A migration
+      # starts from the committed schema, so it must always match the code.
+      - name: Room schemas unchanged
+        if: always()
+        run: |
+          changed=$(git status --porcelain -- ':(glob)**/schemas/**')
+          [ -z "$changed" ] && exit 0
+          echo "$changed"
+          echo "::error title=Room schema changed::The build changed the exported Room schema. If intended, comment /record-schemas on the PR (or run Record references with schemas), and add a tested migration for a new version."
+          exit 1
 
       - name: Coverage summary
         if: success()

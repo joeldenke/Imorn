@@ -3,6 +3,8 @@
 #     description contains /record-screenshots (ci.yml, Tests job), so this is for a single re-record without a push.
 #   - the APK's badging, app/badging/debug-badging.txt (`/record-badging`), after a deliberate change
 #     to permissions, SDK levels or exported components. The pushed diff is what reviewers check.
+#   - Room's exported schemas, core/*/schemas (`/record-schemas`), after a deliberate change to the database. The
+#     next migration starts from them.
 #
 #   - Comment the command on a PR: records on the PR branch and pushes a commit there.
 #   - Or run it from the Actions tab on a branch. On the default branch it opens a PR instead,
@@ -22,7 +24,7 @@ on:
       what:
         description: What to record
         type: choice
-        options: [screenshots, badging]
+        options: [screenshots, badging, schemas]
         default: screenshots
 
 permissions:
@@ -34,12 +36,13 @@ concurrency:
 
 jobs:
   record:
-    name: Record ${{ inputs.what || (startsWith(github.event.comment.body, '/record-badging') && 'badging') || 'screenshots' }}
+    name: Record ${{ inputs.what || (startsWith(github.event.comment.body, '/record-schemas') && 'schemas') || (startsWith(github.event.comment.body, '/record-badging') && 'badging') || 'screenshots' }}
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.issue.pull_request &&
        (startsWith(github.event.comment.body, '/record-screenshots') ||
-        startsWith(github.event.comment.body, '/record-badging')) &&
+        startsWith(github.event.comment.body, '/record-badging') ||
+        startsWith(github.event.comment.body, '/record-schemas')) &&
        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association))
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -51,7 +54,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       PR_NUMBER: ${{ github.event.issue.number }}
       COMMENT_ID: ${{ github.event.comment.id }}
-      WHAT: ${{ inputs.what || (startsWith(github.event.comment.body, '/record-badging') && 'badging') || 'screenshots' }}
+      WHAT: ${{ inputs.what || (startsWith(github.event.comment.body, '/record-schemas') && 'schemas') || (startsWith(github.event.comment.body, '/record-badging') && 'badging') || 'screenshots' }}
     steps:
       - name: Resolve branch
         id: target
@@ -84,6 +87,9 @@ jobs:
         run: |
           if [ "$WHAT" = badging ]; then
             ./gradlew :app:updateDebugBadging --stacktrace
+          elif [ "$WHAT" = schemas ]; then
+            # Compiling runs Room in KSP, which writes the schema into the module's schemas/ folder.
+            ./gradlew compileDebugKotlin --stacktrace
           else
             ./gradlew recordRoborazziDebug --stacktrace
           fi
@@ -97,6 +103,9 @@ jobs:
           if [ "$WHAT" = badging ]; then
             git add -A -- ':(glob)**/badging/*-badging.txt'
             title="Record badging"
+          elif [ "$WHAT" = schemas ]; then
+            git add -A -- ':(glob)**/schemas/**'
+            title="Record Room schemas"
           else
             git add -A -- ':(glob)**/src/test/screenshots/**'
             title="Record screenshot references"

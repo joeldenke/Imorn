@@ -1,8 +1,10 @@
 package se.imorn.buildlogic
 
+import androidx.room.gradle.RoomExtension
 import org.gradle.api.Project
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.testing.Test
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.withType
@@ -92,6 +94,22 @@ abstract class ImornExtension @Inject constructor(private val project: Project) 
             inputs.dir(content).withPropertyName("bundledContent").withPathSensitivity(PathSensitivity.RELATIVE)
             systemProperty("imorn.content", content.asFile.absolutePath)
         }
+    }
+
+    /**
+     * Room: the runtime, its compiler in KSP, and the exported schema in the module's `schemas/` folder. The schema is
+     * reviewed like badging: CI fails when the build changes it, and `/record-schemas` records it, so every
+     * migration has the schema it starts from.
+     */
+    fun room() {
+        project.pluginManager.apply("com.google.devtools.ksp")
+        project.pluginManager.apply("androidx.room")
+        project.extensions.configure<RoomExtension> {
+            schemaDirectory(project.layout.projectDirectory.dir("schemas").asFile.path)
+        }
+        implementation("androidx-room-runtime")
+        implementation("androidx-room-ktx")
+        project.dependencies.add("ksp", project.libs.library("androidx-room-compiler"))
     }
 
     /** Activities with Compose content (`setContent`). */

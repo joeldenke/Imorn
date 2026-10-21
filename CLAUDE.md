@@ -20,8 +20,8 @@ här när den börjar gälla Imorn.
 - DI med [Metro](https://zacsweers.github.io/metro/) (`dev.zacsweers.metro`, Kotlin-kompilatorplugin, ingen KSP).
   Varje skärm har en egen ViewModel (`StateFlow`) i sin feature, skapad av Metro och scopad till sin Navigation 3-entry.
   Ingen delad ViewModel. Skärmarna i `feature/*` är tillståndslösa.
-- Data lokalt i Preferences DataStore, krypterad med Tink och en nyckel i Android Keystore (samma som Novila),
-  via storarna i `:core:data`. Kapitel och steg får Room i Fas 1.
+- Data lokalt: inställningar i Preferences DataStore, krypterad med Tink och en nyckel i Android Keystore (samma
+  som Novila), via storarna i `:core:data`; kapitlen i Room (`:core:database`, kompilatorn i KSP).
 - Gemini Nano (ML Kit Prompt API via AICore) för assistenten, bara på enheten.
 
 ## Struktur
@@ -48,6 +48,10 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   Android Keystore); en fil som inte går att öppna läses som tom. Tills första läsningen är klar är värdet `null`
   och `MainActivity` ritar inget, så temat aldrig blinkar. Här finns också `GeminiNanoLanguageModel` (bunden som
   `LanguageModel`).
+- `:core:database` – Room: `ImornDatabase` (kapitel, ankare, faser, steg och minnen, med främmande nycklar som tar
+  allt i ett kapitel med sig) och `ChapterRepository` (singleton i `AppScope`), som sparar hela kapitel i en
+  transaktion och läser dem som `Flow`, så skärmarna läser om efter varje sparning. Ändra ett kapitel med
+  funktionerna i `:core:model` och spara det. Schemat exporteras till `core/database/schemas`, se *Lagring*.
 - `:core:model` – ren Kotlin: kapitlen (`Chapter`, `Anchor`, `Phase`, `Step`, `Entry`, `LinkRef`), `RelativeTime`
   (dag från ett ankare: dagar, månader eller "nästa år, april") och planen (`Plan.kt`: `dateOf`, `upcoming`,
   `timeline` runt nu-linjen, ändringar som `complete` och `withAnchor`), `tomorrowPlan` för *Imorgon* (högst tre
@@ -61,7 +65,7 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `content/` – innehållspaketet: `links.json` (länkregistret) och `templates/*.json` (mallarna, i dag Flytta).
   `BundledContentTest` i `:core:content` validerar det i CI (`imorn { bundledContent() }`).
 
-Planerat enligt roadmapen (Fas 1): `:core:database` (Room), `:feature:chapters` och `:feature:timeline`.
+Planerat enligt roadmapen (Fas 1): `:feature:chapters` och `:feature:timeline`.
 
 Beroenden går nedåt: `:app` → `:feature:*` → `:core:ui`/`:core:navigation`/`:core:designsystem` → ren Kotlin.
 Strängar och ikoner ligger i modulen som använder dem; det flera moduler använder ligger i `:core:ui`.
@@ -81,8 +85,8 @@ Strängar och ikoner ligger i modulen som använder dem; det flera moduler anvä
 - När PR:en mergas skickar `Distribute to testers` (`distribute.yml`) debug-APK:n (`se.imorn.debug`) via Firebase
   App Distribution, autentiserad med Workload Identity Federation. Se `docs/firebase.md`; ändra setupen via
   `scripts/bootstrap-firebase.sh` och håll den idempotent. Inga JSON-nycklar och ingen `google-services.json`.
-- `Record references` (`screenshots.yml`) spelar in skärmdumpar (`/record-screenshots`) eller badging
-  (`/record-badging`) som kommentar på en PR eller från Actions-fliken.
+- `Record references` (`screenshots.yml`) spelar in skärmdumpar (`/record-screenshots`), badging
+  (`/record-badging`) eller Room-scheman (`/record-schemas`) som kommentar på en PR eller från Actions-fliken.
 
 ## Kvalitet
 - **Lint-policy:** `lint.xml` i roten sätter projektets regler och orsaker. Höj inte lint-fel till varningar
@@ -184,8 +188,10 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
 - Logik som går att testa utan Android ligger i rena Kotlin-moduler (`imorn.jvm.library`) med enhetstester.
 - **Lagring:** aldrig SharedPreferences. Inställningar och små värden sparas i en store i `:core:data` ovanpå
   `PreferencesStore` (krypterad DataStore, en `@SingleIn(AppScope::class)` per fil, testad med Robolectric och
-  `testCipher()`). Kapitel och steg hamnar i Room (`:core:database`, Fas 1) med explicita migrationer; ändra aldrig
-  schemat utan migration och test.
+  `testCipher()`). Kapitel och steg ligger i Room (`:core:database`, `imorn { room() }`), testat med en databas i
+  minnet. Ändra aldrig en tabell utan att höja versionen i `ImornDatabase` och skriva en migration med test. Det
+  exporterade schemat i `schemas/` är granskat som badgingen: CI (Tests) fallerar när bygget ändrar det, och
+  `/record-schemas` spelar in det. Ta aldrig fram schemat lokalt.
 - **Säkerhetskopia:** Auto Backup och flytt till ny telefon kopierar ingenting (`app/src/main/res/xml`, båda filerna
   i synk); nyckeln ligger i Keystore och kan ändå inte följa med. Ändras det (Fas 6), ändras integritetstexten också.
 - **Assistenten (Gemini Nano):** körs i AICore på telefonen; prompten lämnar aldrig enheten. Modellen får aldrig

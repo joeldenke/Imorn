@@ -20,12 +20,13 @@ kotlin {
 
 dependencies {
     // compileOnly: the root build puts these plugins on the classpath (apply false), so every
-    // module shares one copy. AGP is compiled against its public API only. Roborazzi is applied
-    // by id and configured by name, so it needs no compile dependency.
+    // module shares one copy. AGP is compiled against its public API only. Roborazzi and KSP are
+    // applied by id and configured by name, so they need no compile dependency.
     compileOnly(libs.android.gradle.api)
     compileOnly(libs.compose.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
     compileOnly(libs.kover.gradle.plugin)
+    compileOnly(libs.room.gradle.plugin)
 }
 
 tasks {
