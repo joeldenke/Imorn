@@ -75,7 +75,11 @@ content/
     {
       "id": "housing",
       "text": { "sv": "Vad flyttar ni från?", "en": "What are you moving from?" },
-      "options": ["rental", "condo", "house"]
+      "options": [
+        { "id": "rental", "label": { "sv": "Hyresrätt", "en": "Rented flat" } },
+        { "id": "condo", "label": { "sv": "Bostadsrätt", "en": "Owned flat" } },
+        { "id": "house", "label": { "sv": "Hus", "en": "House" } }
+      ]
     },
     { "id": "kids", "text": { "sv": "Byter barnen skola eller förskola?", "en": "Do the kids change school?" }, "type": "bool" }
   ],
@@ -114,7 +118,12 @@ content/
 - `at` är relativ tid: `{anchor, offsetDays}`, `{anchor, offsetMonths}` eller `{anchor, nextYear: {month: 4}}`
   för långa trådar som deklarationen.
 - `when` gömmer steg som inte gäller enligt svaren. Uttrycken är medvetet enkla (`equals`, `in`, `isTrue`) och
-  testas i `:core:content`.
+  testas i `:core:content`. En fråga utan svar gömmer ingenting: hellre ett steg för mycket än ett som saknas.
+- Frågor är val (`options`, med id och etikett) eller ja/nej (`"type": "bool"`).
+- `reviewedAt` och länkarnas `verifiedAt` sätts först när någon har kontrollerat fakta mot källan.
+- Formatet är `Template` och `Link` i `:core:content`; `ContentValidator` kontrollerar det JSON inte kan säga
+  (språk, länk-id, ankare, villkor), och `BundledContentTest` kör den på hela `content/` i CI. Det JSON Schema som
+  nämns nedan kommer i fas 4.
 
 ### Brevtyp
 

@@ -1,8 +1,11 @@
 package se.imorn.buildlogic
 
 import org.gradle.api.Project
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.findByType
+import org.gradle.kotlin.dsl.withType
 import javax.inject.Inject
 
 /**
@@ -76,6 +79,19 @@ abstract class ImornExtension @Inject constructor(private val project: Project) 
         lifecycle()
         coroutines()
         implementation("metrox-viewmodel-compose")
+    }
+
+    /**
+     * The content pack in the repository's `content/` folder (templates and the link registry, see
+     * docs/content-system.md). Tests read it from the folder named by the `imorn.content` system property, and the
+     * folder is an input of the test task, so a change to the content reruns them.
+     */
+    fun bundledContent() {
+        val content = project.isolated.rootProject.projectDirectory.dir("content")
+        project.tasks.withType<Test>().configureEach {
+            inputs.dir(content).withPropertyName("bundledContent").withPathSensitivity(PathSensitivity.RELATIVE)
+            systemProperty("imorn.content", content.asFile.absolutePath)
+        }
     }
 
     /** Activities with Compose content (`setContent`). */
