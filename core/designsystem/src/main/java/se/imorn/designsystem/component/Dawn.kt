@@ -31,6 +31,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -175,7 +176,8 @@ fun ImornGlassPanel(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val shape = ImornTheme.shapes.large
-    val haze = LocalSceneHaze.current
+    // Previews and screenshot tests draw the fallback tint: the blur needs a real window to render into.
+    val haze = if (LocalInspectionMode.current) null else LocalSceneHaze.current
     val glass = if (haze != null) {
         Modifier.hazeBlur(
             input = HazeInput.Sources(haze),
