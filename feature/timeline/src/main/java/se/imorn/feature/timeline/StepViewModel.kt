@@ -19,8 +19,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import se.imorn.content.Link
 import se.imorn.data.BundledContent
-import se.imorn.feature.timeline.navigation.StepRoute
 import se.imorn.database.ChapterRepository
+import se.imorn.feature.timeline.navigation.StepRoute
 import se.imorn.model.Chapter
 import se.imorn.model.Step
 import se.imorn.model.complete
