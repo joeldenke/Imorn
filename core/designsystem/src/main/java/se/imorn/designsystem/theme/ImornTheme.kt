@@ -16,6 +16,7 @@ private val LocalImornColors = staticCompositionLocalOf { ImornLightColors.toImo
 private val LocalImornTypography = staticCompositionLocalOf { ImornTextStyles }
 private val LocalImornShapes = staticCompositionLocalOf { ImornCorners }
 private val LocalImornSpacing = staticCompositionLocalOf { ImornSpacing }
+private val LocalImornSurfaces = staticCompositionLocalOf { ImornLightSurfaces }
 
 /**
  * Root theme for the app. Provides Imorn's own tokens, and wraps [MaterialTheme] with the same values so the
@@ -46,6 +47,7 @@ fun ImornTheme(
         LocalImornTypography provides ImornTextStyles,
         LocalImornShapes provides ImornCorners,
         LocalImornSpacing provides ImornSpacing,
+        LocalImornSurfaces provides if (darkTheme) ImornDarkSurfaces else ImornLightSurfaces,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -76,4 +78,9 @@ object ImornTheme {
     val spacing: ImornSpacing
         @Composable @ReadOnlyComposable
         get() = LocalImornSpacing.current
+
+    /** Cards and their hairline outline. */
+    val surfaces: ImornSurfaceColors
+        @Composable @ReadOnlyComposable
+        get() = LocalImornSurfaces.current
 }

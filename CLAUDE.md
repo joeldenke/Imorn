@@ -166,6 +166,7 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
 - **Gryning:** paletten bär betydelse och används konsekvent: **indigo** (primary) är framtiden och överblicken,
   **aprikos** (secondary) är nuet och vägen, **rosa** (tertiary) är minnena. `Night` och `Dawn` är varumärkets
   färger utanför schemat. Typsnittet Figtree är inbakat; ladda aldrig ner typsnitt i runtime.
+  Kort är ljusare än bakgrunden med hårfin kant (`ImornTheme.surfaces`, som i Novila); `ImornCard` sköter det.
 - **Appikonen:** ett vitt i på den enfärgade Night-plattan, där pricken är solen och stammen solens spegling i
   vattnet. Vektorerna `app/src/main/res/drawable/ic_launcher_foreground.xml` och `…_monochrome.xml` och färgen
   `ic_launcher_background` (lika med `Night` i `Color.kt`) är källan. Ändras de: kör

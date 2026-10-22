@@ -71,7 +71,7 @@ fun ImornChoiceCard(
         },
         shape = ImornTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = if (selected) colors.primaryContainer else colors.surface,
+            containerColor = if (selected) colors.primaryContainer else ImornTheme.surfaces.card,
             contentColor = if (selected) colors.onPrimaryContainer else colors.onSurface,
         ),
         border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) colors.primary else colors.outline),

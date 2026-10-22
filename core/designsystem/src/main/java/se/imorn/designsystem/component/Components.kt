@@ -1,5 +1,6 @@
 package se.imorn.designsystem.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import se.imorn.designsystem.theme.ImornTheme
 
 /** A screen scaffold: an optional title bar and the app's background, with the standard content padding. */
@@ -48,7 +50,7 @@ fun ImornScaffold(
     )
 }
 
-/** A surface card with the app's shape and outline, used for every block of content. */
+/** A card for every block of content: a lighter surface with a hairline outline and the app's shape. */
 @Composable
 fun ImornCard(
     modifier: Modifier = Modifier,
@@ -56,10 +58,12 @@ fun ImornCard(
 ) {
     Card(
         modifier = modifier,
+        shape = ImornTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = ImornTheme.colors.surface,
+            containerColor = ImornTheme.surfaces.card,
             contentColor = ImornTheme.colors.onSurface,
         ),
+        border = BorderStroke(1.dp, ImornTheme.surfaces.cardOutline),
     ) {
         Column(
             modifier = Modifier.padding(ImornTheme.spacing.md),
