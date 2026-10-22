@@ -5,6 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -90,7 +91,7 @@ class ChapterScreenTest {
         val opened = mutableListOf<String>()
         show(ChapterView.Timeline, onOpenEntry = { opened += it })
         compose.onNodeWithText("The new kitchen gets the morning sun.").assertExists()
-        compose.onNodeWithContentDescription("Photo: Book movers or a trailer").performClick()
+        compose.onNodeWithContentDescription("Photo: Book movers or a trailer").performScrollTo().performClick()
         assertEquals(listOf("preview-photo"), opened)
         // Papers are private: never part of the story.
         compose.onNodeWithText("Lease for Norra Kungsgatan 4").assertDoesNotExist()
