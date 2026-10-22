@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -20,12 +19,12 @@ import se.imorn.coach.AssistantAvailability
 import se.imorn.coach.AssistantPrompt
 import se.imorn.coach.AssistantRequest
 import se.imorn.coach.LanguageModel
-import se.imorn.data.ProfileStore
 import se.imorn.database.ChapterRepository
 import se.imorn.model.Chapter
 import se.imorn.model.Entry
 import se.imorn.model.EntryKind
 import se.imorn.model.PlannedStep
+import se.imorn.model.Today
 import se.imorn.model.TomorrowPlan
 import se.imorn.model.complete
 import se.imorn.model.tomorrowPlan
@@ -48,8 +47,6 @@ data class TodayUiState(
     /** Every chapter, for the quiet list under the plan. */
     val chapters: List<Chapter>,
     val assistant: AssistantUiState = AssistantUiState(),
-    /** The user's name for the greeting, if they gave one. */
-    val name: String? = null,
 ) {
     val hasChapters: Boolean get() = chapters.isNotEmpty()
 }
@@ -64,32 +61,31 @@ data class TodayUiState(
 @Inject
 class TodayViewModel(
     private val chapters: ChapterRepository,
-    private val profiles: ProfileStore,
     /** Gemini Nano on the device. Bound in :core:data and chosen nowhere else. */
     private val languageModel: LanguageModel,
+    /** The day it is on the phone, so the plan follows the phone's own time zone. */
+    private val today: Today,
 ) : ViewModel() {
-    private val today = MutableStateFlow(LocalDate.now())
+    private val currentDay = MutableStateFlow(today.now())
     private val assistant = MutableStateFlow(AssistantUiState())
 
     /** Null until the chapters are read, so the screen never flashes an empty state. */
     val state: StateFlow<TodayUiState?> = combine(
         chapters.chapters,
-        today,
+        currentDay,
         assistant,
-        profiles.profile.filterNotNull(),
-    ) { all, day, assistant, profile ->
+    ) { all, day, assistant ->
         TodayUiState(
             today = day,
             plan = tomorrowPlan(all, day),
             chapters = all,
             assistant = assistant,
-            name = profile.name,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     /** Reads "today" again and asks whether the assistant is there. Called when the screen is shown. */
     fun refresh() {
-        today.value = LocalDate.now()
+        currentDay.value = today.now()
         viewModelScope.launch {
             val availability = languageModel.availability()
             assistant.update { it.copy(availability = availability) }
@@ -97,10 +93,11 @@ class TodayViewModel(
     }
 
     /** The step is done today: it falls through the now-line. */
-    fun done(item: PlannedStep) = change(item.chapterId) { it.complete(item.step.id, today.value) }
+    fun done(item: PlannedStep) = change(item.chapterId) { it.complete(item.step.id, currentDay.value) }
 
     /** "Tomorrow is fine": the step moves to tomorrow. Putting something off is a choice, not a failure. */
-    fun tomorrow(item: PlannedStep) = change(item.chapterId) { it.withStepDate(item.step.id, today.value.plusDays(1)) }
+    fun tomorrow(item: PlannedStep) =
+        change(item.chapterId) { it.withStepDate(item.step.id, currentDay.value.plusDays(1)) }
 
     /** The step a photo is being taken for, after its photo prompt: chapter id and step id. */
     private var photoFor: Pair<String, String>? = null
@@ -114,7 +111,7 @@ class TodayViewModel(
     fun keepPhoto(source: Uri) {
         val (chapterId, stepId) = photoFor ?: return
         photoFor = null
-        val photo = Entry(UUID.randomUUID().toString(), chapterId, EntryKind.Photo, today.value, stepId = stepId)
+        val photo = Entry(UUID.randomUUID().toString(), chapterId, EntryKind.Photo, currentDay.value, stepId = stepId)
         viewModelScope.launch { chapters.keepIfReadable(photo, source) }
     }
 

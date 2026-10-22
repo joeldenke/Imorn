@@ -61,9 +61,7 @@ fun TodayScreen(
         val prompt = planned.step.photoPrompt
         if (prompt != null) prompting = listOf(planned.chapterId, planned.step.id, prompt)
     }
-    val title = state.name?.let { stringResource(R.string.today_greeting, it) }
-        ?: stringResource(R.string.today_screen_title)
-    ImornScaffold(title = title, modifier = modifier) { scaffoldPadding ->
+    ImornScaffold(title = stringResource(R.string.today_screen_title), modifier = modifier) { scaffoldPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -250,7 +248,6 @@ private fun previewState(hasChapters: Boolean = true): TodayUiState {
         plan = tomorrowPlan(chapters, PreviewData.TODAY),
         chapters = chapters,
         assistant = AssistantUiState(availability = AssistantAvailability.Available),
-        name = PreviewData.NAME.takeIf { hasChapters },
     )
 }
 

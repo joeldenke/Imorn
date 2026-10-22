@@ -2,7 +2,6 @@
 <resources>
     <string name="today_screen_title">Imorn</string>
     <!-- The start screen's title when the user gave a name, such as "Hi, Alex". -->
-    <string name="today_greeting">Hi, %1$s</string>
     <string name="today_empty_title">Nothing planned yet</string>
     <string name="today_empty_body">Start a chapter, such as a move, and Imorn shows you one thing at a time.</string>
     <string name="today_start_chapter">Start a chapter</string>

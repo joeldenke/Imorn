@@ -12,4 +12,9 @@ dependencies {
     // implementation: Material 3 stays inside this module. ImornTheme and the Imorn* components expose only Imorn
     // types, so feature code can't import Material and it can be replaced component by component.
     implementation(libs.compose.material3)
+    // Glass panels over the dawn scene (ImornDawnScene): Haze captures the scene and blurs it behind each panel.
+    implementation(libs.haze)
+    implementation(libs.haze.blur)
+    // The scene's light status bar icons (WindowCompat).
+    implementation(libs.androidx.core.ktx)
 }

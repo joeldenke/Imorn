@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import se.imorn.database.ChapterRepository
 import se.imorn.feature.timeline.navigation.EntryRoute
+import se.imorn.model.Today
 import java.time.LocalDate
 
 /** Something kept, as its screen shows it. [kept] is null once it has been deleted, and the screen closes. */
@@ -34,14 +35,16 @@ data class EntryUiState(
 class EntryViewModel(
     @Assisted private val route: EntryRoute,
     private val chapters: ChapterRepository,
+    /** The day it is on the phone, so the plan follows the phone's own time zone. */
+    private val today: Today,
 ) : ViewModel() {
-    private val today = MutableStateFlow(LocalDate.now())
+    private val currentDay = MutableStateFlow(today.now())
 
     /** Null until read. */
     val state: StateFlow<EntryUiState?> = combine(
         chapters.chapter(route.chapterId),
         chapters.entry(route.entryId),
-        today,
+        currentDay,
     ) { chapter, entry, day ->
         EntryUiState(
             chapterTitle = chapter?.title.orEmpty(),
@@ -52,7 +55,7 @@ class EntryViewModel(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     fun refresh() {
-        today.value = LocalDate.now()
+        currentDay.value = today.now()
     }
 
     fun delete() {

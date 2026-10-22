@@ -21,6 +21,7 @@ import se.imorn.content.suggestedFirst
 import se.imorn.data.BundledContent
 import se.imorn.data.ProfileStore
 import se.imorn.database.ChapterRepository
+import se.imorn.model.Today
 import java.time.LocalDate
 import java.util.UUID
 
@@ -59,6 +60,8 @@ class NewChapterViewModel(
     private val content: BundledContent,
     private val chapters: ChapterRepository,
     private val profiles: ProfileStore,
+    /** The day it is on the phone, so the plan follows the phone's own time zone. */
+    private val today: Today,
 ) : ViewModel() {
     private val _state = MutableStateFlow<NewChapterUiState?>(null)
 
@@ -71,7 +74,7 @@ class NewChapterViewModel(
             val stages = profiles.profile.filterNotNull().first().lifeStages
             _state.value = NewChapterUiState(
                 templates = content.pack().templates.suggestedFirst(stages),
-                today = LocalDate.now(),
+                today = today.now(),
             )
         }
     }

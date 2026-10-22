@@ -211,7 +211,7 @@ sätt att leverera samma data.
 - [x] `:feature:chapters`: skapa kapitel från mall (frågor + ankare), kapitlets översikt, redigera, avsluta, vila, radera
 - [x] `:feature:timeline`: Lista och Tidslinje med nu-linje, bocka av, flytta steg, egna steg
 - [x] Steg-detalj: beskrivning, länkkort till myndigheten, "varför", anteckning
-- [x] Tomma lägen och onboarding light (namn, livsfas)
+- [x] Tomma lägen och onboarding light (varför Imorn, livsfas; inget namn)
 
 ### Fas 2 – Fånga på vägen
 **Mål:** kapitlet blir en berättelse, inte bara en lista.
@@ -231,7 +231,7 @@ sätt att leverera samma data.
 - [ ] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
 - [ ] *Veckan som kommer* (valfri söndagsnotis)
 - [ ] Widget (Glance): nästa steg + snabbfoto
-- [ ] Omstart, tidszoner, sommartid och ändrade ankare testade
+- [x] Omstart, tidszoner, sommartid och ändrade ankare testade
 
 ### Fas 4 – Levande innehåll och mallbiblioteket
 **Mål:** ägaren uppdaterar mallar och länkar utan ny app; biblioteket täcker livets vanligaste projekt.

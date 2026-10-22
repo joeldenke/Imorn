@@ -17,7 +17,6 @@ import java.time.LocalDate
  * Novila's PreviewData in :core:ui). Feature previews read this instead of inventing their own sample content.
  */
 object PreviewData {
-    const val NAME = "Alex"
     const val ASSISTANT_MESSAGE =
         "You are three steps in. Booking the van next keeps the rest of the week on track."
 

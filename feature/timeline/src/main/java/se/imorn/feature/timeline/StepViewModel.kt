@@ -27,6 +27,7 @@ import se.imorn.model.Chapter
 import se.imorn.model.Entry
 import se.imorn.model.EntryKind
 import se.imorn.model.Step
+import se.imorn.model.Today
 import se.imorn.model.complete
 import se.imorn.model.dateOf
 import se.imorn.model.deadlineOf
@@ -54,16 +55,18 @@ class StepViewModel(
     @Assisted route: StepRoute,
     private val chapters: ChapterRepository,
     private val content: BundledContent,
+    /** The day it is on the phone, so the plan follows the phone's own time zone. */
+    private val today: Today,
 ) : ViewModel() {
     private val chapterId = route.chapterId
     private val stepId = route.stepId
-    private val today = MutableStateFlow(LocalDate.now())
+    private val currentDay = MutableStateFlow(today.now())
 
     /** Null until read, and null again if the step or its chapter is deleted. */
     val state: StateFlow<StepUiState?> = combine(
         chapters.chapter(chapterId),
         flow { emit(content.pack()) },
-        today,
+        currentDay,
         chapters.entries(chapterId).map { entries -> entries.filter { it.stepId == stepId } },
     ) { chapter, pack, day, entries ->
         val step = chapter?.steps?.firstOrNull { it.id == stepId } ?: return@combine null
@@ -79,14 +82,14 @@ class StepViewModel(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     fun refresh() {
-        today.value = LocalDate.now()
+        currentDay.value = today.now()
     }
 
-    fun done() = change { it.complete(stepId, today.value) }
+    fun done() = change { it.complete(stepId, currentDay.value) }
 
     fun reopen() = change { it.reopen(stepId) }
 
-    fun tomorrow() = change { it.withStepDate(stepId, today.value.plusDays(1)) }
+    fun tomorrow() = change { it.withStepDate(stepId, currentDay.value.plusDays(1)) }
 
     /** The user's own day, or null to count from the anchor again. */
     fun setDate(date: LocalDate?) = change { it.withStepDate(stepId, date) }
@@ -101,7 +104,7 @@ class StepViewModel(
 
     /** Keeps a photo with this step, such as the one its photo prompt asks for. */
     fun keepPhoto(source: Uri) {
-        val photo = Entry(UUID.randomUUID().toString(), chapterId, EntryKind.Photo, today.value, stepId = stepId)
+        val photo = Entry(UUID.randomUUID().toString(), chapterId, EntryKind.Photo, currentDay.value, stepId = stepId)
         viewModelScope.launch { chapters.keepIfReadable(photo, source) }
     }
 
