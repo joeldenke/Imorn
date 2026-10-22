@@ -43,8 +43,7 @@ class WidgetTomorrowActionCallback : ActionCallback {
         val repository = app.graph.chapterRepository
         val chapters = repository.chapters.first()
         val chapter = chapters.firstOrNull { it.id == chapterId } ?: return
-        val tomorrow = LocalDate.now().plusDays(1)
-        repository.save(chapter.withStepDate(stepId, tomorrow))
+        repository.save(chapter.withStepDate(stepId, LocalDate.now().plusDays(1)))
         ImornWidget(repository).update(context, glanceId)
     }
 

@@ -51,18 +51,9 @@ class ImornWidget(private val repository: ChapterRepository) : GlanceAppWidget()
 
     companion object {
         fun create(context: Context): ImornWidget {
-            val app = context.applicationContext as se.imorn.ImornApplication
-            val graph = (app as? se.imorn.ImornApplication)?.graph
-            val repo = if (graph != null) {
-                try {
-                    graph.chapterRepository
-                } catch (e: Exception) {
-                    // Fallback for build
-                    throw e
-                }
-            } else {
-                throw IllegalStateException("No app")
-            }
+            val app = context.applicationContext
+            val graph = (app as se.imorn.ImornApplication).graph
+            val repo = graph.chapterRepository
             return ImornWidget(repo)
         }
     }
@@ -80,7 +71,7 @@ fun WidgetContent(
             .fillMaxSize()
             .background(WidgetColors.background)
             .padding(12.dp)
-            .clickable(actionStartActivity<se.imorn.app.MainActivity>()),
+            .clickable(actionStartActivity(se.imorn.app.MainActivity::class.java)),
         verticalAlignment = Alignment.Vertical.Top,
     ) {
         Row(
