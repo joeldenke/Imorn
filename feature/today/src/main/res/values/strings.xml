@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="today_screen_title">Imorn</string>
-    <string name="today_next_step_label">Next step</string>
-    <string name="today_next_step">Book the moving van</string>
-    <string name="project_goal">Move to a new apartment in October</string>
+    <string name="today_empty_title">Nothing planned yet</string>
+    <string name="today_empty_body">Start a chapter, such as a move, and Imorn shows you one thing at a time.</string>
+    <string name="today_start_chapter">Start a chapter</string>
+    <string name="today_new_chapter">New chapter</string>
+    <string name="today_all_done">Nothing to do right now. Tomorrow is fine too.</string>
+    <!-- A step's chapter and day, such as "Moving to Gävle · Tomorrow". -->
+    <string name="today_item_meta">%1$s · %2$s</string>
+    <string name="today_late">A little late</string>
+    <string name="today_done">Done</string>
+    <string name="today_tomorrow">Tomorrow</string>
+    <string name="today_later">Later</string>
 
     <string name="assistant_title">Assistant</string>
     <string name="assistant_checking">Checking whether the on-device assistant is available…</string>
@@ -13,6 +21,7 @@
     <string name="assistant_available">The on-device assistant is ready. Everything it writes stays on this phone.</string>
     <string name="assistant_writing">Writing…</string>
     <string name="assistant_failed">The assistant could not write anything. Please try again.</string>
-    <string name="assistant_ask">Explain the next step</string>
+    <string name="assistant_ai_note">Written by AI on your phone. The plan itself comes from Imorn.</string>
+    <string name="assistant_ask">Explain what is next</string>
     <string name="assistant_download">Download the assistant</string>
 </resources>

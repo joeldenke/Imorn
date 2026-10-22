@@ -1,6 +1,8 @@
 package se.imorn.buildlogic
 
 import androidx.room.gradle.RoomExtension
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import org.gradle.api.Project
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.testing.Test
@@ -86,13 +88,21 @@ abstract class ImornExtension @Inject constructor(private val project: Project) 
     /**
      * The content pack in the repository's `content/` folder (templates and the link registry, see
      * docs/content-system.md). Tests read it from the folder named by the `imorn.content` system property, and the
-     * folder is an input of the test task, so a change to the content reruns them.
+     * folder is an input of the test task, so a change to the content reruns them. In an Android module the folder
+     * is also the module's assets, so the pack ships inside the app and works offline from the first start.
      */
     fun bundledContent() {
         val content = project.isolated.rootProject.projectDirectory.dir("content")
         project.tasks.withType<Test>().configureEach {
             inputs.dir(content).withPropertyName("bundledContent").withPathSensitivity(PathSensitivity.RELATIVE)
             systemProperty("imorn.content", content.asFile.absolutePath)
+        }
+        val path = content.asFile.absolutePath
+        project.extensions.findByType<LibraryAndroidComponentsExtension>()?.onVariants { variant ->
+            variant.sources.assets?.addStaticSourceDirectory(path)
+        }
+        project.extensions.findByType<ApplicationAndroidComponentsExtension>()?.onVariants { variant ->
+            variant.sources.assets?.addStaticSourceDirectory(path)
         }
     }
 

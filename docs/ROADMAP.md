@@ -206,10 +206,10 @@ sätt att leverera samma data.
       planering av relativa datum (`schedule()`), framsteg – enhetstestat
 - [x] `:core:content` (ren Kotlin): mallformatet v1, parser, validering, `instantiate(template, answers, anchors)`
 - [x] `:core:database`: Room med explicita migrationer, främmande nycklar, testade DAO:er
-- [ ] Inbakat innehållspaket med mallen **Flytta** och länkregistret
-  (innehållet finns i `content/` och valideras i CI; det bakas in i appen med skärmarna)
-- [ ] `:feature:today` blir *Imorgon*: högst tre saker – nästa steg per kapitel, det som är försenat, *Längre fram*
+- [x] Inbakat innehållspaket med mallen **Flytta** och länkregistret
+- [x] `:feature:today` blir *Imorgon*: högst tre saker – nästa steg per kapitel, det som är försenat, *Längre fram*
 - [ ] `:feature:chapters`: skapa kapitel från mall (frågor + ankare), kapitlets översikt, redigera, avsluta, vila, radera
+  (skapa från mall klart; översikt, redigera, avsluta, vila och radera kommer med tidslinjen)
 - [ ] `:feature:timeline`: Lista och Tidslinje med nu-linje, bocka av, flytta steg, egna steg
 - [ ] Steg-detalj: beskrivning, länkkort till myndigheten, "varför", anteckning
 - [ ] Tomma lägen och onboarding light (namn, livsfas)

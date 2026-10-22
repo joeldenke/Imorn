@@ -15,7 +15,7 @@ här när den börjar gälla Imorn.
 ## Stack
 - Kotlin 2.4 via AGP 9:s inbyggda Kotlin (ingen `kotlin-android` i modulerna), Gradle 9.8
 - Jetpack Compose med eget designsystem ovanpå Material 3 1.5 (beta), compileSdk/targetSdk 37, minSdk 26
-- Navigation 3 (`androidx.navigation3`) med en back stack per flik (i dag bara Idag)
+- Navigation 3 (`androidx.navigation3`) med en back stack per flik (i dag bara *Imorgon*)
 - Alla versioner i `gradle/libs.versions.toml`. Hårdkoda aldrig versioner i byggfiler.
 - DI med [Metro](https://zacsweers.github.io/metro/) (`dev.zacsweers.metro`, Kotlin-kompilatorplugin, ingen KSP).
   Varje skärm har en egen ViewModel (`StateFlow`) i sin feature, skapad av Metro och scopad till sin Navigation 3-entry.
@@ -29,7 +29,10 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:app` – bara skalet: `ImornApplication` (håller grafen), `MainActivity`, `ImornApp` (flikar och `NavDisplay`),
   `navigation/TopLevelDestination` och `di/`: `AppGraph` (Metro-grafen, där källor väljs) och
   `ImornViewModelFactory`. Ingen skärm, ViewModel eller logik som går att lägga i en modul.
-- `:feature:today` – Idag (blir *Imorgon* i Fas 1: högst tre saker). Varje feature äger sin navigation
+- `:feature:today` – *Imorgon*, startskärmen: `tomorrowPlan` över alla kapitel (högst tre saker, var och en med
+  *Klart* och *Imorgon*), *Längre fram*, tomt läge som bjuder in till första kapitlet, och assistenten.
+- `:feature:chapters` – kapitlen: `NewChapterScreen` (mall, frågorna en i taget, ankardatum som får vara okända,
+  sedan `instantiate` och spara). Varje feature äger sin navigation
   (`navigation/`): `@Serializable`-rutter (`NavKey`) och `EntryProviderScope<NavKey>.<feature>Entry(...)`, som `:app`
   lägger i sin `entryProvider`. Features beror aldrig på varandra (`ArchitectureTest`); flikbyten går via callbacks
   från `:app`.
@@ -37,7 +40,8 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   - `theme` – `ImornTheme`: färger (`ImornColors`, paletten *Gryning*), typografi (Figtree), former och spacing
   - `component` – `Imorn*`-komponenter som wrappar Material 3 (`ImornScaffold`, `ImornCard`, `ImornButton`,
     `ImornText` …)
-- `:core:ui` – det flera features delar, bl.a. `PreviewData` (samma person och projekt i alla previews)
+- `:core:ui` – det flera features delar: `dayText` (i dag, i morgon, i går eller datumet i användarens locale; dagen
+  kommer från ViewModeln) och `PreviewData` (samma kapitel och dag, `TODAY`, i alla previews)
 - `:core:navigation` – `NavigationState` (en back stack per flik) och `Navigator`
 - `:core:coach` – ren Kotlin: assistentens `LanguageModel`-gränssnitt och `AssistantPrompt` (bygger prompten och
   tvättar svaret, enhetstestat). Se *Assistenten* under Regler.
@@ -47,7 +51,7 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   rensas. Filerna förseglas av `EncryptingPreferencesSerializer` med `KeystoreDatastoreCipher` (Tink, nyckeln i
   Android Keystore); en fil som inte går att öppna läses som tom. Tills första läsningen är klar är värdet `null`
   och `MainActivity` ritar inget, så temat aldrig blinkar. Här finns också `GeminiNanoLanguageModel` (bunden som
-  `LanguageModel`).
+  `LanguageModel`) och `BundledContent`, innehållspaketet som appen bär med sig (`content/` som assets).
 - `:core:database` – Room: `ImornDatabase` (kapitel, ankare, faser, steg och minnen, med främmande nycklar som tar
   allt i ett kapitel med sig) och `ChapterRepository` (singleton i `AppScope`), som sparar hela kapitel i en
   transaktion och läser dem som `Flow`, så skärmarna läser om efter varje sparning. Ändra ett kapitel med
@@ -63,9 +67,10 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `build-logic` – inkluderat bygge med convention plugins (`imorn.*`) och `imorn { }`, se `build-logic/README.md`
 - `tools/icon` – `render_icon.py` ritar appikonens reserver, se *Appikonen* under Regler.
 - `content/` – innehållspaketet: `links.json` (länkregistret) och `templates/*.json` (mallarna, i dag Flytta).
-  `BundledContentTest` i `:core:content` validerar det i CI (`imorn { bundledContent() }`).
+  `imorn { bundledContent() }` gör det till testindata och, i `:core:data`, till appens assets; `BundledContentTest`
+  validerar det i CI.
 
-Planerat enligt roadmapen (Fas 1): `:feature:chapters` och `:feature:timeline`.
+Planerat enligt roadmapen (Fas 1): `:feature:timeline` (lista, tidslinje med nu-linjen, steg-detalj).
 
 Beroenden går nedåt: `:app` → `:feature:*` → `:core:ui`/`:core:navigation`/`:core:designsystem` → ren Kotlin.
 Strängar och ikoner ligger i modulen som använder dem; det flera moduler använder ligger i `:core:ui`.

@@ -6,11 +6,14 @@ plugins {
 imorn {
     coroutines()
     metro()
+    // content/ as the module's assets: the pack baked into the app, read by BundledContent.
+    bundledContent()
 }
 
 dependencies {
     api(projects.core.model)
     api(projects.core.coach)
+    api(projects.core.content)
     implementation(libs.androidx.datastore.preferences)
     // Every preference file is sealed with a key from the Android Keystore: datastore-tink's
     // AeadSerializer plus Tink itself (Aead, AndroidKeysetManager). See EncryptingPreferencesSerializer.
