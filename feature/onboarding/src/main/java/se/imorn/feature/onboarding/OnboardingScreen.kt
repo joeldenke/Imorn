@@ -32,6 +32,7 @@ import se.imorn.designsystem.component.ImornPageIndicator
 import se.imorn.designsystem.component.ImornSceneButton
 import se.imorn.designsystem.component.ImornSceneText
 import se.imorn.designsystem.component.ImornSceneTextButton
+import se.imorn.designsystem.component.ImornStillGlass
 import se.imorn.designsystem.theme.ImornTheme
 import se.imorn.model.LifeStage
 
@@ -220,14 +221,16 @@ private val LifeStage.examples
 @Composable
 private fun PreviewPage(page: OnboardingPage) {
     ImornTheme {
-        OnboardingScreen(
-            state = OnboardingUiState(lifeStages = setOf(LifeStage.BuildingUp)),
-            onToggle = {},
-            onStart = {},
-            onSkip = {},
-            contentPadding = PaddingValues(),
-            initialPage = page,
-        )
+        ImornStillGlass {
+            OnboardingScreen(
+                state = OnboardingUiState(lifeStages = setOf(LifeStage.BuildingUp)),
+                onToggle = {},
+                onStart = {},
+                onSkip = {},
+                contentPadding = PaddingValues(),
+                initialPage = page,
+            )
+        }
     }
 }
 

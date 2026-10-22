@@ -31,7 +31,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -83,6 +82,19 @@ private val ReflectionBars = listOf(1f, 0.78f, 0.58f, 0.4f, 0.24f)
 
 /** The glass panels under a scene blur what the scene captured; elsewhere they fall back to a tint. */
 private val LocalSceneHaze = staticCompositionLocalOf<HazeState?> { null }
+
+/** Whether glass panels blur at all; off in previews (see [ImornStillGlass]). */
+private val LocalSceneBlur = staticCompositionLocalOf { true }
+
+/**
+ * For previews and their screenshot tests: glass panels in [content] draw the translucent tint older phones get
+ * instead of a live blur, which Roborazzi's preview capture can't render (it fails with "'color' is not a valid
+ * layout qualifier"). The app never uses this.
+ */
+@Composable
+fun ImornStillGlass(content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalSceneBlur provides false, content = content)
+}
 
 /**
  * The dawn scene behind [content], filling the screen edge to edge; [content] takes care of the system bars itself
@@ -176,8 +188,7 @@ fun ImornGlassPanel(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val shape = ImornTheme.shapes.large
-    // Previews and screenshot tests draw the fallback tint: the blur needs a real window to render into.
-    val haze = if (LocalInspectionMode.current) null else LocalSceneHaze.current
+    val haze = if (LocalSceneBlur.current) LocalSceneHaze.current else null
     val glass = if (haze != null) {
         Modifier.hazeBlur(
             input = HazeInput.Sources(haze),
