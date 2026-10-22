@@ -33,10 +33,11 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   *Klart* och *Imorgon*), *Längre fram*, tomt läge som bjuder in till första kapitlet, och assistenten.
 - `:feature:chapters` – kapitlen: `NewChapterScreen` (mall, frågorna en i taget, ankardatum som får vara okända,
   sedan `instantiate` och spara).
-- `:feature:onboarding` – välkomsten vid första start, lätt med flit: vad Imorn är, namn (frivilligt) och "Vad stämmer
-  på dig just nu?" (`LifeStage`, flera val, i stället för ålder). Visas ensam (utan flikar) tills
-  `AppSettings.onboarded` är satt; allt går att hoppa över. Livsfaserna bestämmer bara vilka mallar som kommer först
-  (`suggestedFirst`), aldrig vilka som finns.
+- `:feature:onboarding` – välkomsten vid första start, tre sidor på gryningsscenen (`ImornDawnScene`): vad Imorn är,
+  varför (fyra löften i glaspaneler, som bara säger det appen verkligen gör) och "Vad stämmer på dig just nu?"
+  (`LifeStage`, flera val, i stället för ålder). Inget namn och inget annat appen inte behöver. Visas ensam (utan
+  flikar) tills `AppSettings.onboarded` är satt; *Hoppa över* finns alltid. Livsfaserna bestämmer bara vilka mallar
+  som kommer först (`suggestedFirst`), aldrig vilka som finns.
 - `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* per fas, *Tidslinje* med berättelsen under
   nu-linjen (`story`: avbockade steg med sina foton och anteckningar) och *Papper*, snabb-+ (fota, välj foto, steg,
   anteckning, papper), egna steg, vila, avsluta, radera), ett steg (`StepScreen`: när, varför, länkkort som alltid
@@ -50,7 +51,9 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   - `theme` – `ImornTheme`: färger (`ImornColors`, paletten *Gryning*), typografi (Figtree), former och spacing
   - `component` – `Imorn*`-komponenter som wrappar Material 3 (`ImornScaffold`, `ImornCard`, `ImornButton`,
     `ImornText`, `ImornSheet`, `ImornFloatingButton` …), `ImornIcons` (egna vektorer, inget ikonbibliotek) och
-    `ImornImage` (en sparad bild, läst utanför huvudtråden; en lugn ruta i previews)
+    `ImornImage` (en sparad bild, läst utanför huvudtråden; en lugn ruta i previews), och gryningsscenen (`Dawn.kt`:
+    `ImornDawnScene`, `ImornGlassPanel`, `ImornSceneText`, `ImornSceneButton`, `ImornPageIndicator`; previews lägger
+    sig i `ImornStillGlass`)
 - `:core:ui` – det flera features delar: `dayText` (i dag, i morgon, i går eller datumet i användarens locale; dagen
   kommer från ViewModeln), `rememberCapture` (kameraappen via `TakePicture` och en egen `FileProvider` i cachen,
   Photo Picker och filväljaren, inga behörigheter; ligger i entryn, aldrig i skärmen), `PhotoPromptDialog` och
@@ -59,7 +62,7 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:core:coach` – ren Kotlin: assistentens `LanguageModel`-gränssnitt och `AssistantPrompt` (bygger prompten och
   tvättar svaret, enhetstestat). Se *Assistenten* under Regler.
 - `:core:data` – lagring i Preferences DataStore: `SettingsStore` (tema, bakgrundsfärger och om välkomsten är klar,
-  `AppSettings`) och `ProfileStore` (namn och livsfaser, `Profile`). `SettingsStore` är en
+  `AppSettings`) och `ProfileStore` (livsfaserna, `Profile`). `SettingsStore` är en
   singleton i `AppScope` vars `StateFlow` får läsarna att läsa om efter en sparning. `PreferencesStore` (samma som
   Novilas) håller datan i minnet och köar sparningar i storens egen scope, i ordning och klara även när ViewModeln
   rensas. Filerna förseglas av `EncryptingPreferencesSerializer` med `KeystoreDatastoreCipher` (Tink, nyckeln i
@@ -185,6 +188,11 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
   **aprikos** (secondary) är nuet och vägen, **rosa** (tertiary) är minnena. `Night` och `Dawn` är varumärkets
   färger utanför schemat. Typsnittet Figtree är inbakat; ladda aldrig ner typsnitt i runtime.
   Kort är ljusare än bakgrunden med hårfin kant (`ImornTheme.surfaces`, som i Novila); `ImornCard` sköter det.
+- **Gryningsscenen:** varumärkets stora ögonblick (välkomsten): appikonen som landskap, natthimmel som värms mot
+  horisonten, solen som stiger ur vattnet och speglingen i streck som smalnar av. Ritad i kod i `ImornDawnScene`,
+  alltid mörk, med ljus text och glaspaneler (`ImornGlassPanel`) som suddar scenen bakom sig med Haze (Android 12+,
+  annars en genomskinlig ton). Haze används bara där, och bara i `:core:designsystem`. Vardagsskärmarna är lugna
+  kort på bakgrunden, inte glas.
 - **Appikonen:** ett vitt i på den enfärgade Night-plattan, där pricken är solen och stammen solens spegling i
   vattnet. Vektorerna `app/src/main/res/drawable/ic_launcher_foreground.xml` och `…_monochrome.xml` och färgen
   `ic_launcher_background` (lika med `Night` i `Color.kt`) är källan. Ändras de: kör

@@ -14,12 +14,12 @@ import se.imorn.data.SettingsStore
 import se.imorn.model.LifeStage
 import se.imorn.model.Profile
 
-/** What the welcome has so far: a name, if any, and the life stages that fit. */
-data class OnboardingUiState(val name: String = "", val lifeStages: Set<LifeStage> = emptySet())
+/** What the welcome has so far: the life stages that fit. */
+data class OnboardingUiState(val lifeStages: Set<LifeStage> = emptySet())
 
 /**
- * The welcome at first start, light on purpose: a name and the life stages that fit, both optional. Getting started
- * saves them and marks the welcome done; skipping only marks it done. The stores save in their own scope, so the
+ * The welcome at first start, light on purpose: the life stages that fit, optional. Getting started saves them and
+ * marks the welcome done; skipping only marks it done. The stores save in their own scope, so the
  * saves finish even as this screen goes away.
  */
 @ViewModelKey
@@ -32,15 +32,12 @@ class OnboardingViewModel(
     private val _state = MutableStateFlow(OnboardingUiState())
     val state: StateFlow<OnboardingUiState> = _state.asStateFlow()
 
-    fun setName(name: String) = _state.update { it.copy(name = name) }
-
     fun toggle(stage: LifeStage) = _state.update {
         it.copy(lifeStages = if (stage in it.lifeStages) it.lifeStages - stage else it.lifeStages + stage)
     }
 
     fun start() {
-        val state = _state.value
-        profiles.save(Profile(name = state.name, lifeStages = state.lifeStages))
+        profiles.save(Profile(lifeStages = _state.value.lifeStages))
         settings.setOnboarded(true)
     }
 

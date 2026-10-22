@@ -21,6 +21,9 @@ ksp = "2.3.12"
 # Metro: compile-time dependency injection (Kotlin compiler plugin). Must support the Kotlin version above,
 # see https://zacsweers.github.io/metro/latest/compatibility/.
 metro = "1.4.5"
+# Haze: real-time blur behind glass panels (dev.chrisbanes.haze), only in :core:designsystem's dawn scene. Blur on
+# Android 12+, a translucent tint below. See ImornDawnScene.
+haze = "2.0.1"
 kotlinxSerialization = "1.11.0"
 kotlinxCoroutines = "1.11.0"
 # Gemini Nano on the device through AICore, for the assistant's message. See GeminiNanoLanguageModel.
@@ -69,6 +72,9 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 mlkit-genai-prompt = { module = "com.google.mlkit:genai-prompt", version.ref = "mlkitGenaiPrompt" }
 # Firebase platform BoM: without a version on the Firebase artifacts below, this pins them all together.
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+
+haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+haze-blur = { module = "dev.chrisbanes.haze:haze-blur", version.ref = "haze" }
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 compose-ui = { module = "androidx.compose.ui:ui" }

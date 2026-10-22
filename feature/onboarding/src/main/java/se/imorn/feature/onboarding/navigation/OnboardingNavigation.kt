@@ -23,7 +23,6 @@ fun EntryProviderScope<NavKey>.onboardingEntry(contentPadding: PaddingValues) {
         val state by viewModel.state.collectAsStateWithLifecycle()
         OnboardingScreen(
             state = state,
-            onNameChange = viewModel::setName,
             onToggle = viewModel::toggle,
             onStart = viewModel::start,
             onSkip = viewModel::skip,

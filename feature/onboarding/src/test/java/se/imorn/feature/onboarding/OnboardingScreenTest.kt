@@ -2,6 +2,7 @@ package se.imorn.feature.onboarding
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -19,26 +20,56 @@ class OnboardingScreenTest {
     @get:Rule
     val compose = createComposeRule()
 
-    @Test
-    fun choosingAStageAndSkippingReachTheirCallbacks() {
-        val toggled = mutableListOf<LifeStage>()
-        var skipped = false
+    private fun show(
+        state: OnboardingUiState = OnboardingUiState(),
+        onToggle: (LifeStage) -> Unit = {},
+        onStart: () -> Unit = {},
+        onSkip: () -> Unit = {},
+    ) {
         compose.setContent {
             ImornTheme {
                 OnboardingScreen(
-                    state = OnboardingUiState(),
-                    onNameChange = {},
-                    onToggle = { toggled += it },
-                    onStart = {},
-                    onSkip = { skipped = true },
+                    state = state,
+                    onToggle = onToggle,
+                    onStart = onStart,
+                    onSkip = onSkip,
                     contentPadding = PaddingValues(),
                 )
             }
         }
-        compose.onNodeWithText("Welcome to Imorn").assertIsDisplayed()
+    }
+
+    @Test
+    fun theWelcomeLeadsThroughWhyToTheLifeStages() {
+        val toggled = mutableListOf<LifeStage>()
+        var started = false
+        show(
+            state = OnboardingUiState(setOf(LifeStage.BuildingUp)),
+            onToggle = { toggled += it },
+            onStart = { started = true },
+        )
+        compose.onNodeWithText("Life's big projects, one step at a time").assertIsDisplayed()
+        compose.onNodeWithText("Continue").performClick()
+        compose.onNodeWithText("Never more than three things a day").assertExists()
+        compose.onNodeWithText("Continue").performClick()
+        compose.onNodeWithText("Building up").assertIsSelected()
         compose.onNodeWithText("New in Sweden").performScrollTo().performClick()
-        compose.onNodeWithText("Skip for now").performScrollTo().performClick()
+        compose.onNodeWithText("Get started").performClick()
         assertEquals(listOf(LifeStage.NewInSweden), toggled)
+        assertEquals(true, started)
+    }
+
+    @Test
+    fun skipIsAlwaysThere() {
+        var skipped = false
+        show(onSkip = { skipped = true })
+        compose.onNodeWithText("Skip").performClick()
         assertEquals(true, skipped)
+    }
+
+    @Test
+    fun noNameIsAsked() {
+        show()
+        compose.onNodeWithText("What should we call you?", substring = true).assertDoesNotExist()
     }
 }
