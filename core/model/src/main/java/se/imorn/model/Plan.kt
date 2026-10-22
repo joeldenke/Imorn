@@ -81,3 +81,20 @@ fun Chapter.withOwnStep(step: Step): Chapter {
     require(steps.none { it.id == step.id }) { "Step ${step.id} already exists in chapter $id" }
     return copy(steps = steps + step.copy(fromTemplate = false))
 }
+
+/** A group in the list view: a phase and its open steps, or steps without a known phase when [phase] is null. */
+data class PhaseGroup(val phase: Phase?, val steps: List<PlannedStep>)
+
+/**
+ * The open steps as the list shows them: by phase in the plan's order, each in [upcoming]'s order, then the steps
+ * without a known phase (the user's own). Empty groups are left out, and so are long threads; see [longThreads].
+ */
+fun Chapter.upcomingByPhase(): List<PhaseGroup> {
+    val upcoming = upcoming()
+    val known = phases.map { it.id }.toSet()
+    val grouped = phases.map { phase -> PhaseGroup(phase, upcoming.filter { it.step.phaseId == phase.id }) }
+    return (grouped + PhaseGroup(null, upcoming.filter { it.step.phaseId !in known })).filter { it.steps.isNotEmpty() }
+}
+
+/** Rests, closes or wakes the chapter. A resting chapter keeps only its long threads in view. */
+fun Chapter.withState(state: ChapterState): Chapter = copy(state = state)

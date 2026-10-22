@@ -32,7 +32,15 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:feature:today` – *Imorgon*, startskärmen: `tomorrowPlan` över alla kapitel (högst tre saker, var och en med
   *Klart* och *Imorgon*), *Längre fram*, tomt läge som bjuder in till första kapitlet, och assistenten.
 - `:feature:chapters` – kapitlen: `NewChapterScreen` (mall, frågorna en i taget, ankardatum som får vara okända,
-  sedan `instantiate` och spara). Varje feature äger sin navigation
+  sedan `instantiate` och spara).
+- `:feature:onboarding` – välkomsten vid första start, lätt med flit: vad Imorn är, namn (frivilligt) och "Vad stämmer
+  på dig just nu?" (`LifeStage`, flera val, i stället för ålder). Visas ensam (utan flikar) tills
+  `AppSettings.onboarded` är satt; allt går att hoppa över. Livsfaserna bestämmer bara vilka mallar som kommer först
+  (`suggestedFirst`), aldrig vilka som finns.
+- `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* per fas och *Tidslinje* runt nu-linjen,
+  egna steg, vila, avsluta, radera) och ett steg (`StepScreen`: när, varför, länkkort som alltid visar organisation
+  och domän, anteckning, *Klart*, *Imorgon*, eget datum, *Gäller inte*). ViewModels med ruttens id
+  (`@AssistedInject`, `assistedMetroViewModel`). Varje feature äger sin navigation
   (`navigation/`): `@Serializable`-rutter (`NavKey`) och `EntryProviderScope<NavKey>.<feature>Entry(...)`, som `:app`
   lägger i sin `entryProvider`. Features beror aldrig på varandra (`ArchitectureTest`); flikbyten går via callbacks
   från `:app`.
@@ -45,7 +53,8 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:core:navigation` – `NavigationState` (en back stack per flik) och `Navigator`
 - `:core:coach` – ren Kotlin: assistentens `LanguageModel`-gränssnitt och `AssistantPrompt` (bygger prompten och
   tvättar svaret, enhetstestat). Se *Assistenten* under Regler.
-- `:core:data` – lagring i Preferences DataStore: `SettingsStore` (tema och bakgrundsfärger, `AppSettings`) är en
+- `:core:data` – lagring i Preferences DataStore: `SettingsStore` (tema, bakgrundsfärger och om välkomsten är klar,
+  `AppSettings`) och `ProfileStore` (namn och livsfaser, `Profile`). `SettingsStore` är en
   singleton i `AppScope` vars `StateFlow` får läsarna att läsa om efter en sparning. `PreferencesStore` (samma som
   Novilas) håller datan i minnet och köar sparningar i storens egen scope, i ordning och klara även när ViewModeln
   rensas. Filerna förseglas av `EncryptingPreferencesSerializer` med `KeystoreDatastoreCipher` (Tink, nyckeln i
@@ -69,8 +78,6 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `content/` – innehållspaketet: `links.json` (länkregistret) och `templates/*.json` (mallarna, i dag Flytta).
   `imorn { bundledContent() }` gör det till testindata och, i `:core:data`, till appens assets; `BundledContentTest`
   validerar det i CI.
-
-Planerat enligt roadmapen (Fas 1): `:feature:timeline` (lista, tidslinje med nu-linjen, steg-detalj).
 
 Beroenden går nedåt: `:app` → `:feature:*` → `:core:ui`/`:core:navigation`/`:core:designsystem` → ren Kotlin.
 Strängar och ikoner ligger i modulen som använder dem; det flera moduler använder ligger i `:core:ui`.
@@ -166,6 +173,7 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
 - **Gryning:** paletten bär betydelse och används konsekvent: **indigo** (primary) är framtiden och överblicken,
   **aprikos** (secondary) är nuet och vägen, **rosa** (tertiary) är minnena. `Night` och `Dawn` är varumärkets
   färger utanför schemat. Typsnittet Figtree är inbakat; ladda aldrig ner typsnitt i runtime.
+  Kort är ljusare än bakgrunden med hårfin kant (`ImornTheme.surfaces`, som i Novila); `ImornCard` sköter det.
 - **Appikonen:** ett vitt i på den enfärgade Night-plattan, där pricken är solen och stammen solens spegling i
   vattnet. Vektorerna `app/src/main/res/drawable/ic_launcher_foreground.xml` och `…_monochrome.xml` och färgen
   `ic_launcher_background` (lika med `Night` i `Color.kt`) är källan. Ändras de: kör

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="today_screen_title">Imorn</string>
+    <!-- The start screen's title when the user gave a name, such as "Hi, Alex". -->
+    <string name="today_greeting">Hi, %1$s</string>
     <string name="today_empty_title">Nothing planned yet</string>
     <string name="today_empty_body">Start a chapter, such as a move, and Imorn shows you one thing at a time.</string>
     <string name="today_start_chapter">Start a chapter</string>
@@ -12,6 +14,11 @@
     <string name="today_done">Done</string>
     <string name="today_tomorrow">Tomorrow</string>
     <string name="today_later">Later</string>
+    <string name="today_chapters">Your chapters</string>
+    <string name="today_chapter_next">Next: %1$s</string>
+    <string name="today_chapter_resting">Resting</string>
+    <string name="today_chapter_closed">Finished</string>
+    <string name="today_chapter_nothing_left">Nothing left to do</string>
 
     <string name="assistant_title">Assistant</string>
     <string name="assistant_checking">Checking whether the on-device assistant is available…</string>

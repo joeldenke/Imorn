@@ -1,5 +1,6 @@
 package se.imorn.designsystem.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import se.imorn.designsystem.theme.ImornTheme
 
 /** A screen scaffold: an optional title bar and the app's background, with the standard content padding. */
@@ -48,24 +50,33 @@ fun ImornScaffold(
     )
 }
 
-/** A surface card with the app's shape and outline, used for every block of content. */
+/**
+ * A card for every block of content: a lighter surface with a hairline outline and the app's shape. With [onClick]
+ * the whole card opens what it shows, such as a step or a chapter.
+ */
 @Composable
 fun ImornCard(
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
-    Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = ImornTheme.colors.surface,
-            contentColor = ImornTheme.colors.onSurface,
-        ),
-    ) {
+    val shape = ImornTheme.shapes.medium
+    val colors = CardDefaults.cardColors(
+        containerColor = ImornTheme.surfaces.card,
+        contentColor = ImornTheme.colors.onSurface,
+    )
+    val border = BorderStroke(1.dp, ImornTheme.surfaces.cardOutline)
+    val body: @Composable () -> Unit = {
         Column(
             modifier = Modifier.padding(ImornTheme.spacing.md),
             verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm),
             content = { content() },
         )
+    }
+    if (onClick == null) {
+        Card(modifier = modifier, shape = shape, colors = colors, border = border) { body() }
+    } else {
+        Card(onClick = onClick, modifier = modifier, shape = shape, colors = colors, border = border) { body() }
     }
 }
 

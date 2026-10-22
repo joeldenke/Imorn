@@ -13,6 +13,8 @@ imorn {
 
 dependencies {
     implementation(projects.feature.chapters)
+    implementation(projects.feature.onboarding)
+    implementation(projects.feature.timeline)
     implementation(projects.feature.today)
 
     // Everything that contributes to the graph must be on the app's classpath, so Metro can find it.

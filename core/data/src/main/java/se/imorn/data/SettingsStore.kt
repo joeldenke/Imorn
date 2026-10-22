@@ -26,6 +26,7 @@ class SettingsStore internal constructor(context: Context, scope: CoroutineScope
         AppSettings(
             theme = ThemeMode.fromName(it[THEME]),
             dynamicColor = it[DYNAMIC_COLOR] ?: false,
+            onboarded = it[ONBOARDED] ?: false,
         )
     }
 
@@ -33,9 +34,13 @@ class SettingsStore internal constructor(context: Context, scope: CoroutineScope
 
     fun setDynamicColor(enabled: Boolean) = store.edit { it[DYNAMIC_COLOR] = enabled }
 
+    /** The welcome is done (or skipped), and the app opens on Imorgon from now on. */
+    fun setOnboarded(done: Boolean) = store.edit { it[ONBOARDED] = done }
+
     private companion object {
         const val NAME = "settings"
         val THEME = stringPreferencesKey("theme")
         val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
+        val ONBOARDED = booleanPreferencesKey("onboarded")
     }
 }

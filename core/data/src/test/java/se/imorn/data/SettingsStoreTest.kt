@@ -32,12 +32,23 @@ class SettingsStoreTest {
         assertEquals(chosen, SettingsStore(context, stores.scope, stores.cipher).settings.await())
     }
 
+    @Test fun `the welcome stays done after a restart`() {
+        val store = SettingsStore(context, stores.scope, stores.cipher)
+        store.setOnboarded(true)
+        store.settings.await { it.onboarded }
+
+        stores.restart()
+        assertEquals(true, SettingsStore(context, stores.scope, stores.cipher).settings.await().onboarded)
+    }
+
     @Test fun `writes apply in order`() {
         val store = SettingsStore(context, stores.scope, stores.cipher)
         store.setTheme(ThemeMode.Dark)
         store.setTheme(ThemeMode.Light)
         store.setTheme(ThemeMode.Dark)
-        store.settings.await { it.theme == ThemeMode.Dark }
+        // The last write in the queue: once it shows, every write before it has been applied, in order.
+        store.setDynamicColor(true)
+        store.settings.await { it.dynamicColor }
 
         stores.restart()
         assertEquals(ThemeMode.Dark, SettingsStore(context, stores.scope, stores.cipher).settings.await().theme)

@@ -21,7 +21,8 @@ class MainActivity : ComponentActivity() {
         val viewModelFactory = graph.metroViewModelFactory
         val settingsStore = graph.settingsStore
         setContent {
-            // Nothing to show until the settings are read, a moment at app start, so the theme never flickers.
+            // Nothing to show until the settings are read, a moment at app start, so neither the theme nor the
+            // welcome flickers.
             val settings = settingsStore.settings.collectAsStateWithLifecycle().value ?: return@setContent
             val darkTheme = settings.theme.isDark(systemDark = isSystemInDarkTheme())
             // The system bars follow the app's theme, not the phone's, when the user picked light or dark.
@@ -35,7 +36,7 @@ class MainActivity : ComponentActivity() {
             ImornTheme(darkTheme = darkTheme, dynamicColor = settings.dynamicColor) {
                 // metroViewModel() in each Navigation 3 entry creates its ViewModels with this factory.
                 CompositionLocalProvider(LocalMetroViewModelFactory provides viewModelFactory) {
-                    ImornApp()
+                    ImornApp(onboarded = settings.onboarded)
                 }
             }
         }

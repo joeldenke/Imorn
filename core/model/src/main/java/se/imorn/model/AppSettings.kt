@@ -1,10 +1,12 @@
 package se.imorn.model
 
-/** How the app looks. Saved by `SettingsStore` in `:core:data`. */
+/** How the app looks, and whether the welcome is done. Saved by `SettingsStore` in `:core:data`. */
 data class AppSettings(
     val theme: ThemeMode = ThemeMode.System,
     /** Wallpaper colors (Material You, Android 12+) instead of the Gryning palette. */
     val dynamicColor: Boolean = false,
+    /** The welcome at first start is done or skipped, so the app opens on Imorgon. */
+    val onboarded: Boolean = false,
 )
 
 /** Light, dark, or whatever the phone uses. */

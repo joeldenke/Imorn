@@ -36,6 +36,10 @@ data class ImornColors(
     val onSecondary: Color,
     val secondaryContainer: Color,
     val onSecondaryContainer: Color,
+    val tertiary: Color,
+    val onTertiary: Color,
+    val tertiaryContainer: Color,
+    val onTertiaryContainer: Color,
     val background: Color,
     val onBackground: Color,
     val surface: Color,
@@ -48,6 +52,19 @@ data class ImornColors(
     val onError: Color,
 )
 
+/**
+ * Cards sit on the background as a lighter surface with a hairline outline, as in Novila: white on the light
+ * background, a step lighter than the night in dark mode. Fixed for both palettes, also with dynamic color.
+ */
+@Immutable
+data class ImornSurfaceColors(
+    val card: Color,
+    val cardOutline: Color,
+)
+
+internal val ImornLightSurfaces = ImornSurfaceColors(card = Color.White, cardOutline = Color(0xFFE4E1E9))
+internal val ImornDarkSurfaces = ImornSurfaceColors(card = Color(0xFF1F1F25), cardOutline = Color(0xFF303036))
+
 /** Picks Imorn's roles from a scheme, so they also follow dynamic color when it's on. */
 internal fun ColorScheme.toImornColors() = ImornColors(
     primary = primary,
@@ -58,6 +75,10 @@ internal fun ColorScheme.toImornColors() = ImornColors(
     onSecondary = onSecondary,
     secondaryContainer = secondaryContainer,
     onSecondaryContainer = onSecondaryContainer,
+    tertiary = tertiary,
+    onTertiary = onTertiary,
+    tertiaryContainer = tertiaryContainer,
+    onTertiaryContainer = onTertiaryContainer,
     background = background,
     onBackground = onBackground,
     surface = surface,

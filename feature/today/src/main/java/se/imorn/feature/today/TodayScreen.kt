@@ -21,8 +21,11 @@ import se.imorn.designsystem.component.ImornScaffold
 import se.imorn.designsystem.component.ImornSecondaryButton
 import se.imorn.designsystem.component.ImornText
 import se.imorn.designsystem.theme.ImornTheme
+import se.imorn.model.Chapter
+import se.imorn.model.ChapterState
 import se.imorn.model.PlannedStep
 import se.imorn.model.TomorrowItem
+import se.imorn.model.next
 import se.imorn.model.tomorrowPlan
 import se.imorn.ui.PreviewData
 import se.imorn.ui.dayText
@@ -38,12 +41,16 @@ fun TodayScreen(
     onDone: (PlannedStep) -> Unit,
     onTomorrow: (PlannedStep) -> Unit,
     onNewChapter: () -> Unit,
+    onOpenStep: (PlannedStep) -> Unit,
+    onOpenChapter: (String) -> Unit,
     onAskAssistant: () -> Unit,
     onDownloadAssistant: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    ImornScaffold(title = stringResource(R.string.today_screen_title), modifier = modifier) { scaffoldPadding ->
+    val title = state.name?.let { stringResource(R.string.today_greeting, it) }
+        ?: stringResource(R.string.today_screen_title)
+    ImornScaffold(title = title, modifier = modifier) { scaffoldPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -61,7 +68,7 @@ fun TodayScreen(
                 }
 
                 else -> state.plan.items.forEach { item ->
-                    ItemCard(item, state, onDone, onTomorrow)
+                    ItemCard(item, state, onDone, onTomorrow, onOpenStep)
                 }
             }
             if (state.plan.later.isNotEmpty()) {
@@ -76,6 +83,12 @@ fun TodayScreen(
                 AssistantCard(state.assistant, onAskAssistant, onDownloadAssistant)
             }
             if (state.hasChapters) {
+                ImornText(
+                    text = stringResource(R.string.today_chapters),
+                    style = ImornTheme.typography.titleMedium,
+                    color = ImornTheme.colors.onBackground,
+                )
+                state.chapters.forEach { ChapterRow(it, onOpenChapter) }
                 ImornSecondaryButton(text = stringResource(R.string.today_new_chapter), onClick = onNewChapter)
             }
         }
@@ -97,9 +110,10 @@ private fun ItemCard(
     state: TodayUiState,
     onDone: (PlannedStep) -> Unit,
     onTomorrow: (PlannedStep) -> Unit,
+    onOpenStep: (PlannedStep) -> Unit,
 ) {
     val planned = item.planned
-    ImornCard(modifier = Modifier.fillMaxWidth()) {
+    ImornCard(modifier = Modifier.fillMaxWidth(), onClick = { onOpenStep(planned) }) {
         ImornText(
             text = stringResource(R.string.today_item_meta, planned.chapterTitle, dayText(planned.date, state.today)),
             style = ImornTheme.typography.labelLarge,
@@ -117,6 +131,25 @@ private fun ItemCard(
             ImornButton(text = stringResource(R.string.today_done), onClick = { onDone(planned) })
             ImornSecondaryButton(text = stringResource(R.string.today_tomorrow), onClick = { onTomorrow(planned) })
         }
+    }
+}
+
+/** A chapter in the quiet list: its title and what is next, or that it rests or is finished. */
+@Composable
+private fun ChapterRow(chapter: Chapter, onOpenChapter: (String) -> Unit) {
+    ImornCard(modifier = Modifier.fillMaxWidth(), onClick = { onOpenChapter(chapter.id) }) {
+        ImornText(text = chapter.title, style = ImornTheme.typography.bodyLarge)
+        val next = chapter.next()
+        ImornText(
+            text = when {
+                chapter.state == ChapterState.Resting -> stringResource(R.string.today_chapter_resting)
+                chapter.state == ChapterState.Closed -> stringResource(R.string.today_chapter_closed)
+                next != null -> stringResource(R.string.today_chapter_next, next.step.title)
+                else -> stringResource(R.string.today_chapter_nothing_left)
+            },
+            style = ImornTheme.typography.bodyMedium,
+            color = ImornTheme.colors.onSurfaceVariant,
+        )
     }
 }
 
@@ -187,12 +220,16 @@ private fun availabilityText(availability: AssistantAvailability): String = when
     AssistantAvailability.Available -> stringResource(R.string.assistant_available)
 }
 
-private fun previewState(hasChapters: Boolean = true) = TodayUiState(
-    today = PreviewData.TODAY,
-    plan = tomorrowPlan(if (hasChapters) listOf(PreviewData.moving) else emptyList(), PreviewData.TODAY),
-    hasChapters = hasChapters,
-    assistant = AssistantUiState(availability = AssistantAvailability.Available),
-)
+private fun previewState(hasChapters: Boolean = true): TodayUiState {
+    val chapters = if (hasChapters) listOf(PreviewData.moving) else emptyList()
+    return TodayUiState(
+        today = PreviewData.TODAY,
+        plan = tomorrowPlan(chapters, PreviewData.TODAY),
+        chapters = chapters,
+        assistant = AssistantUiState(availability = AssistantAvailability.Available),
+        name = PreviewData.NAME.takeIf { hasChapters },
+    )
+}
 
 @Composable
 private fun PreviewScreen(state: TodayUiState) {
@@ -202,6 +239,8 @@ private fun PreviewScreen(state: TodayUiState) {
             onDone = {},
             onTomorrow = {},
             onNewChapter = {},
+            onOpenStep = {},
+            onOpenChapter = {},
             onAskAssistant = {},
             onDownloadAssistant = {},
             contentPadding = PaddingValues(),
