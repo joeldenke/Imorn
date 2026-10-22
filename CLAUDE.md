@@ -121,6 +121,8 @@ Misstag som redan har gjorts i Novila, med samma bygge. Gör dem inte här.
   UI-tester). Nya moduler med Robolectric-tester behöver samma fil. Använd `imorn.android.unittest`, som sätter
   JDK 21-flaggan Robolectric kräver, i stället för egen testkonfiguration.
 - **Modifier-parametrar:** en composable har bara en `Modifier`-parameter, och den heter `modifier`.
+- **Insets i toppen:** appen är edge-to-edge, och `Scaffold` lägger bara insets på innehållet, aldrig på en egen
+  `topBar`. En egen toppbar tar själv `WindowInsets.safeDrawing` (topp och sidor), som titeln i `ImornScaffold`.
 - **Providers från tasks:** ge tasks vanliga värden (strängar) för sådant som bara är text, aldrig ett värde härlett
   ur en `TaskProvider`; det ger ett dolt beroende på den tasken.
 - **Beroenden som bara debug får:** deklarera varje bibliotek en modul importerar direkt i modulen, även om
