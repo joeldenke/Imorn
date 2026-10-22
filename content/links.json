@@ -158,6 +158,21 @@
       }
     },
     {
+      "id": "lantmateriet.pantbrev",
+      "org": "Lantmäteriet",
+      "kind": "authority",
+      "url": "https://www.lantmateriet.se/",
+      "fallbackUrl": "https://www.lantmateriet.se/",
+      "title": {
+        "sv": "Pantbrev",
+        "en": "Mortgage deeds"
+      },
+      "searchHint": {
+        "sv": "pantbrev",
+        "en": "mortgage deeds"
+      }
+    },
+    {
       "id": "transportstyrelsen.start",
       "org": "Transportstyrelsen",
       "kind": "authority",
@@ -285,6 +300,21 @@
       "searchHint": {
         "sv": "hemförsäkring, bolån",
         "en": "home insurance, mortgage"
+      }
+    },
+    {
+      "id": "fi.bolan",
+      "org": "Finansinspektionen",
+      "kind": "authority",
+      "url": "https://www.fi.se/",
+      "fallbackUrl": "https://www.fi.se/",
+      "title": {
+        "sv": "Regler för bolån",
+        "en": "Mortgage rules"
+      },
+      "searchHint": {
+        "sv": "bolånetak och amorteringskrav",
+        "en": "mortgage cap and amortisation"
       }
     },
     {

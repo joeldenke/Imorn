@@ -1,6 +1,6 @@
 {
   "id": "move",
-  "version": 1,
+  "version": 2,
   "title": {
     "sv": "Flytta",
     "en": "Moving"
@@ -50,8 +50,60 @@
             "sv": "Hus",
             "en": "House"
           }
+        },
+        {
+          "id": "other",
+          "label": {
+            "sv": "Annat, till exempel hos föräldrar eller i andra hand",
+            "en": "Something else, such as with parents or a sublet"
+          }
         }
       ]
+    },
+    {
+      "id": "newHome",
+      "text": {
+        "sv": "Vad flyttar du till?",
+        "en": "What are you moving to?"
+      },
+      "options": [
+        {
+          "id": "rental",
+          "label": {
+            "sv": "Hyresrätt",
+            "en": "Rented flat"
+          }
+        },
+        {
+          "id": "buyCondo",
+          "label": {
+            "sv": "En bostadsrätt jag köper",
+            "en": "A flat I am buying"
+          }
+        },
+        {
+          "id": "buyHouse",
+          "label": {
+            "sv": "Ett hus jag köper",
+            "en": "A house I am buying"
+          }
+        },
+        {
+          "id": "other",
+          "label": {
+            "sv": "Annat",
+            "en": "Something else"
+          }
+        }
+      ]
+    },
+    {
+      "id": "selling",
+      "type": "bool",
+      "text": {
+        "sv": "Säljer du din nuvarande bostad?",
+        "en": "Are you selling your current home?"
+      }
     },
     {
       "id": "kids",
@@ -151,6 +203,511 @@
       ]
     },
     {
+      "id": "agent",
+      "title": {
+        "sv": "Mäklaren och försäljningen",
+        "en": "The estate agent and the sale"
+      },
+      "steps": [
+        {
+          "id": "choose-agent",
+          "title": {
+            "sv": "Välj mäklare och jämför minst två",
+            "en": "Choose an estate agent, comparing at least two"
+          },
+          "why": {
+            "sv": "Kolla att mäklaren är registrerad och fråga vad arvodet omfattar: styling, foto och annonser.",
+            "en": "Check that the agent is registered and ask what the fee covers: styling, photos and ads."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -150
+          },
+          "links": [
+            "fmi.start"
+          ],
+          "when": {
+            "question": "selling",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "sale-prep",
+          "title": {
+            "sv": "Gör i ordning bostaden inför fotografering och visning",
+            "en": "Get the home ready for photos and viewings"
+          },
+          "why": {
+            "sv": "Rensa, laga det lilla och låt ljuset komma in. Det du rensar nu slipper du flytta.",
+            "en": "Clear out, fix the small things and let the light in. What you clear out now you won't have to move."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -120
+          },
+          "when": {
+            "question": "selling",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "viewings",
+          "title": {
+            "sv": "Visningar och budgivning",
+            "en": "Viewings and bidding"
+          },
+          "why": {
+            "sv": "Mäklaren håller i visningarna och buden; du bestämmer vem du säljer till och när.",
+            "en": "The agent runs the viewings and the bids; you decide who you sell to and when."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -105
+          },
+          "when": {
+            "question": "selling",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "sale-contract",
+          "title": {
+            "sv": "Skriv köpekontrakt med köparen",
+            "en": "Sign the purchase contract with the buyer"
+          },
+          "why": {
+            "sv": "I kontraktet står tillträdesdagen, handpenningen och vad som följer med bostaden.",
+            "en": "The contract sets the takeover day, the deposit and what comes with the home."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -90
+          },
+          "when": {
+            "question": "selling",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "sale-loan",
+          "title": {
+            "sv": "Be banken lösa det gamla lånet vid tillträdet",
+            "en": "Ask the bank to pay off the old loan at the takeover"
+          },
+          "why": {
+            "sv": "Banken och mäklaren ser till att köparens pengar går till ditt gamla lån först.",
+            "en": "The bank and the agent make sure the buyer's money goes to your old loan first."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -30
+          },
+          "when": {
+            "question": "selling",
+            "isTrue": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "mortgage",
+      "title": {
+        "sv": "Bolån och kontantinsats",
+        "en": "Mortgage and down payment"
+      },
+      "steps": [
+        {
+          "id": "down-payment-plan",
+          "title": {
+            "sv": "Räkna på kontantinsatsen och vad boendet kostar i månaden",
+            "en": "Work out the down payment and the monthly cost of the home"
+          },
+          "why": {
+            "sv": "Banken kräver en egen kontantinsats och räknar på vad du har kvar varje månad. Hur mycket som gäller i dag står hos källan.",
+            "en": "The bank asks for a down payment of your own and checks what is left each month. The current rules are at the source."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -150
+          },
+          "links": [
+            "fi.bolan",
+            "konsumenternas.start"
+          ],
+          "when": {
+            "question": "newHome",
+            "in": [
+              "buyCondo",
+              "buyHouse"
+            ]
+          }
+        },
+        {
+          "id": "compare-banks",
+          "title": {
+            "sv": "Jämför bolån hos flera banker",
+            "en": "Compare mortgages at several banks"
+          },
+          "why": {
+            "sv": "Fråga om ränta, rabatter och vad som krävs. Det är vanligt att förhandla.",
+            "en": "Ask about the rate, discounts and what they require. Negotiating is common."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -130
+          },
+          "links": [
+            "konsumenternas.start"
+          ],
+          "when": {
+            "question": "newHome",
+            "in": [
+              "buyCondo",
+              "buyHouse"
+            ]
+          }
+        },
+        {
+          "id": "loan-promise",
+          "title": {
+            "sv": "Skaffa ett lånelöfte",
+            "en": "Get a mortgage pre-approval"
+          },
+          "why": {
+            "sv": "Med lånelöftet vet du hur högt du kan bjuda. Det gäller oftast bara några månader.",
+            "en": "With the pre-approval you know how high you can bid. It usually lasts only a few months."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -120
+          },
+          "links": [
+            "konsumenternas.start"
+          ],
+          "when": {
+            "question": "newHome",
+            "in": [
+              "buyCondo",
+              "buyHouse"
+            ]
+          }
+        },
+        {
+          "id": "deposit-payment",
+          "title": {
+            "sv": "Betala handpenningen när köpekontraktet skrivs",
+            "en": "Pay the deposit when the purchase contract is signed"
+          },
+          "why": {
+            "sv": "När och hur mycket står i köpekontraktet. Pengarna behöver finnas på kontot den dagen.",
+            "en": "When and how much is in the purchase contract. The money needs to be in your account that day."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -75
+          },
+          "when": {
+            "question": "newHome",
+            "in": [
+              "buyCondo",
+              "buyHouse"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "bank",
+      "title": {
+        "sv": "Bankens steg",
+        "en": "The bank's steps"
+      },
+      "steps": [
+        {
+          "id": "loan-application",
+          "title": {
+            "sv": "Skicka köpekontraktet till banken och ansök om lånet",
+            "en": "Send the purchase contract to the bank and apply for the loan"
+          },
+          "why": {
+            "sv": "Banken behöver kontraktet för att göra lånelöftet till ett riktigt lån.",
+            "en": "The bank needs the contract to turn the pre-approval into a real loan."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -70
+          },
+          "when": {
+            "question": "newHome",
+            "in": [
+              "buyCondo",
+              "buyHouse"
+            ]
+          }
+        },
+        {
+          "id": "association-approval",
+          "title": {
+            "sv": "Få medlemskap i bostadsrättsföreningen",
+            "en": "Get accepted as a member of the housing association"
+          },
+          "why": {
+            "sv": "Föreningen ska godkänna dig som medlem före tillträdet. Mäklaren skickar oftast ansökan.",
+            "en": "The association must accept you as a member before you take over the flat. The agent usually sends the application."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -30
+          },
+          "when": {
+            "question": "newHome",
+            "equals": "buyCondo"
+          }
+        },
+        {
+          "id": "collateral",
+          "title": {
+            "sv": "Låt banken ordna pantbrev eller pantsättning",
+            "en": "Let the bank arrange the mortgage deeds or the pledge"
+          },
+          "why": {
+            "sv": "För ett hus behövs pantbrev; för en bostadsrätt meddelar banken föreningen. Fråga banken vad som redan finns och vad det kostar.",
+            "en": "A house needs mortgage deeds; for a flat the bank notifies the association. Ask the bank what is already there and what it costs."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -21
+          },
+          "links": [
+            "lantmateriet.pantbrev"
+          ],
+          "when": {
+            "question": "newHome",
+            "in": [
+              "buyCondo",
+              "buyHouse"
+            ]
+          }
+        },
+        {
+          "id": "loan-documents",
+          "title": {
+            "sv": "Signera lånehandlingarna",
+            "en": "Sign the loan documents"
+          },
+          "why": {
+            "sv": "Banken behöver dem klara några dagar före tillträdet för att kunna betala ut lånet.",
+            "en": "The bank needs them a few days before the takeover to pay out the loan."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -14
+          },
+          "when": {
+            "question": "newHome",
+            "in": [
+              "buyCondo",
+              "buyHouse"
+            ]
+          }
+        },
+        {
+          "id": "access-day",
+          "title": {
+            "sv": "Tillträdet: banken betalar ut lånet och du får nycklarna",
+            "en": "Takeover day: the bank pays out the loan and you get the keys"
+          },
+          "why": {
+            "sv": "Gå igenom bostaden med säljaren och läs av mätarna innan ni skiljs åt.",
+            "en": "Walk through the home with the seller and read the meters before you part."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Fota nycklarna till nya hemmet",
+            "en": "Photograph the keys to your new home"
+          },
+          "when": {
+            "question": "newHome",
+            "in": [
+              "buyCondo",
+              "buyHouse"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "subscriptions",
+      "title": {
+        "sv": "Abonnemang: säg upp och teckna nytt",
+        "en": "Subscriptions: end the old, start the new"
+      },
+      "steps": [
+        {
+          "id": "electricity",
+          "title": {
+            "sv": "Teckna elavtal för nya adressen",
+            "en": "Get an electricity contract for the new address"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -28
+          },
+          "links": [
+            "energimarknadsbyran.start",
+            "elpriskollen.start"
+          ],
+          "why": {
+            "sv": "Välj elavtal för nya adressen; elnätsbolaget kan du inte välja, men elhandlaren anmäler oftast flytten dit åt dig.",
+            "en": "Choose an electricity contract for the new address; you can't choose the grid company, but the supplier usually tells it about the move for you."
+          }
+        },
+        {
+          "id": "old-electricity",
+          "title": {
+            "sv": "Säg upp elavtalet på gamla adressen",
+            "en": "End the electricity contract at the old address"
+          },
+          "why": {
+            "sv": "Avtalet följer inte med av sig självt. Säg upp till flyttdagen.",
+            "en": "The contract doesn't end by itself. End it from the moving day."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -28
+          },
+          "links": [
+            "energimarknadsbyran.start"
+          ],
+          "when": {
+            "question": "housing",
+            "in": [
+              "condo",
+              "house",
+              "rental"
+            ]
+          }
+        },
+        {
+          "id": "broadband",
+          "title": {
+            "sv": "Flytta bredbandet och säg upp det gamla",
+            "en": "Move your broadband and cancel the old one"
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -28
+          },
+          "why": {
+            "sv": "Kolla vad som finns på nya adressen; i flerbostadshus ingår bredband ibland i avgiften eller hyran.",
+            "en": "Check what is available at the new address; in blocks of flats broadband is sometimes part of the fee or rent."
+          }
+        },
+        {
+          "id": "home-insurance",
+          "title": {
+            "sv": "Flytta eller teckna hemförsäkring",
+            "en": "Move or take out home insurance"
+          },
+          "why": {
+            "sv": "Kolla att den gäller under själva flytten.",
+            "en": "Check that it covers the move itself."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -21
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "house-insurance",
+          "title": {
+            "sv": "Teckna villaförsäkring från tillträdesdagen",
+            "en": "Take out house insurance from the takeover day"
+          },
+          "why": {
+            "sv": "Ett hus behöver en villaförsäkring som gäller från dagen du tar över det.",
+            "en": "A house needs insurance that applies from the day you take it over."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -21
+          },
+          "links": [
+            "konsumenternas.start"
+          ],
+          "when": {
+            "question": "newHome",
+            "equals": "buyHouse"
+          }
+        },
+        {
+          "id": "water-waste-new",
+          "title": {
+            "sv": "Anmäl dig som ny ägare för vatten, avlopp och sophämtning",
+            "en": "Register as the new owner for water, sewage and waste collection"
+          },
+          "why": {
+            "sv": "Det sköts av kommunen eller dess bolag. Läs av vattenmätaren på tillträdesdagen.",
+            "en": "The municipality or its company handles it. Read the water meter on the takeover day."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -14
+          },
+          "links": [
+            "kommun.start"
+          ],
+          "when": {
+            "question": "newHome",
+            "equals": "buyHouse"
+          }
+        },
+        {
+          "id": "water-waste-old",
+          "title": {
+            "sv": "Avsluta vatten och sophämtning för gamla huset",
+            "en": "End water and waste collection for the old house"
+          },
+          "why": {
+            "sv": "Meddela kommunen vem som tar över, så att fakturorna går till rätt person.",
+            "en": "Tell the municipality who takes over, so the bills go to the right person."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -14
+          },
+          "links": [
+            "kommun.start"
+          ],
+          "when": {
+            "question": "housing",
+            "equals": "house"
+          }
+        },
+        {
+          "id": "other-subscriptions",
+          "title": {
+            "sv": "Gå igenom resten: larm, parkering, gym, tidningar och streaming",
+            "en": "Go through the rest: alarm, parking, gym, papers and streaming"
+          },
+          "why": {
+            "sv": "Säg upp det som är knutet till gamla adressen och flytta resten.",
+            "en": "End what is tied to the old address and move the rest."
+          },
+          "at": {
+            "anchor": "moveDay",
+            "offsetDays": -14
+          }
+        }
+      ]
+    },
+    {
       "id": "papers",
       "title": {
         "sv": "Papper",
@@ -195,50 +752,6 @@
           },
           "links": [
             "adressandring.eftersandning"
-          ]
-        },
-        {
-          "id": "electricity",
-          "title": {
-            "sv": "Teckna elavtal för nya adressen",
-            "en": "Get an electricity contract for the new address"
-          },
-          "at": {
-            "anchor": "moveDay",
-            "offsetDays": -28
-          },
-          "links": [
-            "energimarknadsbyran.start",
-            "elpriskollen.start"
-          ]
-        },
-        {
-          "id": "broadband",
-          "title": {
-            "sv": "Flytta bredbandet och säg upp det gamla",
-            "en": "Move your broadband and cancel the old one"
-          },
-          "at": {
-            "anchor": "moveDay",
-            "offsetDays": -28
-          }
-        },
-        {
-          "id": "home-insurance",
-          "title": {
-            "sv": "Flytta eller teckna hemförsäkring",
-            "en": "Move or take out home insurance"
-          },
-          "why": {
-            "sv": "Kolla att den gäller under själva flytten.",
-            "en": "Check that it covers the move itself."
-          },
-          "at": {
-            "anchor": "moveDay",
-            "offsetDays": -21
-          },
-          "links": [
-            "konsumenternas.start"
           ]
         },
         {
@@ -502,6 +1015,52 @@
       "links": [
         "energimarknadsbyran.start"
       ]
+    },
+    {
+      "id": "title-deed",
+      "title": {
+        "sv": "Kolla att lagfarten är beviljad",
+        "en": "Check that the title has been registered"
+      },
+      "why": {
+        "sv": "Banken söker ofta lagfarten åt dig. Beslutet kommer från Lantmäteriet.",
+        "en": "The bank often applies for it for you. The decision comes from Lantmäteriet."
+      },
+      "at": {
+        "anchor": "moveDay",
+        "offsetMonths": 2
+      },
+      "links": [
+        "lantmateriet.lagfart"
+      ],
+      "when": {
+        "question": "newHome",
+        "equals": "buyHouse"
+      }
+    },
+    {
+      "id": "sale-tax-return",
+      "title": {
+        "sv": "Deklarera försäljningen av bostaden",
+        "en": "Declare the sale of your home in your tax return"
+      },
+      "why": {
+        "sv": "Försäljningen ska med i deklarationen året efter. Skatteverket förklarar hur.",
+        "en": "The sale goes into the tax return the year after. Skatteverket explains how."
+      },
+      "at": {
+        "anchor": "moveDay",
+        "nextYear": {
+          "month": 3
+        }
+      },
+      "links": [
+        "skatteverket.bostad"
+      ],
+      "when": {
+        "question": "selling",
+        "isTrue": true
+      }
     }
   ]
 }
