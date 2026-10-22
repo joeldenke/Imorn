@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Next step and quick photo</string>
+    <string name="widget_next_step">Next step</string>
+    <string name="widget_no_steps">Nothing planned yet</string>
+    <string name="widget_quick_photo">Quick photo</string>
+    <string name="widget_tomorrow">Tomorrow</string>
+    <string name="widget_done">Done</string>
+</resources>

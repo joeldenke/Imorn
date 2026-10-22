@@ -18,6 +18,7 @@ import se.imorn.data.SettingsStore
 interface AppGraph : ViewModelGraph {
     /** The theme, read by [se.imorn.MainActivity] before it draws anything. */
     val settingsStore: SettingsStore
+    val chapterRepository: se.imorn.database.ChapterRepository
 
     @DependencyGraph.Factory
     fun interface Factory {
