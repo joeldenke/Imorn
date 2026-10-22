@@ -215,13 +215,13 @@ sätt att leverera samma data.
 
 ### Fas 2 – Fånga på vägen
 **Mål:** kapitlet blir en berättelse, inte bara en lista.
-- [ ] Snabb-+ med Fota, Steg, Anteckning
-- [ ] Foton via Photo Picker och kamera-intent, kopierade till appens privata lagring, miniatyrer
-- [ ] Foto-uppmaning när ett steg med `photoPrompt` bockas av
-- [ ] Papper: PDF och bilder som dokument, märkta privata, egen flik i kapitlet
+- [x] Snabb-+ med Fota, Steg, Anteckning (och Papper)
+- [x] Foton via Photo Picker och kamera-intent, kopierade till appens privata lagring, miniatyrer
+- [x] Foto-uppmaning när ett steg med `photoPrompt` bockas av
+- [x] Papper: PDF och bilder som dokument, märkta privata, egen flik i kapitlet
 - [ ] Före/efter-par med jämförelsereglage; hinna i sökaren (CameraX, kräver `CAMERA` – ägarens ok)
 - [ ] Röstanteckningar med text på enheten (utvärdera)
-- [ ] Radering som städar filer, och tydligt vad som händer med foton när ett kapitel raderas
+- [x] Radering som städar filer, och tydligt vad som händer med foton när ett kapitel raderas
 
 ### Fas 3 – Påminnelser och långa trådar
 **Mål:** inget viktigt glöms, även ett år senare – och ingen känner sig tjatad på.

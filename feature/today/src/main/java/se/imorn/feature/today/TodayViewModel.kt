@@ -1,5 +1,6 @@
 package se.imorn.feature.today
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.zacsweers.metro.AppScope
@@ -20,12 +21,15 @@ import se.imorn.coach.AssistantRequest
 import se.imorn.coach.LanguageModel
 import se.imorn.database.ChapterRepository
 import se.imorn.model.Chapter
+import se.imorn.model.Entry
+import se.imorn.model.EntryKind
 import se.imorn.model.PlannedStep
 import se.imorn.model.TomorrowPlan
 import se.imorn.model.complete
 import se.imorn.model.tomorrowPlan
 import se.imorn.model.withStepDate
 import java.time.LocalDate
+import java.util.UUID
 
 /** The on-device assistant's part of the screen. */
 data class AssistantUiState(
@@ -90,6 +94,22 @@ class TodayViewModel(
 
     /** "Tomorrow is fine": the step moves to tomorrow. Putting something off is a choice, not a failure. */
     fun tomorrow(item: PlannedStep) = change(item.chapterId) { it.withStepDate(item.step.id, today.value.plusDays(1)) }
+
+    /** The step a photo is being taken for, after its photo prompt: chapter id and step id. */
+    private var photoFor: Pair<String, String>? = null
+
+    /** The camera is about to take a photo for [stepId], as its photo prompt asked. */
+    fun photoFor(chapterId: String, stepId: String) {
+        photoFor = chapterId to stepId
+    }
+
+    /** Keeps the photo with the step it was taken for. */
+    fun keepPhoto(source: Uri) {
+        val (chapterId, stepId) = photoFor ?: return
+        photoFor = null
+        val photo = Entry(UUID.randomUUID().toString(), chapterId, EntryKind.Photo, today.value, stepId = stepId)
+        viewModelScope.launch { chapters.keepIfReadable(photo, source) }
+    }
 
     private fun change(chapterId: String, change: (Chapter) -> Chapter) {
         viewModelScope.launch {

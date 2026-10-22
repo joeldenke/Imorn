@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!--
+          Hands the camera app a file in Imorn's cache to write a new photo into (rememberCapture), and nothing else:
+          not exported, and each photo's file is granted to the camera for that one picture only.
+        -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.capture"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/capture_paths" />
+        </provider>
+    </application>
+</manifest>

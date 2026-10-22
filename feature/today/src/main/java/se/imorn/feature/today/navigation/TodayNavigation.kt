@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 import se.imorn.coach.AssistantRequest
 import se.imorn.feature.today.TodayScreen
 import se.imorn.feature.today.TodayViewModel
+import se.imorn.ui.rememberCapture
 
 /** The start tab, *Imorgon*: what to do next. */
 @Serializable data object TodayRoute : NavKey
@@ -38,6 +39,7 @@ fun EntryProviderScope<NavKey>.todayEntry(
         val locale = LocalConfiguration.current.locales[0]
         // Nothing to draw until the chapters are read, a moment at start.
         val current = state ?: return@entry
+        val capture = rememberCapture(onPhoto = viewModel::keepPhoto, onPaper = viewModel::keepPhoto)
         TodayScreen(
             state = current,
             onDone = viewModel::done,
@@ -56,6 +58,10 @@ fun EntryProviderScope<NavKey>.todayEntry(
                 )
             },
             onDownloadAssistant = viewModel::downloadAssistant,
+            onTakePhoto = { chapterId, stepId ->
+                viewModel.photoFor(chapterId, stepId)
+                capture.takePhoto()
+            },
             contentPadding = contentPadding,
         )
     }

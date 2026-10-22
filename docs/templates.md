@@ -28,6 +28,7 @@ Länkarna pekar på startsidan tills djuplänkarna är verifierade; `searchHint`
 | `fk.start` | Försäkringskassan | forsakringskassan.se | föräldrapenning, bostadsbidrag |
 | `csn.start` | CSN | csn.se | – |
 | `lantmateriet.lagfart` | Lantmäteriet | lantmateriet.se | lagfart |
+| `lantmateriet.pantbrev` | Lantmäteriet | lantmateriet.se | pantbrev |
 | `transportstyrelsen.start` | Transportstyrelsen | transportstyrelsen.se | ägarbyte, körkort |
 | `polisen.pass` | Polisen | polisen.se | pass och nationellt id-kort |
 | `pensionsmyndigheten.start` | Pensionsmyndigheten | pensionsmyndigheten.se | ta ut pension |
@@ -39,6 +40,7 @@ Länkarna pekar på startsidan tills djuplänkarna är verifierade; `searchHint`
 | `elpriskollen.start` | Energimarknadsinspektionen | elpriskollen.se | – |
 | `konsumenternas.start` | Konsumenternas Bank- och finansbyrå / Försäkringsbyrå | konsumenternas.se | hemförsäkring, bolån |
 | `fmi.start` | Fastighetsmäklarinspektionen | fmi.se | anlita mäklare |
+| `fi.bolan` | Finansinspektionen | fi.se | bolånetak och amorteringskrav |
 | `boverket.start` | Boverket | boverket.se | bygglov |
 | `elsakerhetsverket.start` | Elsäkerhetsverket | elsakerhetsverket.se | elinstallatör, behörighet |
 | `sakervatten.start` | Säker Vatten | sakervatten.se | våtrum, auktoriserat företag |
@@ -54,21 +56,44 @@ Länkarna pekar på startsidan tills djuplänkarna är verifierade; `searchHint`
 ---
 
 ## 1. Flytta
-**Livsfaser:** alla. **Ankare:** Flyttdag (T).
-**Frågor:** Från hyresrätt/bostadsrätt/hus? Till hyresrätt/bostadsrätt/hus? Barn som byter skola/förskola?
-Flyttfirma eller själva? Husdjur? Bil?
+**Livsfaser:** alla. **Ankare:** Flyttdag (T); vid köp är det tillträdesdagen.
+**Frågor:** Vad flyttar du från (hyresrätt, bostadsrätt, hus, annat)? Vad flyttar du till (hyresrätt, en bostadsrätt
+du köper, ett hus du köper, annat)? Säljer du din nuvarande bostad? Byter barnen skola eller förskola? Bostadsbidrag
+eller studiemedel?
 
-| Fas | Steg | När | Länkar |
+Faserna är **delflöden**: varje del av flytten som hänger ihop, med egna steg i rätt ordning. Delflöden som inte gäller
+(inget köp, ingen försäljning) försvinner av svaren; en obesvarad fråga gömmer ingenting.
+
+| Delflöde | Steg | När | Länkar |
 | --- | --- | --- | --- |
 | Planera | Säg upp hyreskontraktet *(om hyresrätt)* | T−3 mån | – |
 | | Boka flyttfirma eller släp, be om två–tre offerter | T−8v | `konsumentverket.hallakonsument` |
 | | Ansök om plats i ny skola/förskola *(om barn)* | T−8v | `kommun.start` |
 | | Boka ledigt för flyttdagen | T−6v | – |
+| Mäklaren och försäljningen *(om du säljer)* | Välj mäklare, jämför minst två | T−5 mån | `fmi.start` |
+| | Gör i ordning bostaden inför foto och visning | T−4 mån | – |
+| | Visningar och budgivning | T−15v | – |
+| | Skriv köpekontrakt med köparen | T−3 mån | – |
+| | Be banken lösa det gamla lånet vid tillträdet | T−4v | – |
+| Bolån och kontantinsats *(om du köper)* | Räkna på kontantinsatsen och månadskostnaden | T−5 mån | `fi.bolan`, `konsumenternas.start` |
+| | Jämför bolån hos flera banker | T−4 mån | `konsumenternas.start` |
+| | Skaffa lånelöfte | T−4 mån | `konsumenternas.start` |
+| | Betala handpenningen när köpekontraktet skrivs | T−11v | – |
+| Bankens steg *(om du köper)* | Skicka köpekontraktet till banken och ansök om lånet | T−10v | – |
+| | Få medlemskap i bostadsrättsföreningen *(bostadsrätt)* | T−4v | – |
+| | Låt banken ordna pantbrev eller pantsättning | T−3v | `lantmateriet.pantbrev` |
+| | Signera lånehandlingarna | T−2v | – |
+| | Tillträdet: lånet betalas ut, du får nycklarna **[foto]** | T | – |
+| Abonnemang: säg upp och teckna nytt | Teckna elavtal för nya adressen | T−4v | `energimarknadsbyran.start`, `elpriskollen.start` |
+| | Säg upp elavtalet på gamla adressen | T−4v | `energimarknadsbyran.start` |
+| | Flytta bredband och säg upp det gamla | T−4v | – |
+| | Flytta eller teckna hemförsäkring – gäller den under själva flytten? | T−3v | `konsumenternas.start` |
+| | Teckna villaförsäkring från tillträdet *(köper hus)* | T−3v | `konsumenternas.start` |
+| | Anmäl ny ägare för vatten, avlopp och sophämtning *(köper hus)* | T−2v | `kommun.start` |
+| | Avsluta vatten och sophämtning för gamla huset *(från hus)* | T−2v | `kommun.start` |
+| | Gå igenom resten: larm, parkering, gym, tidningar, streaming | T−2v | – |
 | Papper | Gör flyttanmälan (tidigast 4 v före, senast 1 v efter) | T−14d, hård T+7d | `skatteverket.flytt` |
 | | Beställ eftersändning *(valfritt)* | T−14d | `adressandring.eftersandning` |
-| | Teckna elavtal för nya adressen | T−4v | `energimarknadsbyran.start`, `elpriskollen.start` |
-| | Flytta eller teckna hemförsäkring – gäller den under själva flytten? | T−3v | `konsumenternas.start` |
-| | Flytta bredband och säg upp det gamla | T−4v | – |
 | | Bostadsbidrag eller CSN: anmäl ny adress och hyra *(om aktuellt)* | T | `fk.start`, `csn.start` |
 | | Byt adress hos bank, vård, tandvård, jobb, föreningar, prenumerationer | T+7d | – |
 | Packa | Rensa – sälj, skänk, släng | T−6v | `kommun.start` (återvinning) |
@@ -85,6 +110,10 @@ Flyttfirma eller själva? Husdjur? Bil?
 | | Första frukosten i nya hemmet **[minne]** | T+1d | – |
 
 **Långa trådar:** Kolla att depositionen kommit tillbaka (T+1 mån). Se över elavtalet efter första fakturan (T+2 mån).
+Kolla att lagfarten är beviljad *(köper hus, T+2 mån)*. Deklarera försäljningen *(säljer, mars året efter)*.
+
+Belopp, procentsatser och tak (kontantinsats, amorteringskrav) står aldrig i stegen: länken till källan gäller.
+Mallarna *Sälja bostad* och *Köpa bostad* nedan går djupare, för den som bara säljer eller köper.
 
 ---
 

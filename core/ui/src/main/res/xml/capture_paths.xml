@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The only folder the capture FileProvider shares: the camera writes one new photo here at a time. -->
+<paths>
+    <cache-path name="capture" path="capture/" />
+</paths>

@@ -1,5 +1,6 @@
 package se.imorn.feature.timeline
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.zacsweers.metro.AppScope
@@ -14,11 +15,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import se.imorn.database.ChapterRepository
 import se.imorn.model.Chapter
 import se.imorn.model.ChapterState
+import se.imorn.model.Entry
+import se.imorn.model.EntryKind
 import se.imorn.model.Step
 import se.imorn.model.complete
 import se.imorn.model.withAnchor
@@ -27,15 +31,22 @@ import se.imorn.model.withState
 import java.time.LocalDate
 import java.util.UUID
 
-/** How the chapter is shown: the checklist by phase, or the timeline around the now-line. */
-enum class ChapterView { List, Timeline }
+/** How the chapter is shown: the checklist by phase, the timeline around the now-line, or the private papers. */
+enum class ChapterView { List, Timeline, Papers }
 
 /** A chapter as its screen shows it. [chapter] is null once it has been deleted, and the screen closes. */
-data class ChapterUiState(val chapter: Chapter?, val today: LocalDate, val view: ChapterView = ChapterView.List)
+data class ChapterUiState(
+    val chapter: Chapter?,
+    val today: LocalDate,
+    val view: ChapterView = ChapterView.List,
+    /** Photos, notes and papers kept in the chapter, latest first. */
+    val kept: List<KeptEntry> = emptyList(),
+)
 
 /**
- * One chapter: its plan as a list or a timeline, its anchor dates, the user's own steps, and resting, closing or
- * deleting it. Every change is a function from `:core:model` and one save.
+ * One chapter: its plan as a list or a timeline, its story and papers, its anchor dates, the user's own steps, and
+ * resting, closing or deleting it. Every change to the plan is a function from `:core:model` and one save; photos
+ * and papers are copied into the app's private storage by [ChapterRepository.keep].
  */
 @AssistedInject
 class ChapterViewModel(
@@ -46,8 +57,13 @@ class ChapterViewModel(
     private val view = MutableStateFlow(ChapterView.List)
 
     /** Null until the chapter is read. */
-    val state: StateFlow<ChapterUiState?> = combine(chapters.chapter(chapterId), today, view) { chapter, day, view ->
-        ChapterUiState(chapter, day, view)
+    val state: StateFlow<ChapterUiState?> = combine(
+        chapters.chapter(chapterId),
+        chapters.entries(chapterId).map { entries -> entries.map { chapters.kept(it) } },
+        today,
+        view,
+    ) { chapter, kept, day, view ->
+        ChapterUiState(chapter, day, view, kept)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     fun refresh() {
@@ -65,6 +81,25 @@ class ChapterViewModel(
     fun addStep(title: String) = change { it.withOwnStep(Step(id = "own-${UUID.randomUUID()}", title = title)) }
 
     fun setState(state: ChapterState) = change { it.withState(state) }
+
+    fun addNote(text: String) {
+        viewModelScope.launch { chapters.save(newEntry(EntryKind.Note).copy(text = text.trim())) }
+    }
+
+    /** Keeps a photo from the camera or the picker, on its own in the story. */
+    fun keepPhoto(source: Uri) = keep(newEntry(EntryKind.Photo), source)
+
+    /** Keeps a paper, which shows under *Papers* and is private. */
+    fun keepPaper(source: Uri) {
+        view.value = ChapterView.Papers
+        keep(newEntry(EntryKind.Paper), source)
+    }
+
+    private fun newEntry(kind: EntryKind) = Entry(UUID.randomUUID().toString(), chapterId, kind, today.value)
+
+    private fun keep(entry: Entry, source: Uri) {
+        viewModelScope.launch { chapters.keepIfReadable(entry, source) }
+    }
 
     fun delete() {
         viewModelScope.launch { chapters.delete(chapterId) }
