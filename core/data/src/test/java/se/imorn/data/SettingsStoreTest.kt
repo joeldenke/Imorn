@@ -46,7 +46,9 @@ class SettingsStoreTest {
         store.setTheme(ThemeMode.Dark)
         store.setTheme(ThemeMode.Light)
         store.setTheme(ThemeMode.Dark)
-        store.settings.await { it.theme == ThemeMode.Dark }
+        // The last write in the queue: once it shows, every write before it has been applied, in order.
+        store.setDynamicColor(true)
+        store.settings.await { it.dynamicColor }
 
         stores.restart()
         assertEquals(ThemeMode.Dark, SettingsStore(context, stores.scope, stores.cipher).settings.await().theme)
