@@ -1,4 +1,5 @@
 package se.imorn.feature.widget
+import se.imorn.ImornApplication
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -52,10 +53,12 @@ class ImornWidget(private val repository: ChapterRepository) : GlanceAppWidget()
     companion object {
         fun create(context: Context): ImornWidget {
             val app = context.applicationContext
-            val graph = (app as se.imorn.ImornApplication).graph
+            val imornApp = app as ImornApplication
+            val graph = imornApp.graph
             val repo = graph.chapterRepository
             return ImornWidget(repo)
         }
+    }
     }
 }
 
