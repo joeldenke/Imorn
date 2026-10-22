@@ -70,9 +70,7 @@ fun NewChapterScreen(
             val question = state.currentQuestion
             when {
                 template == null -> TemplateStage(state.templates, language, onChooseTemplate)
-
                 question != null -> QuestionStage(state, template, question, language, onAnswer, onBack)
-
                 else -> DatesStage(state, template, language, onSetAnchor, onCreate, onBack)
             }
         }
