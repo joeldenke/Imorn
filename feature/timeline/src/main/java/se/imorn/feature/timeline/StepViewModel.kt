@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import se.imorn.content.Link
 import se.imorn.data.BundledContent
+import se.imorn.feature.timeline.navigation.StepRoute
 import se.imorn.database.ChapterRepository
 import se.imorn.model.Chapter
 import se.imorn.model.Step
@@ -43,11 +44,12 @@ data class StepUiState(
 /** The step detail: what, why, when and where, and the answers *Done*, *Tomorrow*, a date or *Doesn't apply*. */
 @AssistedInject
 class StepViewModel(
-    @Assisted("chapterId") private val chapterId: String,
-    @Assisted("stepId") private val stepId: String,
+    @Assisted route: StepRoute,
     private val chapters: ChapterRepository,
     private val content: BundledContent,
 ) : ViewModel() {
+    private val chapterId = route.chapterId
+    private val stepId = route.stepId
     private val today = MutableStateFlow(LocalDate.now())
 
     /** Null until read, and null again if the step or its chapter is deleted. */
@@ -99,7 +101,7 @@ class StepViewModel(
     @ManualViewModelAssistedFactoryKey
     @ContributesIntoMap(AppScope::class)
     fun interface Factory : ManualViewModelAssistedFactory {
-        fun create(@Assisted("chapterId") chapterId: String, @Assisted("stepId") stepId: String): StepViewModel
+        fun create(@Assisted route: StepRoute): StepViewModel
     }
 
     private companion object {

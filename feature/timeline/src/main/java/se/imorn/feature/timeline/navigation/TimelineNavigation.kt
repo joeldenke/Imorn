@@ -54,9 +54,7 @@ fun EntryProviderScope<NavKey>.timelineEntries(
         )
     }
     entry<StepRoute> { route ->
-        val viewModel = assistedMetroViewModel<StepViewModel, StepViewModel.Factory> {
-            create(route.chapterId, route.stepId)
-        }
+        val viewModel = assistedMetroViewModel<StepViewModel, StepViewModel.Factory> { create(route) }
         LifecycleResumeEffect(viewModel) {
             viewModel.refresh()
             onPauseOrDispose { }
