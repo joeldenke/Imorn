@@ -78,7 +78,9 @@ fun EntryScreen(
                         contentDescription = stringResource(R.string.paper_page, index + 1, paper.document.pageCount),
                     )
                 }
+
                 paper == Paper.Unreadable -> item { ImornBodyText(text = stringResource(R.string.paper_unreadable)) }
+
                 entry.kind != EntryKind.Note && !entry.isPdf -> item {
                     ImornImage(
                         path = kept.file,

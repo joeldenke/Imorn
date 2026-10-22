@@ -56,9 +56,10 @@ fun TodayScreen(
 ) {
     // The photo prompt of a step just done, asked once: chapter id, step id and the prompt.
     var prompting by rememberSaveable { mutableStateOf<List<String>?>(null) }
-    val done = { planned: PlannedStep ->
+    val done: (PlannedStep) -> Unit = { planned ->
         onDone(planned)
-        planned.step.photoPrompt?.let { prompting = listOf(planned.chapterId, planned.step.id, it) }
+        val prompt = planned.step.photoPrompt
+        if (prompt != null) prompting = listOf(planned.chapterId, planned.step.id, prompt)
     }
     val title = state.name?.let { stringResource(R.string.today_greeting, it) }
         ?: stringResource(R.string.today_screen_title)
