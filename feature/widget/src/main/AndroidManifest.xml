@@ -18,7 +18,6 @@
 
         <activity
             android:name=".WidgetPhotoActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Imorn" />
+            android:exported="false" />
     </application>
 </manifest>
