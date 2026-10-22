@@ -44,4 +44,5 @@ include(":core:model")
 include(":core:navigation")
 include(":core:ui")
 
+include(":feature:chapters")
 include(":feature:today")

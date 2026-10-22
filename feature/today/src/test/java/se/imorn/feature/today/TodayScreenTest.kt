@@ -3,53 +3,76 @@ package se.imorn.feature.today
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import se.imorn.coach.AssistantAvailability
 import se.imorn.designsystem.theme.ImornTheme
+import se.imorn.model.PlannedStep
+import se.imorn.model.tomorrowPlan
+import se.imorn.ui.PreviewData
 
 @RunWith(RobolectricTestRunner::class)
 class TodayScreenTest {
     @get:Rule
     val compose = createComposeRule()
 
-    @Test
-    fun showsNextStepAndAssistantMessage() {
+    private fun show(
+        hasChapters: Boolean = true,
+        onDone: (PlannedStep) -> Unit = {},
+        onTomorrow: (PlannedStep) -> Unit = {},
+        onNewChapter: () -> Unit = {},
+    ) {
+        val chapters = if (hasChapters) listOf(PreviewData.moving) else emptyList()
         compose.setContent {
             ImornTheme {
                 TodayScreen(
                     state = TodayUiState(
-                        availability = AssistantAvailability.Available,
-                        message = "Book the van first, it is the longest lead time.",
+                        today = PreviewData.TODAY,
+                        plan = tomorrowPlan(chapters, PreviewData.TODAY),
+                        hasChapters = hasChapters,
                     ),
+                    onDone = onDone,
+                    onTomorrow = onTomorrow,
+                    onNewChapter = onNewChapter,
                     onAskAssistant = {},
                     onDownloadAssistant = {},
                     contentPadding = PaddingValues(),
                 )
             }
         }
-
-        compose.onNodeWithText("Book the moving van").assertIsDisplayed()
-        compose.onNodeWithText("Book the van first, it is the longest lead time.").assertIsDisplayed()
-        compose.onNodeWithText("Explain the next step").assertIsDisplayed()
     }
 
     @Test
-    fun offersDownloadWhenTheModelIsNotThereYet() {
-        compose.setContent {
-            ImornTheme {
-                TodayScreen(
-                    state = TodayUiState(availability = AssistantAvailability.Downloadable),
-                    onAskAssistant = {},
-                    onDownloadAssistant = {},
-                    contentPadding = PaddingValues(),
-                )
-            }
-        }
+    fun showsTheLateStepFirstAndTheNextOne() {
+        show()
+        compose.onNodeWithText("Get moving boxes, tape and a marker").assertIsDisplayed()
+        compose.onNodeWithText("A little late").assertIsDisplayed()
+        compose.onNodeWithText("Report your move").assertExists()
+    }
 
-        compose.onNodeWithText("Download the assistant").assertIsDisplayed()
+    @Test
+    fun doneAndTomorrowAnswerTheStepTheyBelongTo() {
+        val done = mutableListOf<String>()
+        val tomorrow = mutableListOf<String>()
+        show(onDone = { done += it.step.id }, onTomorrow = { tomorrow += it.step.id })
+        compose.onAllNodesWithText("Done").onFirst().performClick()
+        compose.onAllNodesWithText("Tomorrow").onFirst().performClick()
+        assertEquals(listOf("boxes"), done)
+        assertEquals(listOf("boxes"), tomorrow)
+    }
+
+    @Test
+    fun withoutChaptersItInvitesTheFirstOne() {
+        var started = false
+        show(hasChapters = false, onNewChapter = { started = true })
+        compose.onNodeWithText("Nothing planned yet").assertIsDisplayed()
+        compose.onNodeWithText("Start a chapter").performClick()
+        assertEquals(true, started)
     }
 }

@@ -6,4 +6,6 @@ plugins {
 
 dependencies {
     implementation(projects.core.designsystem)
+    // The chapter in PreviewData.
+    api(projects.core.model)
 }
