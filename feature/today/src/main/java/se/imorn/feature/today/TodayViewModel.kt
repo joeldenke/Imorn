@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -18,6 +19,7 @@ import se.imorn.coach.AssistantAvailability
 import se.imorn.coach.AssistantPrompt
 import se.imorn.coach.AssistantRequest
 import se.imorn.coach.LanguageModel
+import se.imorn.data.ProfileStore
 import se.imorn.database.ChapterRepository
 import se.imorn.model.Chapter
 import se.imorn.model.PlannedStep
@@ -42,6 +44,8 @@ data class TodayUiState(
     /** Every chapter, for the quiet list under the plan. */
     val chapters: List<Chapter>,
     val assistant: AssistantUiState = AssistantUiState(),
+    /** The user's name for the greeting, if they gave one. */
+    val name: String? = null,
 ) {
     val hasChapters: Boolean get() = chapters.isNotEmpty()
 }
@@ -56,6 +60,7 @@ data class TodayUiState(
 @Inject
 class TodayViewModel(
     private val chapters: ChapterRepository,
+    private val profiles: ProfileStore,
     /** Gemini Nano on the device. Bound in :core:data and chosen nowhere else. */
     private val languageModel: LanguageModel,
 ) : ViewModel() {
@@ -63,8 +68,19 @@ class TodayViewModel(
     private val assistant = MutableStateFlow(AssistantUiState())
 
     /** Null until the chapters are read, so the screen never flashes an empty state. */
-    val state: StateFlow<TodayUiState?> = combine(chapters.chapters, today, assistant) { all, day, assistant ->
-        TodayUiState(today = day, plan = tomorrowPlan(all, day), chapters = all, assistant = assistant)
+    val state: StateFlow<TodayUiState?> = combine(
+        chapters.chapters,
+        today,
+        assistant,
+        profiles.profile.filterNotNull(),
+    ) { all, day, assistant, profile ->
+        TodayUiState(
+            today = day,
+            plan = tomorrowPlan(all, day),
+            chapters = all,
+            assistant = assistant,
+            name = profile.name,
+        )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     /** Reads "today" again and asks whether the assistant is there. Called when the screen is shown. */

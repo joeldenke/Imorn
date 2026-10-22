@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_title">Welcome to Imorn</string>
+    <string name="onboarding_body">Moving, renovating, a baby, an estate: Imorn knows what usually needs doing and shows you one thing at a time. There is always another day tomorrow.</string>
+    <string name="onboarding_name">What should we call you? (optional)</string>
+    <string name="onboarding_stages_title">What fits you right now?</string>
+    <string name="onboarding_stages_body">Choose as many as you like. It only decides which templates come first; all of them are always there.</string>
+    <string name="onboarding_start">Get started</string>
+    <string name="onboarding_skip">Skip for now</string>
+    <string name="onboarding_privacy">Everything stays on this phone.</string>
+
+    <string name="stage_on_my_own">On my own</string>
+    <string name="stage_on_my_own_examples">First flat, studies, first job, driving licence</string>
+    <string name="stage_building_up">Building up</string>
+    <string name="stage_building_up_examples">Buying a home, moving in together, children, renovating</string>
+    <string name="stage_midlife">In the middle of life</string>
+    <string name="stage_midlife_examples">A bigger home, children moving out, helping a parent</string>
+    <string name="stage_next_chapter">The next chapter</string>
+    <string name="stage_next_chapter_examples">Retiring, moving somewhere smaller, a will</string>
+    <string name="stage_new_in_sweden">New in Sweden</string>
+    <string name="stage_new_in_sweden_examples">Registration, ID card, bank, healthcare</string>
+    <string name="stage_something_hard">Something hard has happened</string>
+    <string name="stage_something_hard_examples">Someone has died, a separation, a lost job</string>
+</resources>

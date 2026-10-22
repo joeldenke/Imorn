@@ -13,6 +13,7 @@ imorn {
 
 dependencies {
     implementation(projects.feature.chapters)
+    implementation(projects.feature.onboarding)
     implementation(projects.feature.timeline)
     implementation(projects.feature.today)
 

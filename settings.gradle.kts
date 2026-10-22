@@ -45,5 +45,6 @@ include(":core:navigation")
 include(":core:ui")
 
 include(":feature:chapters")
+include(":feature:onboarding")
 include(":feature:timeline")
 include(":feature:today")

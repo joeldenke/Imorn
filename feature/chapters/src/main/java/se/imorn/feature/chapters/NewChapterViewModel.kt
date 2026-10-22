@@ -9,13 +9,17 @@ import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import se.imorn.content.Answer
 import se.imorn.content.Question
 import se.imorn.content.Template
 import se.imorn.content.instantiate
+import se.imorn.content.suggestedFirst
 import se.imorn.data.BundledContent
+import se.imorn.data.ProfileStore
 import se.imorn.database.ChapterRepository
 import java.time.LocalDate
 import java.util.UUID
@@ -54,6 +58,7 @@ enum class Stage { Template, Question, Dates }
 class NewChapterViewModel(
     private val content: BundledContent,
     private val chapters: ChapterRepository,
+    private val profiles: ProfileStore,
 ) : ViewModel() {
     private val _state = MutableStateFlow<NewChapterUiState?>(null)
 
@@ -62,7 +67,12 @@ class NewChapterViewModel(
 
     init {
         viewModelScope.launch {
-            _state.value = NewChapterUiState(templates = content.pack().templates, today = LocalDate.now())
+            // The templates for the user's life stages first; every template is always there.
+            val stages = profiles.profile.filterNotNull().first().lifeStages
+            _state.value = NewChapterUiState(
+                templates = content.pack().templates.suggestedFirst(stages),
+                today = LocalDate.now(),
+            )
         }
     }
 

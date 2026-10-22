@@ -32,6 +32,15 @@ class SettingsStoreTest {
         assertEquals(chosen, SettingsStore(context, stores.scope, stores.cipher).settings.await())
     }
 
+    @Test fun `the welcome stays done after a restart`() {
+        val store = SettingsStore(context, stores.scope, stores.cipher)
+        store.setOnboarded(true)
+        store.settings.await { it.onboarded }
+
+        stores.restart()
+        assertEquals(true, SettingsStore(context, stores.scope, stores.cipher).settings.await().onboarded)
+    }
+
     @Test fun `writes apply in order`() {
         val store = SettingsStore(context, stores.scope, stores.cipher)
         store.setTheme(ThemeMode.Dark)

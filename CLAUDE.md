@@ -33,6 +33,10 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   *Klart* och *Imorgon*), *Längre fram*, tomt läge som bjuder in till första kapitlet, och assistenten.
 - `:feature:chapters` – kapitlen: `NewChapterScreen` (mall, frågorna en i taget, ankardatum som får vara okända,
   sedan `instantiate` och spara).
+- `:feature:onboarding` – välkomsten vid första start, lätt med flit: vad Imorn är, namn (frivilligt) och "Vad stämmer
+  på dig just nu?" (`LifeStage`, flera val, i stället för ålder). Visas ensam (utan flikar) tills
+  `AppSettings.onboarded` är satt; allt går att hoppa över. Livsfaserna bestämmer bara vilka mallar som kommer först
+  (`suggestedFirst`), aldrig vilka som finns.
 - `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* per fas och *Tidslinje* runt nu-linjen,
   egna steg, vila, avsluta, radera) och ett steg (`StepScreen`: när, varför, länkkort som alltid visar organisation
   och domän, anteckning, *Klart*, *Imorgon*, eget datum, *Gäller inte*). ViewModels med ruttens id
@@ -49,7 +53,8 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:core:navigation` – `NavigationState` (en back stack per flik) och `Navigator`
 - `:core:coach` – ren Kotlin: assistentens `LanguageModel`-gränssnitt och `AssistantPrompt` (bygger prompten och
   tvättar svaret, enhetstestat). Se *Assistenten* under Regler.
-- `:core:data` – lagring i Preferences DataStore: `SettingsStore` (tema och bakgrundsfärger, `AppSettings`) är en
+- `:core:data` – lagring i Preferences DataStore: `SettingsStore` (tema, bakgrundsfärger och om välkomsten är klar,
+  `AppSettings`) och `ProfileStore` (namn och livsfaser, `Profile`). `SettingsStore` är en
   singleton i `AppScope` vars `StateFlow` får läsarna att läsa om efter en sparning. `PreferencesStore` (samma som
   Novilas) håller datan i minnet och köar sparningar i storens egen scope, i ordning och klara även när ViewModeln
   rensas. Filerna förseglas av `EncryptingPreferencesSerializer` med `KeystoreDatastoreCipher` (Tink, nyckeln i
@@ -73,8 +78,6 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `content/` – innehållspaketet: `links.json` (länkregistret) och `templates/*.json` (mallarna, i dag Flytta).
   `imorn { bundledContent() }` gör det till testindata och, i `:core:data`, till appens assets; `BundledContentTest`
   validerar det i CI.
-
-Planerat enligt roadmapen (Fas 1): onboarding light (namn, livsfas).
 
 Beroenden går nedåt: `:app` → `:feature:*` → `:core:ui`/`:core:navigation`/`:core:designsystem` → ren Kotlin.
 Strängar och ikoner ligger i modulen som använder dem; det flera moduler använder ligger i `:core:ui`.

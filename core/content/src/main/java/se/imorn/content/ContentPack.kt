@@ -1,6 +1,7 @@
 package se.imorn.content
 
 import kotlinx.serialization.json.Json
+import se.imorn.model.LifeStage
 
 /** The templates and links the app plans with: the pack baked into the app, later the one fetched (phase 4). */
 data class ContentPack(val links: List<Link>, val templates: List<Template>) {
@@ -18,4 +19,14 @@ data class ContentPack(val links: List<Link>, val templates: List<Template>) {
             templates = templateJsons.map { json.decodeFromString<Template>(it) },
         )
     }
+}
+
+/**
+ * The templates in the order to offer them: those made for one of [lifeStages] first, then the rest, each part in
+ * the pack's order. Every template stays in the list; the stages only decide what comes first.
+ */
+fun List<Template>.suggestedFirst(lifeStages: Set<LifeStage>): List<Template> {
+    val ids = lifeStages.map { it.id }.toSet()
+    val (suggested, rest) = partition { template -> template.lifestages.any { it in ids } }
+    return suggested + rest
 }
