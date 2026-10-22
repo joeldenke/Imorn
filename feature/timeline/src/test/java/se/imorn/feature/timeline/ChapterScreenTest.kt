@@ -74,7 +74,9 @@ class ChapterScreenTest {
     fun aStepOpensFromTheList() {
         val opened = mutableListOf<String>()
         show(ChapterView.List, onOpenStep = { opened += it })
-        compose.onNodeWithText("Report your move").performClick()
+        // Paperwork starts closed (the next step is in Packing): open it, then the step.
+        compose.onNodeWithText("Paperwork").performScrollTo().performClick()
+        compose.onNodeWithText("Report your move").performScrollTo().performClick()
         assertEquals(listOf("address-change"), opened)
     }
 
@@ -122,5 +124,16 @@ class ChapterScreenTest {
         compose.onNodeWithText("What do you want to remember?").performTextInput("Keys in the blue box")
         compose.onNodeWithText("Save").performClick()
         assertEquals(listOf("Keys in the blue box"), notes)
+    }
+
+    @Test
+    fun eachSubflowShowsItsProgressAndWhatIsNext() {
+        show(ChapterView.List)
+        // Plan: both steps done.
+        compose.onNodeWithText("All 2 done").assertExists()
+        // Paperwork is closed, so it says what is next instead of listing it.
+        compose.onNodeWithText("Next: Report your move", substring = true).assertExists()
+        compose.onNodeWithText("Paperwork").performScrollTo().performClick()
+        compose.onNodeWithText("Next: Report your move", substring = true).assertDoesNotExist()
     }
 }

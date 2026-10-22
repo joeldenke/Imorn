@@ -38,7 +38,8 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   (`LifeStage`, flera val, i stället för ålder). Inget namn och inget annat appen inte behöver. Visas ensam (utan
   flikar) tills `AppSettings.onboarded` är satt; *Hoppa över* finns alltid. Livsfaserna bestämmer bara vilka mallar
   som kommer först (`suggestedFirst`), aldrig vilka som finns.
-- `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* per fas, *Tidslinje* med berättelsen under
+- `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* som delflöden (`subflows`: varje fas ett kort
+  med framsteg och vad som är nästa, öppnas till sina steg), *Tidslinje* med berättelsen under
   nu-linjen (`story`: avbockade steg med sina foton och anteckningar) och *Papper*, snabb-+ (fota, välj foto, steg,
   anteckning, papper), egna steg, vila, avsluta, radera), ett steg (`StepScreen`: när, varför, länkkort som alltid
   visar organisation och domän, anteckning, stegets foton, *Klart* med foto-uppmaningen, *Imorgon*, eget datum,
@@ -79,7 +80,8 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:core:model` – ren Kotlin: kapitlen (`Chapter`, `Anchor`, `Phase`, `Step`, `Entry`, `LinkRef`), berättelsen
   (`Story.kt`: `story` och `papers`; papper är alltid `isPrivate` och aldrig del av berättelsen), `RelativeTime`
   (dag från ett ankare: dagar, månader eller "nästa år, april") och planen (`Plan.kt`: `dateOf`, `upcoming`,
-  `timeline` runt nu-linjen, ändringar som `complete` och `withAnchor`), `tomorrowPlan` för *Imorgon* (högst tre
+  `timeline` runt nu-linjen, `subflows` (faserna som delflöden med framsteg), ändringar som `complete` och
+  `withAnchor`), `tomorrowPlan` för *Imorgon* (högst tre
   saker: det försenade, sedan nästa steg per kapitel; långa trådar under *Längre fram*), samt `AppSettings`.
   Ett eget datum på ett steg vinner alltid och står kvar när ankaret flyttas; okända ankare ger steg utan datum i
   mallens ordning.

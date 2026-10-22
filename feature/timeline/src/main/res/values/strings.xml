@@ -6,6 +6,13 @@
     <string name="chapter_view_papers">Papers</string>
     <string name="chapter_own_steps">Your own steps</string>
     <string name="chapter_later">Later</string>
+    <!-- A subflow's progress: "2 of 5 done". -->
+    <string name="chapter_subflow_progress">%1$d of %2$d done</string>
+    <string name="chapter_subflow_finished">All %1$d done</string>
+    <!-- What is next in a subflow and when: "Next: Get a pre-approval, Feb 1". -->
+    <string name="chapter_subflow_next">Next: %1$s, %2$s</string>
+    <string name="chapter_subflow_show">Show the steps</string>
+    <string name="chapter_subflow_hide">Hide the steps</string>
     <string name="chapter_now">Now</string>
     <string name="chapter_nothing_left">Nothing left to do in this chapter.</string>
     <string name="chapter_nothing_done">What you do ends up here, below the line.</string>
