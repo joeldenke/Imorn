@@ -39,9 +39,12 @@ data class AssistantUiState(
 data class TodayUiState(
     val today: LocalDate,
     val plan: TomorrowPlan,
-    val hasChapters: Boolean,
+    /** Every chapter, for the quiet list under the plan. */
+    val chapters: List<Chapter>,
     val assistant: AssistantUiState = AssistantUiState(),
-)
+) {
+    val hasChapters: Boolean get() = chapters.isNotEmpty()
+}
 
 /**
  * The start screen's ViewModel: [tomorrowPlan] over every chapter in the database, re-read after each save, and
@@ -61,7 +64,7 @@ class TodayViewModel(
 
     /** Null until the chapters are read, so the screen never flashes an empty state. */
     val state: StateFlow<TodayUiState?> = combine(chapters.chapters, today, assistant) { all, day, assistant ->
-        TodayUiState(today = day, plan = tomorrowPlan(all, day), hasChapters = all.isNotEmpty(), assistant = assistant)
+        TodayUiState(today = day, plan = tomorrowPlan(all, day), chapters = all, assistant = assistant)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     /** Reads "today" again and asks whether the assistant is there. Called when the screen is shown. */

@@ -12,6 +12,11 @@
     <string name="today_done">Done</string>
     <string name="today_tomorrow">Tomorrow</string>
     <string name="today_later">Later</string>
+    <string name="today_chapters">Your chapters</string>
+    <string name="today_chapter_next">Next: %1$s</string>
+    <string name="today_chapter_resting">Resting</string>
+    <string name="today_chapter_closed">Finished</string>
+    <string name="today_chapter_nothing_left">Nothing left to do</string>
 
     <string name="assistant_title">Assistant</string>
     <string name="assistant_checking">Checking whether the on-device assistant is available…</string>

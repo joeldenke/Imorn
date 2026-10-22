@@ -208,10 +208,9 @@ sätt att leverera samma data.
 - [x] `:core:database`: Room med explicita migrationer, främmande nycklar, testade DAO:er
 - [x] Inbakat innehållspaket med mallen **Flytta** och länkregistret
 - [x] `:feature:today` blir *Imorgon*: högst tre saker – nästa steg per kapitel, det som är försenat, *Längre fram*
-- [ ] `:feature:chapters`: skapa kapitel från mall (frågor + ankare), kapitlets översikt, redigera, avsluta, vila, radera
-  (skapa från mall klart; översikt, redigera, avsluta, vila och radera kommer med tidslinjen)
-- [ ] `:feature:timeline`: Lista och Tidslinje med nu-linje, bocka av, flytta steg, egna steg
-- [ ] Steg-detalj: beskrivning, länkkort till myndigheten, "varför", anteckning
+- [x] `:feature:chapters`: skapa kapitel från mall (frågor + ankare), kapitlets översikt, redigera, avsluta, vila, radera
+- [x] `:feature:timeline`: Lista och Tidslinje med nu-linje, bocka av, flytta steg, egna steg
+- [x] Steg-detalj: beskrivning, länkkort till myndigheten, "varför", anteckning
 - [ ] Tomma lägen och onboarding light (namn, livsfas)
 
 ### Fas 2 – Fånga på vägen

@@ -8,6 +8,9 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import se.imorn.feature.chapters.navigation.NewChapterRoute
 import se.imorn.feature.chapters.navigation.chaptersEntries
+import se.imorn.feature.timeline.navigation.ChapterRoute
+import se.imorn.feature.timeline.navigation.StepRoute
+import se.imorn.feature.timeline.navigation.timelineEntries
 import se.imorn.feature.today.navigation.todayEntry
 import se.imorn.navigation.Navigator
 import se.imorn.navigation.TopLevelDestination
@@ -27,9 +30,17 @@ fun ImornApp() {
     val navigator = remember(navigationState) { Navigator(navigationState) }
     val entries = navigationState.toEntries(
         entryProvider<NavKey> {
+            val openStep = { chapterId: String, stepId: String -> navigator.navigate(StepRoute(chapterId, stepId)) }
             todayEntry(
                 contentPadding = PaddingValues(),
                 onNewChapter = { navigator.navigate(NewChapterRoute) },
+                onOpenStep = openStep,
+                onOpenChapter = { navigator.navigate(ChapterRoute(it)) },
+            )
+            timelineEntries(
+                contentPadding = PaddingValues(),
+                onOpenStep = openStep,
+                onBack = navigator::goBack,
             )
             chaptersEntries(
                 contentPadding = PaddingValues(),

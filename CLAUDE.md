@@ -32,7 +32,11 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:feature:today` – *Imorgon*, startskärmen: `tomorrowPlan` över alla kapitel (högst tre saker, var och en med
   *Klart* och *Imorgon*), *Längre fram*, tomt läge som bjuder in till första kapitlet, och assistenten.
 - `:feature:chapters` – kapitlen: `NewChapterScreen` (mall, frågorna en i taget, ankardatum som får vara okända,
-  sedan `instantiate` och spara). Varje feature äger sin navigation
+  sedan `instantiate` och spara).
+- `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* per fas och *Tidslinje* runt nu-linjen,
+  egna steg, vila, avsluta, radera) och ett steg (`StepScreen`: när, varför, länkkort som alltid visar organisation
+  och domän, anteckning, *Klart*, *Imorgon*, eget datum, *Gäller inte*). ViewModels med ruttens id
+  (`@AssistedInject`, `assistedMetroViewModel`). Varje feature äger sin navigation
   (`navigation/`): `@Serializable`-rutter (`NavKey`) och `EntryProviderScope<NavKey>.<feature>Entry(...)`, som `:app`
   lägger i sin `entryProvider`. Features beror aldrig på varandra (`ArchitectureTest`); flikbyten går via callbacks
   från `:app`.
@@ -70,7 +74,7 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   `imorn { bundledContent() }` gör det till testindata och, i `:core:data`, till appens assets; `BundledContentTest`
   validerar det i CI.
 
-Planerat enligt roadmapen (Fas 1): `:feature:timeline` (lista, tidslinje med nu-linjen, steg-detalj).
+Planerat enligt roadmapen (Fas 1): onboarding light (namn, livsfas).
 
 Beroenden går nedåt: `:app` → `:feature:*` → `:core:ui`/`:core:navigation`/`:core:designsystem` → ren Kotlin.
 Strängar och ikoner ligger i modulen som använder dem; det flera moduler använder ligger i `:core:ui`.

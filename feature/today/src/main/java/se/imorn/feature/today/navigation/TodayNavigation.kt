@@ -17,10 +17,16 @@ import se.imorn.feature.today.TodayViewModel
 @Serializable data object TodayRoute : NavKey
 
 /**
- * Today's entry, with its own [TodayViewModel] scoped to the entry. Starting a chapter opens another feature, so
- * [onNewChapter] comes from the app. The assistant request is built here, where the user's language is known.
+ * Today's entry, with its own [TodayViewModel] scoped to the entry. Starting a chapter and opening a step or a
+ * chapter open other features, so those callbacks come from the app. The assistant request is built here, where
+ * the user's language is known.
  */
-fun EntryProviderScope<NavKey>.todayEntry(contentPadding: PaddingValues, onNewChapter: () -> Unit) {
+fun EntryProviderScope<NavKey>.todayEntry(
+    contentPadding: PaddingValues,
+    onNewChapter: () -> Unit,
+    onOpenStep: (chapterId: String, stepId: String) -> Unit,
+    onOpenChapter: (chapterId: String) -> Unit,
+) {
     entry<TodayRoute> {
         val viewModel = metroViewModel<TodayViewModel>()
         // Read "today" and the model's state on resume, never in the background.
@@ -37,6 +43,8 @@ fun EntryProviderScope<NavKey>.todayEntry(contentPadding: PaddingValues, onNewCh
             onDone = viewModel::done,
             onTomorrow = viewModel::tomorrow,
             onNewChapter = onNewChapter,
+            onOpenStep = { onOpenStep(it.chapterId, it.step.id) },
+            onOpenChapter = onOpenChapter,
             onAskAssistant = {
                 val items = current.plan.items.map { it.planned }
                 viewModel.askAssistant(

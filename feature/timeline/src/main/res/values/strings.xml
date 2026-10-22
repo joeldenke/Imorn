@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chapter_anchor_unknown">Not known yet. Tap to choose a date.</string>
+    <string name="chapter_view_list">List</string>
+    <string name="chapter_view_timeline">Timeline</string>
+    <string name="chapter_own_steps">Your own steps</string>
+    <string name="chapter_later">Later</string>
+    <string name="chapter_now">Now</string>
+    <string name="chapter_nothing_left">Nothing left to do in this chapter.</string>
+    <string name="chapter_nothing_done">What you do ends up here, below the line.</string>
+    <!-- When a step was done, such as "Done Feb 1, 2027" or "Done Yesterday". -->
+    <string name="chapter_done_on">Done: %1$s</string>
+    <string name="chapter_late_since">%1$s, a little late</string>
+    <string name="chapter_add_step">Add a step</string>
+    <string name="chapter_add_step_label">What do you need to do?</string>
+    <string name="chapter_add_step_confirm">Add</string>
+    <string name="chapter_rest">Rest the chapter</string>
+    <string name="chapter_close">Finish it</string>
+    <string name="chapter_wake">Wake the chapter</string>
+    <string name="chapter_delete">Delete</string>
+    <string name="chapter_delete_title">Delete the chapter?</string>
+    <string name="chapter_delete_text">Its plan and everything kept in it are deleted from this phone. This can\'t be undone.</string>
+    <string name="chapter_state_active">This chapter is active.</string>
+    <string name="chapter_state_resting">This chapter is resting. Imorn keeps an eye on what is far ahead.</string>
+    <string name="chapter_state_closed">This chapter is finished.</string>
+
+    <string name="step_deadline">Last day: %1$s</string>
+    <string name="step_not_applicable_note">Doesn\'t apply</string>
+    <string name="step_done">Done</string>
+    <string name="step_tomorrow">Tomorrow</string>
+    <string name="step_choose_date">Choose a day</string>
+    <string name="step_follow_plan">Follow the plan</string>
+    <string name="step_not_applicable">Doesn\'t apply</string>
+    <string name="step_reopen">Not done after all</string>
+    <string name="step_note">Note</string>
+    <string name="step_save_note">Save the note</string>
+    <!-- What to search for on a site, such as "Search for: change of address". -->
+    <string name="step_search_for">Search for: %1$s</string>
+
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+</resources>

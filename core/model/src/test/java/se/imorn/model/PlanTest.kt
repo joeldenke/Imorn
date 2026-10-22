@@ -60,6 +60,20 @@ class PlanTest {
         assertEquals(false, chapter.steps.last().fromTemplate)
     }
 
+    @Test fun `the list groups open steps by phase in plan order, own steps last`() {
+        val chapter = moving().complete("notice", LocalDate.of(2026, 12, 1)).withOwnStep(Step("own-1", "Call grandma"))
+        val groups = chapter.upcomingByPhase()
+        assertEquals(listOf("plan", "papers", null), groups.map { it.phase?.id })
+        assertEquals(listOf("book-van", "boxes"), groups[0].steps.ids)
+        assertEquals(listOf("address"), groups[1].steps.ids)
+        assertEquals(listOf("own-1"), groups[2].steps.ids)
+    }
+
+    @Test fun `a phase with nothing left disappears from the list`() {
+        val chapter = moving().complete("address", LocalDate.of(2027, 2, 1))
+        assertEquals(listOf("plan"), chapter.upcomingByPhase().map { it.phase?.id })
+    }
+
     @Test(expected = IllegalArgumentException::class)
     fun `an own step cannot reuse an id`() {
         moving().withOwnStep(Step("boxes", "Boxes again"))

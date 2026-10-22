@@ -50,26 +50,33 @@ fun ImornScaffold(
     )
 }
 
-/** A card for every block of content: a lighter surface with a hairline outline and the app's shape. */
+/**
+ * A card for every block of content: a lighter surface with a hairline outline and the app's shape. With [onClick]
+ * the whole card opens what it shows, such as a step or a chapter.
+ */
 @Composable
 fun ImornCard(
     modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
-    Card(
-        modifier = modifier,
-        shape = ImornTheme.shapes.medium,
-        colors = CardDefaults.cardColors(
-            containerColor = ImornTheme.surfaces.card,
-            contentColor = ImornTheme.colors.onSurface,
-        ),
-        border = BorderStroke(1.dp, ImornTheme.surfaces.cardOutline),
-    ) {
+    val shape = ImornTheme.shapes.medium
+    val colors = CardDefaults.cardColors(
+        containerColor = ImornTheme.surfaces.card,
+        contentColor = ImornTheme.colors.onSurface,
+    )
+    val border = BorderStroke(1.dp, ImornTheme.surfaces.cardOutline)
+    val body: @Composable () -> Unit = {
         Column(
             modifier = Modifier.padding(ImornTheme.spacing.md),
             verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm),
             content = { content() },
         )
+    }
+    if (onClick == null) {
+        Card(modifier = modifier, shape = shape, colors = colors, border = border) { body() }
+    } else {
+        Card(onClick = onClick, modifier = modifier, shape = shape, colors = colors, border = border) { body() }
     }
 }
 
