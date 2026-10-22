@@ -5,7 +5,6 @@ import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
 import kotlinx.coroutines.flow.first
-import se.imorn.database.ChapterRepository
 import se.imorn.model.complete
 import se.imorn.model.withStepDate
 import java.time.LocalDate
@@ -19,8 +18,9 @@ class WidgetDoneActionCallback : ActionCallback {
         val chapterId = parameters[CHAPTER_ID] ?: return
         val stepId = parameters[STEP_ID] ?: return
         val app = context.applicationContext as se.imorn.ImornApplication
-        val repository = (app.graph as se.imorn.di.AppGraph).chapterRepository
-        val chapter = repository.chapters.first().firstOrNull { it.id == chapterId } ?: return
+        val repository = app.graph.chapterRepository
+        val chapters = repository.chapters.first()
+        val chapter = chapters.firstOrNull { it.id == chapterId } ?: return
         repository.save(chapter.complete(stepId, LocalDate.now()))
         ImornWidget(repository).update(context, glanceId)
     }
@@ -40,8 +40,9 @@ class WidgetTomorrowActionCallback : ActionCallback {
         val chapterId = parameters[CHAPTER_ID] ?: return
         val stepId = parameters[STEP_ID] ?: return
         val app = context.applicationContext as se.imorn.ImornApplication
-        val repository = (app.graph as se.imorn.di.AppGraph).chapterRepository
-        val chapter = repository.chapters.first().firstOrNull { it.id == chapterId } ?: return
+        val repository = app.graph.chapterRepository
+        val chapters = repository.chapters.first()
+        val chapter = chapters.firstOrNull { it.id == chapterId } ?: return
         val tomorrow = LocalDate.now().plusDays(1)
         repository.save(chapter.withStepDate(stepId, tomorrow))
         ImornWidget(repository).update(context, glanceId)

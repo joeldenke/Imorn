@@ -25,9 +25,7 @@ import androidx.glance.layout.width
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.SingleIn
+import androidx.glance.unit.ColorProvider
 import kotlinx.coroutines.flow.first
 import se.imorn.database.ChapterRepository
 import se.imorn.model.ChapterState
@@ -54,7 +52,17 @@ class ImornWidget(private val repository: ChapterRepository) : GlanceAppWidget()
     companion object {
         fun create(context: Context): ImornWidget {
             val app = context.applicationContext as se.imorn.ImornApplication
-            val repo = (app.graph as se.imorn.di.AppGraph).chapterRepository
+            val graph = (app as? se.imorn.ImornApplication)?.graph
+            val repo = if (graph != null) {
+                try {
+                    graph.chapterRepository
+                } catch (e: Exception) {
+                    // Fallback for build
+                    throw e
+                }
+            } else {
+                throw IllegalStateException("No app")
+            }
             return ImornWidget(repo)
         }
     }
@@ -118,14 +126,15 @@ fun WidgetContent(
             verticalAlignment = Alignment.Vertical.CenterVertically,
         ) {
             val photoAction: Action = if (chapterId != null && stepId != null) {
-                actionStartActivity<WidgetPhotoActivity>(
+                actionStartActivity(
+                    WidgetPhotoActivity::class.java,
                     androidx.glance.action.actionParametersOf(
                         WidgetPhotoActivity.CHAPTER_ID to chapterId,
                         WidgetPhotoActivity.STEP_ID to stepId,
                     ),
                 )
             } else {
-                actionStartActivity<WidgetPhotoActivity>()
+                actionStartActivity(WidgetPhotoActivity::class.java)
             }
             Text(
                 text = "Snabbfoto",
@@ -164,19 +173,19 @@ fun WidgetContent(
 }
 
 object WidgetColors {
-    val background = androidx.glance.unit.ColorProvider(
+    val background = ColorProvider(
         day = androidx.compose.ui.graphics.Color(0xFFF7F5FF),
         night = androidx.compose.ui.graphics.Color(0xFF151226),
     )
-    val textPrimary = androidx.glance.unit.ColorProvider(
+    val textPrimary = ColorProvider(
         day = androidx.compose.ui.graphics.Color(0xFF1F1B2E),
         night = androidx.compose.ui.graphics.Color(0xFFF5F3FF),
     )
-    val accent = androidx.glance.unit.ColorProvider(
+    val accent = ColorProvider(
         day = androidx.compose.ui.graphics.Color(0xFF5B4BFF),
         night = androidx.compose.ui.graphics.Color(0xFFB9B0FF),
     )
-    val accentAlt = androidx.glance.unit.ColorProvider(
+    val accentAlt = ColorProvider(
         day = androidx.compose.ui.graphics.Color(0xFFFF7A3E),
         night = androidx.compose.ui.graphics.Color(0xFFFF9C6B),
     )

@@ -1,8 +1,7 @@
 package se.imorn.feature.widget
 
-import android.os.Build
-import androidx.compose.runtime.Composable
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
+import com.github.takahirom.roborazzi.RoborazziRule
 import com.github.takahirom.roborazzi.captureRoboImage
 import org.junit.Rule
 import org.junit.Test
@@ -17,9 +16,9 @@ import se.imorn.designsystem.theme.ImornTheme
 @Config(sdk = [36], qualifiers = RobolectricDeviceQualifiers.Pixel6)
 class WidgetScreenshotTest {
     @get:Rule
-    val roborazziRule = com.github.takahirom.roborazzi.RoborazziRule(
-        options = com.github.takahirom.roborazzi.RoborazziRule.Options(
-            captureRoot = com.github.takahirom.roborazzi.captureRoboImage,
+    val roborazziRule = RoborazziRule(
+        options = RoborazziRule.Options(
+            captureRoot = { it.captureRoboImage() },
         ),
     )
 
