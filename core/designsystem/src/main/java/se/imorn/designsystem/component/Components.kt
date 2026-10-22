@@ -4,8 +4,13 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -19,7 +24,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import se.imorn.designsystem.theme.ImornTheme
 
-/** A screen scaffold: an optional title bar and the app's background, with the standard content padding. */
+/**
+ * A screen scaffold: an optional title bar and the app's background, with the standard content padding. The app is
+ * edge to edge, so the title keeps clear of the status bar and display cutouts itself: Scaffold only pads the
+ * content, never a custom top bar.
+ */
 @Composable
 fun ImornScaffold(
     modifier: Modifier = Modifier,
@@ -42,6 +51,9 @@ fun ImornScaffold(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
+                        )
                         .padding(
                             horizontal = ImornTheme.spacing.md,
                             vertical = ImornTheme.spacing.lg,
