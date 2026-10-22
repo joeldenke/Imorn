@@ -51,8 +51,9 @@ class ImornWidget(private val repository: ChapterRepository) : GlanceAppWidget()
 
     companion object {
         fun create(context: Context): ImornWidget {
-            val app = context.applicationContext as se.imorn.ImornApplication
-            val graph = app.graph
+            val app = context.applicationContext
+            val graph = (app as? se.imorn.ImornApplication)?.graph
+                ?: throw IllegalStateException("No graph")
             val repo = graph.chapterRepository
             return ImornWidget(repo)
         }

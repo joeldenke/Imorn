@@ -31,12 +31,6 @@ class WidgetPhotoActivity : ComponentActivity() {
                 finish()
                 return@launch
             }
-            // Quick photo via existing capture mechanism - launch camera picker flow
-            try {
-                val intent = androidx.activity.result.contract.ActivityResultContracts.TakePicture()
-                // Simplified: rely on system picker
-            } catch (_: Exception) {
-            }
             finish()
         }
     }
