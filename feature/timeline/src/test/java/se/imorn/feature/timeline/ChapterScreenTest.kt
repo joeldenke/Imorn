@@ -90,9 +90,9 @@ class ChapterScreenTest {
     fun theTimelineTellsTheStoryWithWhatWasKept() {
         val opened = mutableListOf<String>()
         show(ChapterView.Timeline, onOpenEntry = { opened += it })
-        compose.onNodeWithText("The new kitchen gets the morning sun.").assertExists()
-        compose.onNodeWithContentDescription("Photo: Book movers or a trailer").performScrollTo().performClick()
-        assertEquals(listOf("preview-photo"), opened)
+        compose.onNodeWithContentDescription("Photo: Book movers or a trailer").assertExists()
+        compose.onNodeWithText("The new kitchen gets the morning sun.").performScrollTo().performClick()
+        assertEquals(listOf("preview-note"), opened)
         // Papers are private: never part of the story.
         compose.onNodeWithText("Lease for Norra Kungsgatan 4").assertDoesNotExist()
     }

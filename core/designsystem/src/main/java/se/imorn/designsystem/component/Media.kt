@@ -26,6 +26,8 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -101,7 +103,13 @@ fun ImornImage(
     val shape = ImornTheme.shapes.small
     val current = image
     if (current == null) {
-        Box(modifier.clip(shape).background(ImornTheme.colors.tertiaryContainer))
+        // Still a picture to TalkBack while it loads, or when the file is missing.
+        val described = if (contentDescription != null) {
+            Modifier.semantics { this.contentDescription = contentDescription }
+        } else {
+            Modifier
+        }
+        Box(modifier.clip(shape).background(ImornTheme.colors.tertiaryContainer).then(described))
     } else {
         Image(
             bitmap = current,
