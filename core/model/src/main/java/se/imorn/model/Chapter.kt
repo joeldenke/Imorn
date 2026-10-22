@@ -72,15 +72,30 @@ enum class StepStatus {
 @JvmInline
 value class LinkRef(val id: String)
 
-/** Something kept along the way: a note, a photo, a paper. Captured in phase 2; the model is here already. */
+/**
+ * Something kept along the way: a note, a photo or a paper. Photos and notes become part of the chapter's story;
+ * papers (letters, contracts, receipts) are kept on their own and are always [isPrivate].
+ */
 data class Entry(
     val id: String,
     val chapterId: String,
     val kind: EntryKind,
     val on: LocalDate,
+    /** The note itself, a photo's caption, or a paper's name. */
     val text: String? = null,
     /** The step it belongs to, when it was captured as one was done. */
     val stepId: String? = null,
-)
+    /** The kept file's name in the chapter's folder in the app's private storage, for photos and papers. */
+    val file: String? = null,
+    /** The kept file's type, such as `image/jpeg` or `application/pdf`. */
+    val mimeType: String? = null,
+) {
+    /** Papers may carry a personal identity number: they stay on the phone and are never part of a shared story. */
+    val isPrivate: Boolean get() = kind == EntryKind.Paper
+
+    val isPdf: Boolean get() = mimeType == PDF
+}
 
 enum class EntryKind { Note, Photo, Paper }
+
+const val PDF = "application/pdf"

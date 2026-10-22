@@ -92,6 +92,9 @@ internal data class EntryEntity(
     val day: Long,
     val text: String?,
     val stepId: String?,
+    /** Added in version 2: the kept file's name in the chapter's folder, and its type. */
+    val file: String?,
+    val mimeType: String?,
 )
 
 /** A chapter with everything in it, as Room reads it in one transaction. */

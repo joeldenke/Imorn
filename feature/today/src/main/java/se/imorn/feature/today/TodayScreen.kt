@@ -10,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +31,7 @@ import se.imorn.model.PlannedStep
 import se.imorn.model.TomorrowItem
 import se.imorn.model.next
 import se.imorn.model.tomorrowPlan
+import se.imorn.ui.PhotoPromptDialog
 import se.imorn.ui.PreviewData
 import se.imorn.ui.dayText
 
@@ -45,9 +50,16 @@ fun TodayScreen(
     onOpenChapter: (String) -> Unit,
     onAskAssistant: () -> Unit,
     onDownloadAssistant: () -> Unit,
+    onTakePhoto: (chapterId: String, stepId: String) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
+    // The photo prompt of a step just done, asked once: chapter id, step id and the prompt.
+    var prompting by rememberSaveable { mutableStateOf<List<String>?>(null) }
+    val done = { planned: PlannedStep ->
+        onDone(planned)
+        planned.step.photoPrompt?.let { prompting = listOf(planned.chapterId, planned.step.id, it) }
+    }
     val title = state.name?.let { stringResource(R.string.today_greeting, it) }
         ?: stringResource(R.string.today_screen_title)
     ImornScaffold(title = title, modifier = modifier) { scaffoldPadding ->
@@ -68,7 +80,7 @@ fun TodayScreen(
                 }
 
                 else -> state.plan.items.forEach { item ->
-                    ItemCard(item, state, onDone, onTomorrow, onOpenStep)
+                    ItemCard(item, state, done, onTomorrow, onOpenStep)
                 }
             }
             if (state.plan.later.isNotEmpty()) {
@@ -92,6 +104,16 @@ fun TodayScreen(
                 ImornSecondaryButton(text = stringResource(R.string.today_new_chapter), onClick = onNewChapter)
             }
         }
+    }
+    prompting?.let { (chapterId, stepId, prompt) ->
+        PhotoPromptDialog(
+            prompt = prompt,
+            onTakePhoto = {
+                prompting = null
+                onTakePhoto(chapterId, stepId)
+            },
+            onDismiss = { prompting = null },
+        )
     }
 }
 
@@ -243,6 +265,7 @@ private fun PreviewScreen(state: TodayUiState) {
             onOpenChapter = {},
             onAskAssistant = {},
             onDownloadAssistant = {},
+            onTakePhoto = { _, _ -> },
             contentPadding = PaddingValues(),
         )
     }

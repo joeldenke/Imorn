@@ -24,10 +24,13 @@ import se.imorn.designsystem.theme.ImornTheme
 fun ImornScaffold(
     modifier: Modifier = Modifier,
     title: String? = null,
+    // The screen's one floating button, if it has one, such as a chapter's quick +.
+    floatingAction: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
+        floatingActionButton = floatingAction,
         containerColor = ImornTheme.colors.background,
         topBar = {
             if (title != null) {

@@ -44,6 +44,9 @@ internal abstract class ChapterDao {
     @Query("SELECT * FROM entries WHERE chapterId = :chapterId ORDER BY day DESC, id")
     abstract fun observeEntries(chapterId: String): Flow<List<EntryEntity>>
 
+    @Query("SELECT * FROM entries WHERE id = :id")
+    abstract fun observeEntry(id: String): Flow<EntryEntity?>
+
     @Upsert
     abstract suspend fun upsertEntry(entry: EntryEntity)
 

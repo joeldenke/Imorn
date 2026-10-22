@@ -3,6 +3,7 @@
     <string name="chapter_anchor_unknown">Not known yet. Tap to choose a date.</string>
     <string name="chapter_view_list">List</string>
     <string name="chapter_view_timeline">Timeline</string>
+    <string name="chapter_view_papers">Papers</string>
     <string name="chapter_own_steps">Your own steps</string>
     <string name="chapter_later">Later</string>
     <string name="chapter_now">Now</string>
@@ -19,7 +20,7 @@
     <string name="chapter_wake">Wake the chapter</string>
     <string name="chapter_delete">Delete</string>
     <string name="chapter_delete_title">Delete the chapter?</string>
-    <string name="chapter_delete_text">Its plan and everything kept in it are deleted from this phone. This can\'t be undone.</string>
+    <string name="chapter_delete_text">Its plan, photos, notes and papers are deleted from this phone. Photos you chose from your gallery stay there; photos taken in Imorn are deleted with it. This can\'t be undone.</string>
     <string name="chapter_state_active">This chapter is active.</string>
     <string name="chapter_state_resting">This chapter is resting. Imorn keeps an eye on what is far ahead.</string>
     <string name="chapter_state_closed">This chapter is finished.</string>
@@ -34,8 +35,32 @@
     <string name="step_reopen">Not done after all</string>
     <string name="step_note">Note</string>
     <string name="step_save_note">Save the note</string>
+    <string name="step_add_photo">Add a photo</string>
     <!-- What to search for on a site, such as "Search for: change of address". -->
     <string name="step_search_for">Search for: %1$s</string>
+
+    <string name="quick_add">Add to the chapter</string>
+    <string name="quick_take_photo">Take a photo</string>
+    <string name="quick_choose_photo">Choose a photo</string>
+    <string name="quick_note">Write a note</string>
+    <string name="note_label">What do you want to remember?</string>
+    <string name="note_save">Save</string>
+
+    <string name="photo">Photo</string>
+    <!-- A photo's description for TalkBack, such as "Photo: Book movers or a trailer". -->
+    <string name="photo_of">Photo: %1$s</string>
+    <string name="note">Note</string>
+    <string name="paper">Paper</string>
+    <string name="paper_add">Add a paper</string>
+    <string name="paper_private">Only on this phone</string>
+    <string name="papers_intro">Letters, contracts and receipts. Papers are kept here, on this phone, and never shared.</string>
+    <string name="papers_empty">No papers yet. Add a PDF or a photo of a paper.</string>
+    <!-- A PDF page's description for TalkBack: "Page 1 of 3". -->
+    <string name="paper_page">Page %1$d of %2$d</string>
+    <string name="paper_unreadable">This PDF can\'t be shown on this phone.</string>
+    <string name="entry_delete">Delete</string>
+    <string name="entry_delete_title">Delete this?</string>
+    <string name="entry_delete_text">It is deleted from this phone. This can\'t be undone.</string>
 
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>

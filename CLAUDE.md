@@ -37,19 +37,24 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   på dig just nu?" (`LifeStage`, flera val, i stället för ålder). Visas ensam (utan flikar) tills
   `AppSettings.onboarded` är satt; allt går att hoppa över. Livsfaserna bestämmer bara vilka mallar som kommer först
   (`suggestedFirst`), aldrig vilka som finns.
-- `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* per fas och *Tidslinje* runt nu-linjen,
-  egna steg, vila, avsluta, radera) och ett steg (`StepScreen`: när, varför, länkkort som alltid visar organisation
-  och domän, anteckning, *Klart*, *Imorgon*, eget datum, *Gäller inte*). ViewModels med ruttens id
-  (`@AssistedInject`, `assistedMetroViewModel`). Varje feature äger sin navigation
-  (`navigation/`): `@Serializable`-rutter (`NavKey`) och `EntryProviderScope<NavKey>.<feature>Entry(...)`, som `:app`
-  lägger i sin `entryProvider`. Features beror aldrig på varandra (`ArchitectureTest`); flikbyten går via callbacks
-  från `:app`.
+- `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* per fas, *Tidslinje* med berättelsen under
+  nu-linjen (`story`: avbockade steg med sina foton och anteckningar) och *Papper*, snabb-+ (fota, välj foto, steg,
+  anteckning, papper), egna steg, vila, avsluta, radera), ett steg (`StepScreen`: när, varför, länkkort som alltid
+  visar organisation och domän, anteckning, stegets foton, *Klart* med foto-uppmaningen, *Imorgon*, eget datum,
+  *Gäller inte*) och något sparat (`EntryScreen`: fotot, anteckningen eller pappret, PDF:er sida för sida med
+  `PdfRenderer` i appen, radera). ViewModels med ruttens id (`@AssistedInject`, `assistedMetroViewModel`).
+  Varje feature äger sin navigation (`navigation/`): `@Serializable`-rutter (`NavKey`) och
+  `EntryProviderScope<NavKey>.<feature>Entry(...)`, som `:app` lägger i sin `entryProvider`. Features beror aldrig
+  på varandra (`ArchitectureTest`); flikbyten går via callbacks från `:app`.
 - `:core:designsystem` – `se.imorn.designsystem`, enda modulen som använder Material 3 direkt
   - `theme` – `ImornTheme`: färger (`ImornColors`, paletten *Gryning*), typografi (Figtree), former och spacing
   - `component` – `Imorn*`-komponenter som wrappar Material 3 (`ImornScaffold`, `ImornCard`, `ImornButton`,
-    `ImornText` …)
+    `ImornText`, `ImornSheet`, `ImornFloatingButton` …), `ImornIcons` (egna vektorer, inget ikonbibliotek) och
+    `ImornImage` (en sparad bild, läst utanför huvudtråden; en lugn ruta i previews)
 - `:core:ui` – det flera features delar: `dayText` (i dag, i morgon, i går eller datumet i användarens locale; dagen
-  kommer från ViewModeln) och `PreviewData` (samma kapitel och dag, `TODAY`, i alla previews)
+  kommer från ViewModeln), `rememberCapture` (kameraappen via `TakePicture` och en egen `FileProvider` i cachen,
+  Photo Picker och filväljaren, inga behörigheter; ligger i entryn, aldrig i skärmen), `PhotoPromptDialog` och
+  `PreviewData` (samma kapitel, dag, `TODAY`, och sparade saker, `kept`, i alla previews)
 - `:core:navigation` – `NavigationState` (en back stack per flik) och `Navigator`
 - `:core:coach` – ren Kotlin: assistentens `LanguageModel`-gränssnitt och `AssistantPrompt` (bygger prompten och
   tvättar svaret, enhetstestat). Se *Assistenten* under Regler.
@@ -64,8 +69,12 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:core:database` – Room: `ImornDatabase` (kapitel, ankare, faser, steg och minnen, med främmande nycklar som tar
   allt i ett kapitel med sig) och `ChapterRepository` (singleton i `AppScope`), som sparar hela kapitel i en
   transaktion och läser dem som `Flow`, så skärmarna läser om efter varje sparning. Ändra ett kapitel med
-  funktionerna i `:core:model` och spara det. Schemat exporteras till `core/database/schemas`, se *Lagring*.
-- `:core:model` – ren Kotlin: kapitlen (`Chapter`, `Anchor`, `Phase`, `Step`, `Entry`, `LinkRef`), `RelativeTime`
+  funktionerna i `:core:model` och spara det. Foton och papper är filer i `files/kept/<kapitel>/` (`KeptFiles`):
+  bilder sparas om som JPEG, rättvända, högst 2560 px och utan kamerans metadata (plats), PDF:er som de är, var och en
+  med en miniatyr. `ChapterRepository.keep`/`delete` är enda vägen in och ut, så filerna alltid följer med när en
+  post eller ett kapitel raderas. Schemat exporteras till `core/database/schemas`, se *Lagring*.
+- `:core:model` – ren Kotlin: kapitlen (`Chapter`, `Anchor`, `Phase`, `Step`, `Entry`, `LinkRef`), berättelsen
+  (`Story.kt`: `story` och `papers`; papper är alltid `isPrivate` och aldrig del av berättelsen), `RelativeTime`
   (dag från ett ankare: dagar, månader eller "nästa år, april") och planen (`Plan.kt`: `dateOf`, `upcoming`,
   `timeline` runt nu-linjen, ändringar som `complete` och `withAnchor`), `tomorrowPlan` för *Imorgon* (högst tre
   saker: det försenade, sedan nästa steg per kapitel; långa trådar under *Längre fram*), samt `AppSettings`.
@@ -202,7 +211,8 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
 - **Lagring:** aldrig SharedPreferences. Inställningar och små värden sparas i en store i `:core:data` ovanpå
   `PreferencesStore` (krypterad DataStore, en `@SingleIn(AppScope::class)` per fil, testad med Robolectric och
   `testCipher()`). Kapitel och steg ligger i Room (`:core:database`, `imorn { room() }`), testat med en databas i
-  minnet. Ändra aldrig en tabell utan att höja versionen i `ImornDatabase` och skriva en migration med test. Det
+  minnet. Ändra aldrig en tabell utan att höja versionen i `ImornDatabase` och skriva en migration med test
+  (`MigrationTest` bygger den gamla databasen ur dess exporterade schema och låter Room migrera och kontrollera). Det
   exporterade schemat i `schemas/` är granskat som badgingen: CI (Tests) fallerar när bygget ändrar det, och
   `/record-schemas` spelar in det. Ta aldrig fram schemat lokalt.
 - **Säkerhetskopia:** Auto Backup och flytt till ny telefon kopierar ingenting (`app/src/main/res/xml`, båda filerna
@@ -215,6 +225,10 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
   tas bort i appens manifest (`tools:node="remove"`). Lägg aldrig tillbaka den utan ägarens ok; roadmapen tar det
   beslutet i Fas 4 (innehållet) och Fas 7 (familjen). Inga analysverktyg eller Firebase-SDK:er i appen utan att
   ägaren ber om det.
+- **Foton och papper:** bara Photo Picker, kameraappen (`TakePicture`) och filväljaren, så appen behöver ingen
+  behörighet för dem; `CAMERA` kommer först med före/efter-hinnan (Fas 2, ägarens ok). Allt kopieras till appens
+  privata lagring direkt och läses aldrig från galleriet igen. Papper visas bara i appen (PDF:er med
+  `PdfRenderer`), skickas aldrig till en annan app och märks *Bara på den här telefonen*.
 - **Behörigheter:** varje ny behörighet (kamera, notiser …) kräver ägarens ok, skillen
   `android-permissions-security` och en ny rad i badging. Fråga i sammanhanget, aldrig vid start.
 - **Påminnelser** (Fas 3): som i Novila, bara WorkManager, ett engångsjobb som lägger nästa själv. Inga periodiska
