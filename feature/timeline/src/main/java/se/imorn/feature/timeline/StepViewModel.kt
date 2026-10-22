@@ -1,5 +1,6 @@
 package se.imorn.feature.timeline
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.zacsweers.metro.AppScope
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import se.imorn.content.Link
@@ -22,6 +24,8 @@ import se.imorn.data.BundledContent
 import se.imorn.database.ChapterRepository
 import se.imorn.feature.timeline.navigation.StepRoute
 import se.imorn.model.Chapter
+import se.imorn.model.Entry
+import se.imorn.model.EntryKind
 import se.imorn.model.Step
 import se.imorn.model.complete
 import se.imorn.model.dateOf
@@ -30,6 +34,7 @@ import se.imorn.model.notApplicable
 import se.imorn.model.reopen
 import se.imorn.model.withStepDate
 import java.time.LocalDate
+import java.util.UUID
 
 /** One step, with its day, hard deadline and the links it refers to from the registry. Null once it is gone. */
 data class StepUiState(
@@ -39,6 +44,8 @@ data class StepUiState(
     val deadline: LocalDate?,
     val links: List<Link>,
     val today: LocalDate,
+    /** The photos and notes kept with this step. */
+    val kept: List<KeptEntry> = emptyList(),
 )
 
 /** The step detail: what, why, when and where, and the answers *Done*, *Tomorrow*, a date or *Doesn't apply*. */
@@ -57,7 +64,8 @@ class StepViewModel(
         chapters.chapter(chapterId),
         flow { emit(content.pack()) },
         today,
-    ) { chapter, pack, day ->
+        chapters.entries(chapterId).map { entries -> entries.filter { it.stepId == stepId } },
+    ) { chapter, pack, day, entries ->
         val step = chapter?.steps?.firstOrNull { it.id == stepId } ?: return@combine null
         StepUiState(
             chapterTitle = chapter.title,
@@ -66,6 +74,7 @@ class StepViewModel(
             deadline = chapter.deadlineOf(step),
             links = step.links.mapNotNull { pack.link(it.id) },
             today = day,
+            kept = entries.sortedBy { it.on }.map { chapters.kept(it) },
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
@@ -88,6 +97,12 @@ class StepViewModel(
         chapter.copy(
             steps = chapter.steps.map { if (it.id == stepId) it.copy(note = note.trim().ifEmpty { null }) else it },
         )
+    }
+
+    /** Keeps a photo with this step, such as the one its photo prompt asks for. */
+    fun keepPhoto(source: Uri) {
+        val photo = Entry(UUID.randomUUID().toString(), chapterId, EntryKind.Photo, today.value, stepId = stepId)
+        viewModelScope.launch { chapters.keepIfReadable(photo, source) }
     }
 
     private fun change(change: (Chapter) -> Chapter) {

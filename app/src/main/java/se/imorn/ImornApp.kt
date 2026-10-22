@@ -11,6 +11,7 @@ import se.imorn.feature.chapters.navigation.chaptersEntries
 import se.imorn.feature.onboarding.navigation.OnboardingRoute
 import se.imorn.feature.onboarding.navigation.onboardingEntry
 import se.imorn.feature.timeline.navigation.ChapterRoute
+import se.imorn.feature.timeline.navigation.EntryRoute
 import se.imorn.feature.timeline.navigation.StepRoute
 import se.imorn.feature.timeline.navigation.timelineEntries
 import se.imorn.feature.today.navigation.todayEntry
@@ -47,6 +48,7 @@ fun ImornApp(onboarded: Boolean) {
             timelineEntries(
                 contentPadding = PaddingValues(),
                 onOpenStep = openStep,
+                onOpenEntry = { chapterId, entryId -> navigator.navigate(EntryRoute(chapterId, entryId)) },
                 onBack = navigator::goBack,
             )
             chaptersEntries(

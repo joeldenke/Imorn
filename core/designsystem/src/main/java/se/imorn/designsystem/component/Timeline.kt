@@ -64,7 +64,10 @@ fun ImornTextField(
     )
 }
 
-/** Asks for one line of text, such as an own step. Confirming is only possible with something written. */
+/**
+ * Asks for some text, such as an own step (one line) or a note (several, with [singleLine] false). Confirming is
+ * only possible with something written.
+ */
 @Composable
 fun ImornTextInputDialog(
     title: String,
@@ -73,12 +76,15 @@ fun ImornTextInputDialog(
     dismissText: String,
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit,
+    singleLine: Boolean = true,
 ) {
     var text by rememberSaveable { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = title) },
-        text = { ImornTextField(value = text, onValueChange = { text = it }, label = label, singleLine = true) },
+        text = {
+            ImornTextField(value = text, onValueChange = { text = it }, label = label, singleLine = singleLine)
+        },
         confirmButton = {
             TextButton(onClick = { onConfirm(text.trim()) }, enabled = text.isNotBlank()) {
                 Text(text = confirmText)

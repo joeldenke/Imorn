@@ -2,7 +2,10 @@ package se.imorn.ui
 
 import se.imorn.model.Anchor
 import se.imorn.model.Chapter
+import se.imorn.model.Entry
+import se.imorn.model.EntryKind
 import se.imorn.model.LinkRef
+import se.imorn.model.PDF
 import se.imorn.model.Phase
 import se.imorn.model.RelativeTime
 import se.imorn.model.Step
@@ -52,4 +55,42 @@ object PreviewData {
         ),
         createdOn = LocalDate.of(2026, 12, 1),
     ).complete("book-movers", LocalDate.of(2027, 1, 4)).complete("day-off", LocalDate.of(2027, 1, 18))
+
+    /** What was kept in [moving]: a photo for a done step, a note of its own, and two papers. */
+    val kept: List<Entry> = listOf(
+        Entry(
+            "preview-photo",
+            "preview-move",
+            EntryKind.Photo,
+            LocalDate.of(2027, 1, 4),
+            stepId = "book-movers",
+            file = "preview-photo.jpg",
+            mimeType = "image/jpeg",
+        ),
+        Entry(
+            "preview-note",
+            "preview-move",
+            EntryKind.Note,
+            LocalDate.of(2027, 1, 10),
+            text = "The new kitchen gets the morning sun.",
+        ),
+        Entry(
+            "preview-lease",
+            "preview-move",
+            EntryKind.Paper,
+            LocalDate.of(2027, 1, 12),
+            text = "Lease for Norra Kungsgatan 4",
+            file = "preview-lease.pdf",
+            mimeType = PDF,
+        ),
+        Entry(
+            "preview-receipt",
+            "preview-move",
+            EntryKind.Paper,
+            LocalDate.of(2027, 1, 4),
+            text = "Movers booking",
+            file = "preview-receipt.jpg",
+            mimeType = "image/jpeg",
+        ),
+    )
 }

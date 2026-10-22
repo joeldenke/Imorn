@@ -120,7 +120,7 @@ private fun StepEntity.toStep() = Step(
     fromTemplate = fromTemplate,
 )
 
-internal fun Entry.toEntity() = EntryEntity(id, chapterId, kind.name, on.toDay(), text, stepId)
+internal fun Entry.toEntity() = EntryEntity(id, chapterId, kind.name, on.toDay(), text, stepId, file, mimeType)
 
 internal fun EntryEntity.toEntry() = Entry(
     id = id,
@@ -129,4 +129,6 @@ internal fun EntryEntity.toEntry() = Entry(
     on = day.toDate(),
     text = text,
     stepId = stepId,
+    file = file,
+    mimeType = mimeType,
 )

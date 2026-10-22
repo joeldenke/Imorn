@@ -44,6 +44,7 @@ class TodayScreenTest {
                     onOpenChapter = {},
                     onAskAssistant = {},
                     onDownloadAssistant = {},
+                    onTakePhoto = { _, _ -> },
                     contentPadding = PaddingValues(),
                 )
             }

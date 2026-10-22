@@ -32,7 +32,12 @@ class StepScreenTest {
         title = mapOf(SWEDISH to "Gör flyttanmälan", ENGLISH to "Report your move"),
     )
 
-    private fun show(state: StepUiState, onDone: () -> Unit = {}, onReopen: () -> Unit = {}) {
+    private fun show(
+        state: StepUiState,
+        onDone: () -> Unit = {},
+        onReopen: () -> Unit = {},
+        onTakePhoto: () -> Unit = {},
+    ) {
         compose.setContent {
             ImornTheme {
                 StepScreen(
@@ -44,6 +49,8 @@ class StepScreenTest {
                     onSetDate = {},
                     onNotApplicable = {},
                     onSaveNote = {},
+                    onTakePhoto = onTakePhoto,
+                    onOpenEntry = {},
                     contentPadding = PaddingValues(),
                 )
             }
@@ -80,5 +87,35 @@ class StepScreenTest {
         show(done, onReopen = { reopened = true })
         compose.onNodeWithText("Not done after all").performClick()
         assertEquals(true, reopened)
+    }
+
+    @Test
+    fun aStepWithAPhotoPromptAsksForAPhotoOnceItIsDone() {
+        var photos = 0
+        val withPrompt = open.copy(step = step.copy(photoPrompt = "Photograph the meter readings"))
+        show(withPrompt, onTakePhoto = { photos++ })
+        compose.onNodeWithText("Photograph the meter readings").assertExists()
+        compose.onNodeWithText("Done").performClick()
+        compose.onNodeWithText("Done. Keep a photo?").assertExists()
+        compose.onNodeWithText("Take a photo").performClick()
+        assertEquals(1, photos)
+        compose.onNodeWithText("Done. Keep a photo?").assertDoesNotExist()
+    }
+
+    @Test
+    fun notNowClosesThePromptWithoutAPhoto() {
+        var photos = 0
+        show(open.copy(step = step.copy(photoPrompt = "Photograph the keys")), onTakePhoto = { photos++ })
+        compose.onNodeWithText("Done").performClick()
+        compose.onNodeWithText("Not now").performClick()
+        compose.onNodeWithText("Done. Keep a photo?").assertDoesNotExist()
+        assertEquals(0, photos)
+    }
+
+    @Test
+    fun aStepWithoutAPhotoPromptAsksNothing() {
+        show(open)
+        compose.onNodeWithText("Done").performClick()
+        compose.onNodeWithText("Done. Keep a photo?").assertDoesNotExist()
     }
 }
