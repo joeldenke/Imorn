@@ -82,18 +82,36 @@ fun Chapter.withOwnStep(step: Step): Chapter {
     return copy(steps = steps + step.copy(fromTemplate = false))
 }
 
-/** A group in the list view: a phase and its open steps, or steps without a known phase when [phase] is null. */
-data class PhaseGroup(val phase: Phase?, val steps: List<PlannedStep>)
+/**
+ * A subflow of the chapter, such as *Mortgage and down payment* or *Subscriptions*: a phase with how far along it
+ * is. [open] is what waits, in [upcoming]'s order, and [next] the first of it. Steps that don't apply count for
+ * nothing; [phase] is null for the user's own steps.
+ */
+data class Subflow(val phase: Phase?, val done: Int, val total: Int, val open: List<PlannedStep>) {
+    val next: PlannedStep? get() = open.firstOrNull()
+    val finished: Boolean get() = open.isEmpty()
+}
 
 /**
- * The open steps as the list shows them: by phase in the plan's order, each in [upcoming]'s order, then the steps
- * without a known phase (the user's own). Empty groups are left out, and so are long threads; see [longThreads].
+ * The chapter as subflows, in the plan's order, then the user's own steps. A subflow is there when it has a step
+ * that applies, also when every step is done, so the chapter shows what is behind it too. Long threads are left
+ * out, as in [upcoming]; see [longThreads].
  */
-fun Chapter.upcomingByPhase(): List<PhaseGroup> {
+fun Chapter.subflows(): List<Subflow> {
     val upcoming = upcoming()
     val known = phases.map { it.id }.toSet()
-    val grouped = phases.map { phase -> PhaseGroup(phase, upcoming.filter { it.step.phaseId == phase.id }) }
-    return (grouped + PhaseGroup(null, upcoming.filter { it.step.phaseId !in known })).filter { it.steps.isNotEmpty() }
+    val counted = steps.filter { it.status != StepStatus.NotApplicable && !it.longThread }
+    fun subflow(phase: Phase?, belongs: (Step) -> Boolean): Subflow {
+        val mine = counted.filter(belongs)
+        return Subflow(
+            phase = phase,
+            done = mine.count { it.status == StepStatus.Done },
+            total = mine.size,
+            open = upcoming.filter { belongs(it.step) },
+        )
+    }
+    val grouped = phases.map { phase -> subflow(phase) { it.phaseId == phase.id } }
+    return (grouped + subflow(null) { it.phaseId !in known }).filter { it.total > 0 }
 }
 
 /** Rests, closes or wakes the chapter. A resting chapter keeps only its long threads in view. */

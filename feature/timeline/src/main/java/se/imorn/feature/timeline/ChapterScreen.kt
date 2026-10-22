@@ -31,6 +31,7 @@ import se.imorn.designsystem.component.ImornFloatingButton
 import se.imorn.designsystem.component.ImornIcons
 import se.imorn.designsystem.component.ImornImage
 import se.imorn.designsystem.component.ImornNowLine
+import se.imorn.designsystem.component.ImornProgressBar
 import se.imorn.designsystem.component.ImornScaffold
 import se.imorn.designsystem.component.ImornSecondaryButton
 import se.imorn.designsystem.component.ImornSheet
@@ -45,11 +46,13 @@ import se.imorn.model.Entry
 import se.imorn.model.EntryKind
 import se.imorn.model.PlannedStep
 import se.imorn.model.StoryItem
+import se.imorn.model.Subflow
 import se.imorn.model.longThreads
+import se.imorn.model.next
 import se.imorn.model.papers
 import se.imorn.model.story
+import se.imorn.model.subflows
 import se.imorn.model.timeline
-import se.imorn.model.upcomingByPhase
 import se.imorn.ui.Capture
 import se.imorn.ui.PreviewData
 import se.imorn.ui.dayText
@@ -261,18 +264,79 @@ private fun SectionTitle(text: String) {
 
 @Composable
 private fun ListView(chapter: Chapter, today: LocalDate, onOpenStep: (String) -> Unit) {
-    val groups = chapter.upcomingByPhase()
-    if (groups.isEmpty()) {
+    val subflows = chapter.subflows()
+    if (subflows.all { it.finished }) {
         ImornBodyText(text = stringResource(R.string.chapter_nothing_left))
     }
-    groups.forEach { group ->
-        SectionTitle(group.phase?.title ?: stringResource(R.string.chapter_own_steps))
-        group.steps.forEach { StepCard(it, today, onOpenStep) }
+    // The subflow with the chapter's next step starts open; the others show their progress and what is next.
+    val first = chapter.next()?.step?.phaseId?.takeIf { id -> chapter.phases.any { it.id == id } } ?: OWN_STEPS
+    var expanded by rememberSaveable(chapter.id) { mutableStateOf(listOf(first)) }
+    subflows.forEach { subflow ->
+        val key = subflow.phase?.id ?: OWN_STEPS
+        SubflowCard(
+            subflow = subflow,
+            expanded = key in expanded,
+            today = today,
+            onToggle = { expanded = if (key in expanded) expanded - key else expanded + key },
+            onOpenStep = onOpenStep,
+        )
     }
     val later = chapter.longThreads()
     if (later.isNotEmpty()) {
         SectionTitle(stringResource(R.string.chapter_later))
         later.forEach { StepCard(it, today, onOpenStep) }
+    }
+}
+
+/** The key of the user's own steps, which have no phase, among the expanded subflows. */
+private const val OWN_STEPS = ""
+
+/**
+ * A subflow, such as *Mortgage and down payment*: its progress as a bar and in words, and what is next. Tapping it
+ * shows or hides its open steps. A finished one says so, quietly.
+ */
+@Composable
+private fun SubflowCard(
+    subflow: Subflow,
+    expanded: Boolean,
+    today: LocalDate,
+    onToggle: () -> Unit,
+    onOpenStep: (String) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm)) {
+        ImornCard(modifier = Modifier.fillMaxWidth(), onClick = onToggle) {
+            ImornText(
+                text = subflow.phase?.title ?: stringResource(R.string.chapter_own_steps),
+                style = ImornTheme.typography.titleMedium,
+            )
+            ImornProgressBar(progress = subflow.done.toFloat() / subflow.total)
+            ImornText(
+                text = if (subflow.finished) {
+                    stringResource(R.string.chapter_subflow_finished, subflow.total)
+                } else {
+                    stringResource(R.string.chapter_subflow_progress, subflow.done, subflow.total)
+                },
+                style = ImornTheme.typography.labelLarge,
+                color = ImornTheme.colors.onSurfaceVariant,
+            )
+            subflow.next?.takeIf { !expanded }?.let { next ->
+                ImornText(
+                    text = stringResource(R.string.chapter_subflow_next, next.step.title, dayText(next.date, today)),
+                    style = ImornTheme.typography.bodyMedium,
+                )
+            }
+            if (!subflow.finished) {
+                val toggle = if (expanded) R.string.chapter_subflow_hide else R.string.chapter_subflow_show
+                ImornText(
+                    text = stringResource(toggle),
+                    style = ImornTheme.typography.labelLarge,
+                    color = ImornTheme.colors.primary,
+                )
+            }
+        }
+        if (expanded) {
+            subflow.open.forEach { StepCard(it, today, onOpenStep) }
+        }
     }
 }
 
