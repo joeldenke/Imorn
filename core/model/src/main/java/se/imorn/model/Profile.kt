@@ -1,13 +1,10 @@
 package se.imorn.model
 
 /**
- * Who uses Imorn, as far as the user chose to tell: a name for the greeting, and the life stages that fit right now.
- * The stages only decide which templates come first; every template is always there. Saved by `ProfileStore`.
+ * Who uses Imorn, as far as the user chose to tell: the life stages that fit right now. They only decide which
+ * templates come first; every template is always there. Nothing else is asked. Saved by `ProfileStore`.
  */
-data class Profile(
-    val name: String? = null,
-    val lifeStages: Set<LifeStage> = emptySet(),
-)
+data class Profile(val lifeStages: Set<LifeStage> = emptySet())
 
 /**
  * "What fits you right now?", asked instead of age. [id] is how templates name the stage in `content/` (their

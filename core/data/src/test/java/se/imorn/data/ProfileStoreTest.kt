@@ -23,19 +23,11 @@ class ProfileStoreTest {
 
     @Test fun `a saved profile survives a restart`() {
         val store = ProfileStore(context, stores.scope, stores.cipher)
-        val profile = Profile(name = "Alex", lifeStages = setOf(LifeStage.BuildingUp, LifeStage.NewInSweden))
+        val profile = Profile(lifeStages = setOf(LifeStage.BuildingUp, LifeStage.NewInSweden))
         store.save(profile)
         store.profile.await { it == profile }
 
         stores.restart()
         assertEquals(profile, ProfileStore(context, stores.scope, stores.cipher).profile.await())
-    }
-
-    @Test fun `a blank name is no name, and names are trimmed`() {
-        val store = ProfileStore(context, stores.scope, stores.cipher)
-        store.save(Profile(name = "  Alex "))
-        assertEquals("Alex", store.profile.await { it.name != null }.name)
-        store.save(Profile(name = "   "))
-        assertEquals(null, store.profile.await { it.name == null }.name)
     }
 }

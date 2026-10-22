@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_title">Welcome to Imorn</string>
-    <string name="onboarding_body">Moving, renovating, a baby, an estate: Imorn knows what usually needs doing and shows you one thing at a time. There is always another day tomorrow.</string>
-    <string name="onboarding_name">What should we call you? (optional)</string>
+    <string name="onboarding_brand" translatable="false">Imorn</string>
+    <string name="onboarding_title">Life\'s big projects, one step at a time</string>
+    <string name="onboarding_body">Moving, renovating, a baby on the way, an estate to settle. Imorn knows the usual steps, puts a date on each of them and shows you only what matters today.</string>
+
+    <string name="onboarding_why_title">Why Imorn</string>
+    <!-- The number before each reason, such as "01". -->
+    <string name="onboarding_reason_number" translatable="false">%1$02d</string>
+    <string name="onboarding_reason_steps">The usual steps, in order</string>
+    <string name="onboarding_reason_steps_body">Every chapter starts from what usually needs doing, grouped the way it happens, with a link to the source wherever a rule applies.</string>
+    <string name="onboarding_reason_three">Never more than three things a day</string>
+    <string name="onboarding_reason_three_body">The rest waits its turn. Putting something off until tomorrow is a choice, not a failure.</string>
+    <string name="onboarding_reason_dates">Dates that count themselves</string>
+    <string name="onboarding_reason_dates_body">Set the moving day and every step gets its day, and the last day when one really counts.</string>
+    <string name="onboarding_reason_private">Everything stays on this phone</string>
+    <string name="onboarding_reason_private_body">No account, no ads, no tracking. Your papers and photos never leave the device.</string>
+
     <string name="onboarding_stages_title">What fits you right now?</string>
-    <string name="onboarding_stages_body">Choose as many as you like. It only decides which templates come first; all of them are always there.</string>
+    <string name="onboarding_stages_body">Pick as many as you like. It only decides which templates come first; all of them are always there.</string>
+
+    <!-- The page indicator, read by TalkBack: "Page 2 of 3". -->
+    <string name="onboarding_page">Page %1$d of %2$d</string>
+    <string name="onboarding_next">Continue</string>
     <string name="onboarding_start">Get started</string>
-    <string name="onboarding_skip">Skip for now</string>
-    <string name="onboarding_privacy">Everything stays on this phone.</string>
+    <string name="onboarding_skip">Skip</string>
 
     <string name="stage_on_my_own">On my own</string>
     <string name="stage_on_my_own_examples">First flat, studies, first job, driving licence</string>
