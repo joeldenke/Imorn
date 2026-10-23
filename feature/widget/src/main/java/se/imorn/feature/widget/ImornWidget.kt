@@ -2,6 +2,7 @@ package se.imorn.feature.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
@@ -13,7 +14,6 @@ import androidx.glance.action.actionStartActivity
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.action.actionRunCallback
-import androidx.glance.appwidget.action.actionStartActivity as actionStartActivityIntent
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Alignment
@@ -34,6 +34,7 @@ import se.imorn.database.ChapterArchive
 import se.imorn.model.Chapter
 import se.imorn.model.tomorrowPlan
 import java.time.LocalDate
+import androidx.glance.appwidget.action.actionStartActivity as actionStartActivityIntent
 
 /**
  * The home screen widget: the next step across every open chapter, with *Snabbfoto* and *Klart* right there, so
@@ -72,11 +73,12 @@ fun WidgetContent(
     hasStep: Boolean,
 ) {
     val context = LocalContext.current
+    val colors = widgetColors(context)
     // The widget is in a feature module and can't name :app's activity, so open the launcher intent instead.
     val openApp = context.packageManager.getLaunchIntentForPackage(context.packageName)
     val rootModifier = GlanceModifier
         .fillMaxSize()
-        .background(WidgetColors.background)
+        .background(colors.background)
         .padding(12.dp)
     Column(
         modifier = if (openApp != null) {
@@ -91,7 +93,7 @@ fun WidgetContent(
             style = TextStyle(
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
-                color = WidgetColors.accent,
+                color = colors.accent,
             ),
         )
         Spacer(modifier = GlanceModifier.height(6.dp))
@@ -100,7 +102,7 @@ fun WidgetContent(
             style = TextStyle(
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,
-                color = WidgetColors.textPrimary,
+                color = colors.textPrimary,
             ),
             maxLines = 2,
         )
@@ -126,7 +128,7 @@ fun WidgetContent(
                 style = TextStyle(
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    color = WidgetColors.accentAlt,
+                    color = colors.accentAlt,
                 ),
                 modifier = GlanceModifier
                     .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -139,7 +141,7 @@ fun WidgetContent(
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
-                        color = WidgetColors.accent,
+                        color = colors.accent,
                     ),
                     modifier = GlanceModifier
                         .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -159,11 +161,22 @@ fun WidgetContent(
 
 /**
  * The widget's colours, from the *Gryning* palette: indigo is the future, apricot the way, pink the memory. A
- * widget can't read a Compose theme, so the few roles it uses are resources, with a night set beside the day one.
+ * widget can't read a Compose theme, so the few roles it uses are resources, with a night set beside the day one;
+ * [widgetColors] reads the resource that fits the phone right now (`values-night` when it is dark).
  */
-object WidgetColors {
-    val background = ColorProvider(R.color.widget_background)
-    val textPrimary = ColorProvider(R.color.widget_text_primary)
-    val accent = ColorProvider(R.color.widget_accent)
-    val accentAlt = ColorProvider(R.color.widget_accent_alt)
+internal fun widgetColors(context: Context): WidgetColors {
+    fun role(resId: Int) = ColorProvider(Color(context.getColor(resId)))
+    return WidgetColors(
+        background = role(R.color.widget_background),
+        textPrimary = role(R.color.widget_text_primary),
+        accent = role(R.color.widget_accent),
+        accentAlt = role(R.color.widget_accent_alt),
+    )
 }
+
+internal data class WidgetColors(
+    val background: ColorProvider,
+    val textPrimary: ColorProvider,
+    val accent: ColorProvider,
+    val accentAlt: ColorProvider,
+)
