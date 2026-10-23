@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_app_name" translatable="false">Imorn</string>
+    <string name="widget_description">Next step and quick photo</string>
+    <string name="widget_no_steps">Nothing planned yet</string>
+    <string name="widget_quick_photo">Quick photo</string>
+    <string name="widget_done">Done</string>
+</resources>

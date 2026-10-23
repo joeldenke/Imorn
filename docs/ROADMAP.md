@@ -230,7 +230,7 @@ sätt att leverera samma data.
 - [ ] Försenat-flödet: Klart · Imorgon · Nytt datum · Gäller inte
 - [ ] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
 - [ ] *Veckan som kommer* (valfri söndagsnotis)
-- [ ] Widget (Glance): nästa steg + snabbfoto
+- [x] Widget (Glance): nästa steg + snabbfoto
 - [x] Omstart, tidszoner, sommartid och ändrade ankare testade
 
 ### Fas 4 – Levande innehåll och mallbiblioteket

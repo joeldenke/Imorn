@@ -56,7 +56,7 @@ fun rememberCapture(onPhoto: (Uri) -> Unit, onPaper: (Uri) -> Unit): Capture {
     val choosePhoto = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
     return Capture(
         takePhoto = {
-            val uri = newCaptureUri(context)
+            val uri = newCaptureUriFor(context)
             pending = uri.toString()
             try {
                 camera.launch(uri)
@@ -70,8 +70,12 @@ fun rememberCapture(onPhoto: (Uri) -> Unit, onPaper: (Uri) -> Unit): Capture {
     )
 }
 
-/** A new, empty file for the camera to write into. Earlier ones are kept already, so they are cleared first. */
-private fun newCaptureUri(context: Context): Uri {
+/**
+ * A fresh file in the app's cache the camera app may write one new photo into, granted through the `.capture`
+ * FileProvider. Earlier ones are kept already, so they are cleared first. The widget's quick photo uses this
+ * outside a Compose entry; [rememberCapture] uses the same file.
+ */
+fun newCaptureUriFor(context: Context): Uri {
     val folder = File(context.cacheDir, "capture")
     folder.deleteRecursively()
     folder.mkdirs()
