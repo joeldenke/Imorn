@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
+        <!--
+          The widget shows the next step and takes a quick photo. The receiver is what Android binds the widget
+          from; the activity is the camera step *Snabbfoto* opens. Neither is exported, and neither needs a
+          permission: the camera app takes the picture.
+        -->
         <receiver
             android:name=".ImornWidgetReceiver"
             android:exported="false">
@@ -11,10 +16,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/imorn_widget_info" />
         </receiver>
-
-        <receiver
-            android:name=".ImornWidgetActionReceiver"
-            android:exported="false" />
 
         <activity
             android:name=".WidgetPhotoActivity"

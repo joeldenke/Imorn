@@ -5,16 +5,16 @@ plugins {
 }
 
 imorn {
-    metro()
     activity()
+    coroutines()
 }
 
 dependencies {
-    implementation(projects.core.data)
     implementation(projects.core.database)
-    implementation(projects.core.designsystem)
     implementation(projects.core.model)
+    // The camera file the quick photo writes into (newCaptureUriFor) and the shared FileProvider.
     implementation(projects.core.ui)
+    // lifecycleScope in WidgetPhotoActivity, to keep the photo off the main thread.
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.glance.appwidget)
-    implementation(libs.glance.material3)
 }
