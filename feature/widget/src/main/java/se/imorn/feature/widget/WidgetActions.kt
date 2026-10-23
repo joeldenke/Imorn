@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.appwidget.action.ActionCallback
-import androidx.glance.appwidget.update
 import kotlinx.coroutines.flow.first
 import se.imorn.database.ChapterArchive
 import se.imorn.model.complete
