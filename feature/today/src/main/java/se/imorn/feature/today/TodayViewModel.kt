@@ -24,6 +24,7 @@ import se.imorn.model.Chapter
 import se.imorn.model.Entry
 import se.imorn.model.EntryKind
 import se.imorn.model.PlannedStep
+import se.imorn.model.Today
 import se.imorn.model.TomorrowPlan
 import se.imorn.model.complete
 import se.imorn.model.tomorrowPlan
@@ -62,14 +63,16 @@ class TodayViewModel(
     private val chapters: ChapterRepository,
     /** Gemini Nano on the device. Bound in :core:data and chosen nowhere else. */
     private val languageModel: LanguageModel,
+    /** The day it is on the phone, so the plan follows the phone's own time zone. */
+    private val today: Today,
 ) : ViewModel() {
-    private val today = MutableStateFlow(LocalDate.now())
+    private val currentDay = MutableStateFlow(today.now())
     private val assistant = MutableStateFlow(AssistantUiState())
 
     /** Null until the chapters are read, so the screen never flashes an empty state. */
     val state: StateFlow<TodayUiState?> = combine(
         chapters.chapters,
-        today,
+        currentDay,
         assistant,
     ) { all, day, assistant ->
         TodayUiState(
@@ -82,7 +85,7 @@ class TodayViewModel(
 
     /** Reads "today" again and asks whether the assistant is there. Called when the screen is shown. */
     fun refresh() {
-        today.value = LocalDate.now()
+        currentDay.value = today.now()
         viewModelScope.launch {
             val availability = languageModel.availability()
             assistant.update { it.copy(availability = availability) }
@@ -90,10 +93,11 @@ class TodayViewModel(
     }
 
     /** The step is done today: it falls through the now-line. */
-    fun done(item: PlannedStep) = change(item.chapterId) { it.complete(item.step.id, today.value) }
+    fun done(item: PlannedStep) = change(item.chapterId) { it.complete(item.step.id, currentDay.value) }
 
     /** "Tomorrow is fine": the step moves to tomorrow. Putting something off is a choice, not a failure. */
-    fun tomorrow(item: PlannedStep) = change(item.chapterId) { it.withStepDate(item.step.id, today.value.plusDays(1)) }
+    fun tomorrow(item: PlannedStep) =
+        change(item.chapterId) { it.withStepDate(item.step.id, currentDay.value.plusDays(1)) }
 
     /** The step a photo is being taken for, after its photo prompt: chapter id and step id. */
     private var photoFor: Pair<String, String>? = null
@@ -107,7 +111,7 @@ class TodayViewModel(
     fun keepPhoto(source: Uri) {
         val (chapterId, stepId) = photoFor ?: return
         photoFor = null
-        val photo = Entry(UUID.randomUUID().toString(), chapterId, EntryKind.Photo, today.value, stepId = stepId)
+        val photo = Entry(UUID.randomUUID().toString(), chapterId, EntryKind.Photo, currentDay.value, stepId = stepId)
         viewModelScope.launch { chapters.keepIfReadable(photo, source) }
     }
 

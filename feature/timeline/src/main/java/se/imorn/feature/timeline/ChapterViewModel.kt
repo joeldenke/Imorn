@@ -24,6 +24,7 @@ import se.imorn.model.ChapterState
 import se.imorn.model.Entry
 import se.imorn.model.EntryKind
 import se.imorn.model.Step
+import se.imorn.model.Today
 import se.imorn.model.complete
 import se.imorn.model.withAnchor
 import se.imorn.model.withOwnStep
@@ -52,29 +53,31 @@ data class ChapterUiState(
 class ChapterViewModel(
     @Assisted private val chapterId: String,
     private val chapters: ChapterRepository,
+    /** The day it is on the phone, so the plan follows the phone's own time zone. */
+    private val today: Today,
 ) : ViewModel() {
-    private val today = MutableStateFlow(LocalDate.now())
+    private val currentDay = MutableStateFlow(today.now())
     private val view = MutableStateFlow(ChapterView.List)
 
     /** Null until the chapter is read. */
     val state: StateFlow<ChapterUiState?> = combine(
         chapters.chapter(chapterId),
         chapters.entries(chapterId).map { entries -> entries.map { chapters.kept(it) } },
-        today,
+        currentDay,
         view,
     ) { chapter, kept, day, view ->
         ChapterUiState(chapter, day, view, kept)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     fun refresh() {
-        today.value = LocalDate.now()
+        currentDay.value = today.now()
     }
 
     fun show(view: ChapterView) {
         this.view.value = view
     }
 
-    fun done(stepId: String) = change { it.complete(stepId, today.value) }
+    fun done(stepId: String) = change { it.complete(stepId, currentDay.value) }
 
     fun setAnchor(id: String, date: LocalDate?) = change { it.withAnchor(id, date) }
 
@@ -95,7 +98,7 @@ class ChapterViewModel(
         keep(newEntry(EntryKind.Paper), source)
     }
 
-    private fun newEntry(kind: EntryKind) = Entry(UUID.randomUUID().toString(), chapterId, kind, today.value)
+    private fun newEntry(kind: EntryKind) = Entry(UUID.randomUUID().toString(), chapterId, kind, currentDay.value)
 
     private fun keep(entry: Entry, source: Uri) {
         viewModelScope.launch { chapters.keepIfReadable(entry, source) }

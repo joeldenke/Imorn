@@ -3,19 +3,24 @@ package se.imorn.designsystem.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -119,4 +124,24 @@ fun ImornDatePickerDialog(
     ) {
         DatePicker(state = state)
     }
+}
+
+/**
+ * How far along something is, such as a subflow's steps: a thin bar in the color of the present, on a quiet track.
+ * [progress] is from 0 to 1. Decorative to TalkBack: say the numbers in text next to it.
+ */
+@Composable
+fun ImornProgressBar(progress: Float, modifier: Modifier = Modifier) {
+    LinearProgressIndicator(
+        progress = { progress.coerceIn(0f, 1f) },
+        modifier = modifier
+            .fillMaxWidth()
+            .height(6.dp)
+            .clearAndSetSemantics { },
+        color = ImornTheme.colors.secondary,
+        trackColor = ImornTheme.colors.surfaceVariant,
+        strokeCap = StrokeCap.Round,
+        gapSize = 0.dp,
+        drawStopIndicator = {},
+    )
 }
