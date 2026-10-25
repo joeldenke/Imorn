@@ -11,7 +11,7 @@ fun interface Today {
     fun now(): LocalDate
 
     /**
-     * The hour it is now, 0 to 23, for what only follows the light: the start screen's sky and its greeting. Never
+     * The hour it is now, 0 to 23, for what only follows the light: the start screen's greeting. Never
      * for the plan, which has no time of day.
      */
     fun hour(): Int = NOON
