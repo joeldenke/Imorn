@@ -64,9 +64,15 @@ data class LinkRegistry(val links: List<Link>)
 data class Template(
     val id: String,
     val version: Int,
+    /** Where the template comes in the library: lower first. Templates without one come last. */
+    val order: Int = Int.MAX_VALUE,
     /** The day the facts were last checked against the sources; null until reviewed. */
     val reviewedAt: String? = null,
     val title: Localized,
+    /** One short line under the title in the library, saying what the template covers. */
+    val summary: Localized = emptyMap(),
+    /** The name of the template's icon in the app (`home`, `key` …); an unknown or missing one gets a plain mark. */
+    val icon: String? = null,
     val lifestages: List<String> = emptyList(),
     val anchors: List<TemplateAnchor> = emptyList(),
     val questions: List<Question> = emptyList(),

@@ -46,6 +46,11 @@ class ContentValidatorTest {
         assertEquals(listOf("Template move step address title has no en text"), found)
     }
 
+    @Test fun `a summary needs both languages`() {
+        val found = problems(template.copy(summary = mapOf(SWEDISH to "Från uppsägningen till frukosten")))
+        assertEquals(listOf("Template move summary has no en text"), found)
+    }
+
     @Test fun `links must be in the registry`() {
         assertEquals(
             listOf("Template move step address links to skatteverket.flytt, which is not in the registry"),

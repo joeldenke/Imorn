@@ -1,10 +1,16 @@
 {
   "id": "move",
   "version": 2,
+  "order": 1,
   "title": {
     "sv": "Flytta",
     "en": "Moving"
   },
+  "summary": {
+    "sv": "Från uppsägningen till första frukosten",
+    "en": "From giving notice to the first breakfast"
+  },
+  "icon": "home",
   "lifestages": [
     "first-home",
     "building",

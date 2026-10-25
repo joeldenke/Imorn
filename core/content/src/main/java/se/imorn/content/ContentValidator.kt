@@ -27,6 +27,7 @@ object ContentValidator {
         val where = "Template $id"
         if (version < 1) add("$where: version must be 1 or more")
         addAll(title.missing("$where title"))
+        if (summary.isNotEmpty()) addAll(summary.missing("$where summary"))
         duplicates(anchors.map { it.id }).forEach { add("$where: anchor $it appears more than once") }
         anchors.forEach { addAll(it.label.missing("$where anchor ${it.id}")) }
         duplicates(questions.map { it.id }).forEach { add("$where: question $it appears more than once") }
