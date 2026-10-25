@@ -29,19 +29,23 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:app` – bara skalet: `ImornApplication` (håller grafen), `MainActivity`, `ImornApp` (flikar och `NavDisplay`),
   `navigation/TopLevelDestination` och `di/`: `AppGraph` (Metro-grafen, där källor väljs) och
   `ImornViewModelFactory`. Ingen skärm, ViewModel eller logik som går att lägga i en modul.
-- `:feature:today` – *Imorgon*, startskärmen: `tomorrowPlan` över alla kapitel (högst tre saker, var och en med
-  *Klart* och *Imorgon*), *Längre fram*, tomt läge som bjuder in till första kapitlet, och assistenten.
-- `:feature:chapters` – kapitlen: `NewChapterScreen` (mall, frågorna en i taget, ankardatum som får vara okända,
-  sedan `instantiate` och spara).
+- `:feature:today` – *Imorgon*, startskärmen: himlen efter timmen (`ImornSkyHero`) med en hälsning, nedräkningen
+  till närmaste ankare (`nextMilestone`) och det enda att göra nu på glas, med *Klart* och *Imorgon*; sedan resten av
+  `tomorrowPlan` (högst tre saker totalt), *Längre fram*, kapitlen med märke och framstegsring (`progress`), tomt läge
+  som bjuder in till första kapitlet, och assistenten.
+- `:feature:chapters` – kapitlen: `NewChapterScreen` (mallbiblioteket två och två med ikon och en rad om vad mallen
+  täcker, *Föreslaget för dig* efter livsfaserna först, frågorna en i taget med framsteg, ankardatum som får vara
+  okända, sedan `instantiate` och spara).
 - `:feature:onboarding` – välkomsten vid första start, tre sidor på gryningsscenen (`ImornDawnScene`): vad Imorn är,
   varför (fyra löften i glaspaneler, som bara säger det appen verkligen gör) och "Vad stämmer på dig just nu?"
   (`LifeStage`, flera val, i stället för ålder). Inget namn och inget annat appen inte behöver. Visas ensam (utan
   flikar) tills `AppSettings.onboarded` är satt; *Hoppa över* finns alltid. Livsfaserna bestämmer bara vilka mallar
   som kommer först (`suggestedFirst`), aldrig vilka som finns.
-- `:feature:timeline` – ett kapitel (`ChapterScreen`: ankardatum, *Lista* som delflöden (`subflows`: varje fas ett kort
-  med framsteg och vad som är nästa, öppnas till sina steg), *Tidslinje* med berättelsen under
-  nu-linjen (`story`: avbockade steg med sina foton och anteckningar) och *Papper*, snabb-+ (fota, välj foto, steg,
-  anteckning, papper), egna steg, vila, avsluta, radera), ett steg (`StepScreen`: när, varför, länkkort som alltid
+- `:feature:timeline` – ett kapitel (`ChapterScreen`: märket med framstegsring, ankardatum med nedräkning, flikarna
+  `ImornTabs`, *Lista* som delflöden (`subflows`: varje fas ett kort
+  med framsteg och vad som är nästa, öppnas till sina steg), *Tidslinje* på en räls (`ImornTimelineRow`) med
+  berättelsen under nu-linjen (`story`: avbockade steg med sina foton och anteckningar) och *Papper*, snabb-+ (fota,
+  välj foto, steg, anteckning, papper), egna steg, och vila, avsluta och radera i ett blad bakom *Mer*), ett steg (`StepScreen`: när, varför, länkkort som alltid
   visar organisation och domän, anteckning, stegets foton, *Klart* med foto-uppmaningen, *Imorgon*, eget datum,
   *Gäller inte*) och något sparat (`EntryScreen`: fotot, anteckningen eller pappret, PDF:er sida för sida med
   `PdfRenderer` i appen, radera). ViewModels med ruttens id (`@AssistedInject`, `assistedMetroViewModel`).
@@ -51,7 +55,9 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:core:designsystem` – `se.imorn.designsystem`, enda modulen som använder Material 3 direkt
   - `theme` – `ImornTheme`: färger (`ImornColors`, paletten *Gryning*), typografi (Figtree), former och spacing
   - `component` – `Imorn*`-komponenter som wrappar Material 3 (`ImornScaffold`, `ImornCard`, `ImornButton`,
-    `ImornText`, `ImornSheet`, `ImornFloatingButton` …), `ImornIcons` (egna vektorer, inget ikonbibliotek) och
+    `ImornText`, `ImornSheet`, `ImornFloatingButton` …), `ImornIcons` (egna vektorer, inget ikonbibliotek; mallarnas
+    linjeikoner via `ImornIcons.template(namn)`), kapitlets märke (`ImornChapterMark`, med framstegsring), `ImornTag`,
+    `ImornTabs`, tidslinjens räls (`ImornTimelineRow`, `ImornNowLine`), himlen (`Sky.kt`: `ImornSkyHero`) och
     `ImornImage` (en sparad bild, läst utanför huvudtråden; en lugn ruta i previews), och gryningsscenen (`Dawn.kt`:
     `ImornDawnScene`, `ImornGlassPanel`, `ImornSceneText`, `ImornSceneButton`, `ImornPageIndicator`; previews lägger
     sig i `ImornStillGlass`)
@@ -89,7 +95,9 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
   `ContentValidator` och `instantiate` (mall + svar + ankardatum → `Chapter`). Se `docs/content-system.md`.
 - `build-logic` – inkluderat bygge med convention plugins (`imorn.*`) och `imorn { }`, se `build-logic/README.md`
 - `tools/icon` – `render_icon.py` ritar appikonens reserver, se *Appikonen* under Regler.
-- `content/` – innehållspaketet: `links.json` (länkregistret) och `templates/*.json` (mallarna, i dag Flytta).
+- `content/` – innehållspaketet: `links.json` (länkregistret) och `templates/*.json` (13 mallar: flytta, köpa och
+  sälja bostad, första egna boendet, renovera, vänta barn, gifta sig, byta jobb, börja plugga, ny i Sverige, gå i
+  pension, ta körkort, köpa eller sälja bil). Varje mall har `order` (platsen i biblioteket), `summary` och `icon`.
   `imorn { bundledContent() }` gör det till testindata och, i `:core:data`, till appens assets; `BundledContentTest`
   validerar det i CI.
 
@@ -190,11 +198,16 @@ och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i 
   **aprikos** (secondary) är nuet och vägen, **rosa** (tertiary) är minnena. `Night` och `Dawn` är varumärkets
   färger utanför schemat. Typsnittet Figtree är inbakat; ladda aldrig ner typsnitt i runtime.
   Kort är ljusare än bakgrunden med hårfin kant (`ImornTheme.surfaces`, som i Novila); `ImornCard` sköter det.
+- **Himlen på startskärmen:** gryningsscenen i vardagen. `ImornSkyHero` ritar samma landskap som en rubrik, färgad
+  efter timmen (`ImornSkyTime`: gryning 05–10, hög sol 10–17, skymning 17–22, måne 22–05). Timmen kommer från
+  ViewModeln (`Today.hour()`), aldrig från klockan i en composable, så previews (`PreviewData.HOUR`) visar en bestämd
+  himmel. Toppen är alltid mörk, så texten är ljus och statusfältets ikoner med den medan himlen syns bakom dem.
+  Bara startskärmen har himlen; övriga skärmar är lugna kort på bakgrunden.
 - **Gryningsscenen:** varumärkets stora ögonblick (välkomsten): appikonen som landskap, natthimmel som värms mot
   horisonten, solen som stiger ur vattnet och speglingen i streck som smalnar av. Ritad i kod i `ImornDawnScene`,
   alltid mörk, med ljus text och glaspaneler (`ImornGlassPanel`) som suddar scenen bakom sig med Haze (Android 12+,
   annars en genomskinlig ton). Haze används bara där, och bara i `:core:designsystem`. Vardagsskärmarna är lugna
-  kort på bakgrunden, inte glas.
+  kort på bakgrunden, inte glas; enda undantaget är panelen på startskärmens himmel (utan Haze).
 - **Appikonen:** ett vitt i på den enfärgade Night-plattan, där pricken är solen och stammen solens spegling i
   vattnet. Vektorerna `app/src/main/res/drawable/ic_launcher_foreground.xml` och `…_monochrome.xml` och färgen
   `ic_launcher_background` (lika med `Night` i `Color.kt`) är källan. Ändras de: kör

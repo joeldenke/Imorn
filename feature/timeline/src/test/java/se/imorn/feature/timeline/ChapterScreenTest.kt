@@ -123,7 +123,8 @@ class ChapterScreenTest {
     fun finishingKeepsTrackOfWhatLiesFurtherAhead() {
         var kept = 0
         show(ChapterView.List, onFinishKeeping = { kept++ })
-        compose.onNodeWithText("Finish it").performScrollTo().performClick()
+        compose.onNodeWithContentDescription("More for this chapter").performClick()
+        compose.onNodeWithText("Finish it").performClick()
         compose.onNodeWithText("There is 1 thing further ahead. Keep an eye on it?").assertExists()
         compose.onNodeWithText("Yes, keep track").performClick()
         assertEquals(1, kept)
@@ -133,7 +134,8 @@ class ChapterScreenTest {
     fun finishingLetsTheThreadsGo() {
         var closed = 0
         show(ChapterView.List, onFinishClosing = { closed++ })
-        compose.onNodeWithText("Finish it").performScrollTo().performClick()
+        compose.onNodeWithContentDescription("More for this chapter").performClick()
+        compose.onNodeWithText("Finish it").performClick()
         compose.onNodeWithText("No, let it go").performClick()
         assertEquals(1, closed)
     }

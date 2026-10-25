@@ -15,9 +15,12 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import se.imorn.data.BundledContent
 import se.imorn.database.ChapterRepository
 import se.imorn.model.Chapter
 import se.imorn.model.ChapterState
@@ -44,6 +47,8 @@ data class ChapterUiState(
     val view: ChapterView = ChapterView.List,
     /** Photos, notes and papers kept in the chapter, latest first. */
     val kept: List<KeptEntry> = emptyList(),
+    /** The icon of the template the chapter was made from, for its mark; null for an own chapter. */
+    val icon: String? = null,
 )
 
 /**
@@ -55,11 +60,16 @@ data class ChapterUiState(
 class ChapterViewModel(
     @Assisted private val chapterId: String,
     private val chapters: ChapterRepository,
+    /** The templates, for the chapter's icon. */
+    private val content: BundledContent,
     /** The day it is on the phone, so the plan follows the phone's own time zone. */
     private val today: Today,
 ) : ViewModel() {
     private val currentDay = MutableStateFlow(today.now())
     private val view = MutableStateFlow(ChapterView.List)
+    private val templateIcons = flow {
+        emit(content.pack().templates.mapNotNull { template -> template.icon?.let { template.id to it } }.toMap())
+    }.onStart { emit(emptyMap()) }
 
     /** Null until the chapter is read. */
     val state: StateFlow<ChapterUiState?> = combine(
@@ -67,8 +77,9 @@ class ChapterViewModel(
         chapters.entries(chapterId).map { entries -> entries.map { chapters.kept(it) } },
         currentDay,
         view,
-    ) { chapter, kept, day, view ->
-        ChapterUiState(chapter, day, view, kept)
+        templateIcons,
+    ) { chapter, kept, day, view, icons ->
+        ChapterUiState(chapter, day, view, kept, icon = chapter?.templateId?.let(icons::get))
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     fun refresh() {

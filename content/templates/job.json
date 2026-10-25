@@ -1,0 +1,241 @@
+{
+  "id": "job",
+  "version": 1,
+  "order": 8,
+  "title": {
+    "sv": "Byta jobb",
+    "en": "Changing jobs"
+  },
+  "summary": {
+    "sv": "Nytt jobb, eller när jobbet tar slut",
+    "en": "A new job, or when a job ends"
+  },
+  "icon": "briefcase",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife",
+    "hard-times"
+  ],
+  "anchors": [
+    {
+      "id": "day",
+      "label": {
+        "sv": "Första eller sista dagen",
+        "en": "The first or the last day"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "change",
+      "text": {
+        "sv": "Vad händer?",
+        "en": "What is happening?"
+      },
+      "options": [
+        {
+          "id": "new",
+          "label": {
+            "sv": "Jag har fått ett nytt jobb",
+            "en": "I have a new job"
+          }
+        },
+        {
+          "id": "lost",
+          "label": {
+            "sv": "Jobbet tar slut",
+            "en": "My job is ending"
+          }
+        }
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "id": "new",
+      "title": {
+        "sv": "Nytt jobb",
+        "en": "New job"
+      },
+      "steps": [
+        {
+          "id": "employment-contract",
+          "title": {
+            "sv": "Läs anställningsavtalet",
+            "en": "Read the employment contract"
+          },
+          "why": {
+            "sv": "Lön, arbetstid, provanställning, uppsägningstid och semester.",
+            "en": "Pay, hours, probation, notice period and holiday."
+          },
+          "at": {
+            "anchor": "day",
+            "offsetDays": -30
+          },
+          "when": {
+            "question": "change",
+            "equals": "new"
+          }
+        },
+        {
+          "id": "notice",
+          "title": {
+            "sv": "Säg upp dig från det gamla jobbet",
+            "en": "Hand in your notice at the old job"
+          },
+          "why": {
+            "sv": "Uppsägningstiden står i avtalet eller kollektivavtalet.",
+            "en": "The notice period is in the contract or the collective agreement."
+          },
+          "at": {
+            "anchor": "day",
+            "offsetDays": -30
+          },
+          "when": {
+            "question": "change",
+            "equals": "new"
+          }
+        },
+        {
+          "id": "pension",
+          "title": {
+            "sv": "Kolla tjänstepensionen och försäkringarna",
+            "en": "Check the workplace pension and insurance"
+          },
+          "why": {
+            "sv": "Vad du får via jobbet kan skilja mycket mellan arbetsgivare.",
+            "en": "What you get through work can differ a lot between employers."
+          },
+          "at": {
+            "anchor": "day",
+            "offsetDays": 30
+          },
+          "links": [
+            "minpension.start"
+          ],
+          "when": {
+            "question": "change",
+            "equals": "new"
+          }
+        },
+        {
+          "id": "first-day",
+          "title": {
+            "sv": "Första dagen",
+            "en": "The first day"
+          },
+          "at": {
+            "anchor": "day",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Spara ett foto från första dagen",
+            "en": "Keep a photo from the first day"
+          },
+          "when": {
+            "question": "change",
+            "equals": "new"
+          }
+        }
+      ]
+    },
+    {
+      "id": "lost",
+      "title": {
+        "sv": "När jobbet tar slut",
+        "en": "When the job ends"
+      },
+      "steps": [
+        {
+          "id": "register-af",
+          "title": {
+            "sv": "Anmäl dig hos Arbetsförmedlingen första dagen utan jobb",
+            "en": "Register with Arbetsförmedlingen on your first day without work"
+          },
+          "why": {
+            "sv": "Det behövs för att a-kassan ska kunna betala.",
+            "en": "It's needed for the unemployment fund to pay."
+          },
+          "at": {
+            "anchor": "day",
+            "offsetDays": 1
+          },
+          "hardDeadline": {
+            "anchor": "day",
+            "offsetDays": 1
+          },
+          "links": [
+            "arbetsformedlingen.start"
+          ],
+          "when": {
+            "question": "change",
+            "equals": "lost"
+          }
+        },
+        {
+          "id": "a-kassa",
+          "title": {
+            "sv": "Ansök om ersättning från a-kassan",
+            "en": "Apply for unemployment benefit"
+          },
+          "at": {
+            "anchor": "day",
+            "offsetDays": 1
+          },
+          "links": [
+            "akassan.start"
+          ],
+          "when": {
+            "question": "change",
+            "equals": "lost"
+          }
+        },
+        {
+          "id": "certificate",
+          "title": {
+            "sv": "Be om arbetsgivarintyg",
+            "en": "Ask for an employer's certificate"
+          },
+          "why": {
+            "sv": "A-kassan behöver det för att räkna ut ersättningen.",
+            "en": "The fund needs it to work out the benefit."
+          },
+          "at": {
+            "anchor": "day",
+            "offsetDays": 0
+          },
+          "when": {
+            "question": "change",
+            "equals": "lost"
+          }
+        },
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Gå igenom utgifterna",
+            "en": "Go through your outgoings"
+          },
+          "why": {
+            "sv": "Säg upp det du inte behöver. Kan du inte betala en räkning, hör av dig innan den förfaller.",
+            "en": "Cancel what you don't need. If you can't pay a bill, get in touch before it's due."
+          },
+          "at": {
+            "anchor": "day",
+            "offsetDays": 7
+          },
+          "links": [
+            "konsumentverket.hallakonsument",
+            "kronofogden.start"
+          ],
+          "when": {
+            "question": "change",
+            "equals": "lost"
+          }
+        }
+      ]
+    }
+  ],
+  "longThreads": []
+}

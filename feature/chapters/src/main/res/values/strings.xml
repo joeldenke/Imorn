@@ -2,6 +2,11 @@
 <resources>
     <string name="new_chapter_title">New chapter</string>
     <string name="new_chapter_what">What is happening?</string>
+    <string name="new_chapter_what_body">Pick what fits best. A few questions shape the plan, and you can always add your own steps.</string>
+    <string name="new_chapter_suggested">Suggested for you</string>
+    <string name="new_chapter_everything">Everything else</string>
+    <!-- Where in starting a chapter the user is: the questions, then the dates. -->
+    <string name="new_chapter_step_of">Step %1$d of %2$d</string>
     <string name="new_chapter_progress">Question %1$d of %2$d</string>
     <string name="new_chapter_yes">Yes</string>
     <string name="new_chapter_no">No</string>

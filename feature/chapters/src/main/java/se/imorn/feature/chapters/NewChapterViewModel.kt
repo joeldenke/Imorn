@@ -30,8 +30,11 @@ import java.util.UUID
  * plan, and the anchor dates (which may stay unknown). Then the plan is built, deterministically, from the template.
  */
 data class NewChapterUiState(
+    /** Every template, those for the user's life stages first. */
     val templates: List<Template>,
     val today: LocalDate,
+    /** How many of the first [templates] are for the user's life stages, shown as *Suggested for you*. */
+    val suggested: Int = 0,
     val template: Template? = null,
     /** The question being asked, an index into the template's questions; past the last one come the dates. */
     val question: Int = 0,
@@ -72,9 +75,12 @@ class NewChapterViewModel(
         viewModelScope.launch {
             // The templates for the user's life stages first; every template is always there.
             val stages = profiles.profile.filterNotNull().first().lifeStages
+            val templates = content.pack().templates
+            val ids = stages.map { it.id }.toSet()
             _state.value = NewChapterUiState(
-                templates = content.pack().templates.suggestedFirst(stages),
+                templates = templates.suggestedFirst(stages),
                 today = today.now(),
+                suggested = templates.count { template -> template.lifestages.any { it in ids } },
             )
         }
     }

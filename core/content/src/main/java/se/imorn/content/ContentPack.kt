@@ -13,10 +13,13 @@ data class ContentPack(val links: List<Link>, val templates: List<Template>) {
         /** Unknown keys are skipped, so a pack written for a newer app still reads. */
         private val json = Json { ignoreUnknownKeys = true }
 
-        /** Reads `links.json` and the files in `templates/`. Throws on a file that isn't valid JSON for the format. */
+        /**
+         * Reads `links.json` and the files in `templates/`, the templates in their [Template.order]. Throws on a file
+         * that isn't valid JSON for the format.
+         */
         fun parse(linksJson: String, templateJsons: List<String>): ContentPack = ContentPack(
             links = json.decodeFromString<LinkRegistry>(linksJson).links,
-            templates = templateJsons.map { json.decodeFromString<Template>(it) },
+            templates = templateJsons.map { json.decodeFromString<Template>(it) }.sortedBy { it.order },
         )
     }
 }

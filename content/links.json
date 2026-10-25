@@ -475,6 +475,51 @@
         "sv": "digital brevlåda",
         "en": "digital mailbox"
       }
+    },
+    {
+      "id": "antagning.start",
+      "org": "Antagning.se",
+      "kind": "authority",
+      "url": "https://www.antagning.se/",
+      "fallbackUrl": "https://www.antagning.se/",
+      "title": {
+        "sv": "Sök till högskolan",
+        "en": "Apply to university"
+      },
+      "searchHint": {
+        "sv": "anmälan, sista ansökningsdag",
+        "en": "application, deadline"
+      }
+    },
+    {
+      "id": "trafikverket.korprov",
+      "org": "Trafikverket",
+      "kind": "authority",
+      "url": "https://www.trafikverket.se/",
+      "fallbackUrl": "https://www.trafikverket.se/",
+      "title": {
+        "sv": "Boka kunskapsprov och körprov",
+        "en": "Book the theory and driving tests"
+      },
+      "searchHint": {
+        "sv": "boka prov, körkort",
+        "en": "book test, driving licence"
+      }
+    },
+    {
+      "id": "migrationsverket.start",
+      "org": "Migrationsverket",
+      "kind": "authority",
+      "url": "https://www.migrationsverket.se/",
+      "fallbackUrl": "https://www.migrationsverket.se/",
+      "title": {
+        "sv": "Migrationsverket",
+        "en": "Swedish Migration Agency"
+      },
+      "searchHint": {
+        "sv": "uppehållstillstånd",
+        "en": "residence permit"
+      }
     }
   ]
 }

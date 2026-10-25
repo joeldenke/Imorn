@@ -7,6 +7,9 @@ gäller, faser med steg i relativ tid, länkar ur länkregistret, foto-uppmaning
 > procentsatser och tak skrivs aldrig in i stegen – de ändras, och länken till källan gäller.
 > Mallar beskriver vanliga steg, aldrig "allt du måste göra".
 
+**I appen:** 1–6 och 8–13 och 15 finns i `content/templates/` (12 *Nytt jobb / förlora jobbet* heter `job`, en fråga
+väljer vilket). 7 och 14 återstår. Ingen mall har `reviewedAt` än.
+
 Förkortningar: **T** = ankardatum (flyttdag, tillträde, förlossning …). `T−6v` = sex veckor före.
 
 ---
