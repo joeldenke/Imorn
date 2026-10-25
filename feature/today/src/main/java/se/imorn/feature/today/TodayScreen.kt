@@ -398,8 +398,6 @@ private fun TodayScreenDarkPreview() {
     }
 }
 
-
-
 @Preview(showBackground = true)
 @Composable
 private fun TodayScreenEmptyPreview() {
