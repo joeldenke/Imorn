@@ -20,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import se.imorn.designsystem.component.ImornBodyText
@@ -47,6 +48,7 @@ import se.imorn.model.EntryKind
 import se.imorn.model.PlannedStep
 import se.imorn.model.StoryItem
 import se.imorn.model.Subflow
+import se.imorn.model.farAhead
 import se.imorn.model.longThreads
 import se.imorn.model.next
 import se.imorn.model.papers
@@ -76,6 +78,8 @@ fun ChapterScreen(
     onAddStep: (String) -> Unit,
     onAddNote: (String) -> Unit,
     onSetState: (ChapterState) -> Unit,
+    onFinishKeeping: () -> Unit,
+    onFinishClosing: () -> Unit,
     onDelete: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -85,6 +89,7 @@ fun ChapterScreen(
     var writing by rememberSaveable { mutableStateOf(false) }
     var quickAdd by rememberSaveable { mutableStateOf(false) }
     var deleting by rememberSaveable { mutableStateOf(false) }
+    var finishing by rememberSaveable { mutableStateOf(false) }
     ImornScaffold(
         title = chapter.title,
         modifier = modifier,
@@ -150,7 +155,7 @@ fun ChapterScreen(
                     )
                     ImornTextButton(
                         text = stringResource(R.string.chapter_close),
-                        onClick = { onSetState(ChapterState.Closed) },
+                        onClick = { finishing = true },
                     )
                 } else {
                     ImornTextButton(
@@ -223,6 +228,52 @@ fun ChapterScreen(
             },
             onDismiss = { deleting = false },
         )
+    }
+    if (finishing) {
+        FinishSheet(
+            farAhead = chapter.farAhead(),
+            onKeep = {
+                finishing = false
+                onFinishKeeping()
+            },
+            onClose = {
+                finishing = false
+                onFinishClosing()
+            },
+            onDismiss = { finishing = false },
+        )
+    }
+}
+
+/**
+ * Finishing a chapter. When steps lie far ahead (the tax return next spring, the guarantee) the question is
+ * whether to keep an eye on them: yes rests the chapter with its threads in view, no lets it become a memory.
+ * With nothing ahead the chapter simply closes.
+ */
+@Composable
+private fun FinishSheet(
+    farAhead: List<PlannedStep>,
+    onKeep: () -> Unit,
+    onClose: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    if (farAhead.isEmpty()) {
+        ImornConfirmDialog(
+            title = stringResource(R.string.chapter_finish_title),
+            text = stringResource(R.string.chapter_finish_text),
+            confirmText = stringResource(R.string.chapter_close),
+            dismissText = stringResource(R.string.dialog_cancel),
+            onConfirm = onClose,
+            onDismiss = onDismiss,
+        )
+        return
+    }
+    ImornSheet(onDismiss = onDismiss) {
+        SectionTitle(stringResource(R.string.chapter_finish_title))
+        ImornBodyText(text = pluralStringResource(R.plurals.chapter_finish_keep_text, farAhead.size, farAhead.size))
+        ImornSheetAction(ImornIcons.Keep, stringResource(R.string.chapter_finish_keep), onKeep)
+        ImornSheetAction(ImornIcons.Close, stringResource(R.string.chapter_finish_close), onClose)
+        Spacer(Modifier.height(ImornTheme.spacing.lg))
     }
 }
 
@@ -504,6 +555,8 @@ private fun PreviewScreen(view: ChapterView) {
             onAddStep = {},
             onAddNote = {},
             onSetState = {},
+            onFinishKeeping = {},
+            onFinishClosing = {},
             onDelete = {},
             contentPadding = PaddingValues(),
         )

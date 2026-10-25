@@ -228,7 +228,7 @@ sätt att leverera samma data.
 - [ ] `:core:reminders` med WorkManager (samma mönster som Novila: ett engångsjobb, lägger nästa själv, inga exakta larm)
 - [ ] Notisbudget: sammanslagning per dag, tysta timmar, *Imorgon*-knapp i notisen
 - [ ] Försenat-flödet: Klart · Imorgon · Nytt datum · Gäller inte
-- [ ] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
+- [x] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
 - [ ] *Veckan som kommer* (valfri söndagsnotis)
 - [ ] Widget (Glance): nästa steg + snabbfoto
 - [x] Omstart, tidszoner, sommartid och ändrade ankare testade

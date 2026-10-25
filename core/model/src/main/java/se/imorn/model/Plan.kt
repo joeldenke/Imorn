@@ -23,15 +23,15 @@ private fun Chapter.planned(step: Step) = PlannedStep(id, title, step, dateOf(st
  * chapter whose anchor is still unknown reads like the template. Long threads are left out; see [longThreads].
  */
 fun Chapter.upcoming(): List<PlannedStep> = steps
-    .filter { it.status == StepStatus.Open && !it.longThread }
+    .filter { it.status == StepStatus.Open && !isLongThread(it) }
     .map { planned(it) }
     .withIndex()
     .sortedWith(compareBy<IndexedValue<PlannedStep>>({ it.value.date == null }, { it.value.date }, { it.index }))
     .map { it.value }
 
-/** The open long threads, soonest first; those without a day last. */
+/** The open long threads, soonest first; those without a day last. See [isLongThread] for what counts. */
 fun Chapter.longThreads(): List<PlannedStep> = steps
-    .filter { it.status == StepStatus.Open && it.longThread }
+    .filter { it.status == StepStatus.Open && isLongThread(it) }
     .map { planned(it) }
     .sortedWith(compareBy<PlannedStep>({ it.date == null }, { it.date }))
 
