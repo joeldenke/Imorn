@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -26,41 +23,42 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import se.imorn.coach.AssistantAvailability
 import se.imorn.designsystem.component.ImornBodyText
 import se.imorn.designsystem.component.ImornButton
 import se.imorn.designsystem.component.ImornCard
-import se.imorn.designsystem.component.ImornChapterMark
-import se.imorn.designsystem.component.ImornGlassPanel
-import se.imorn.designsystem.component.ImornIcon
-import se.imorn.designsystem.component.ImornIcons
+import se.imorn.designsystem.component.ImornCheckCircle
+import se.imorn.designsystem.component.ImornCountdown
+import se.imorn.designsystem.component.ImornDateBadge
+import se.imorn.designsystem.component.ImornDayTone
+import se.imorn.designsystem.component.ImornNowCard
 import se.imorn.designsystem.component.ImornScaffold
-import se.imorn.designsystem.component.ImornSceneButton
-import se.imorn.designsystem.component.ImornSceneText
-import se.imorn.designsystem.component.ImornSceneTextButton
 import se.imorn.designsystem.component.ImornSecondaryButton
-import se.imorn.designsystem.component.ImornSkyHero
-import se.imorn.designsystem.component.ImornSkyTime
-import se.imorn.designsystem.component.ImornTag
-import se.imorn.designsystem.component.ImornTagTone
+import se.imorn.designsystem.component.ImornShelf
+import se.imorn.designsystem.component.ImornSpine
+import se.imorn.designsystem.component.ImornSpineTone
 import se.imorn.designsystem.component.ImornText
+import se.imorn.designsystem.component.ImornTextButton
 import se.imorn.designsystem.theme.ImornTheme
-import se.imorn.model.Chapter
 import se.imorn.model.ChapterState
 import se.imorn.model.PlannedStep
 import se.imorn.model.TomorrowItem
-import se.imorn.model.next
 import se.imorn.model.progress
 import se.imorn.model.tomorrowPlan
 import se.imorn.ui.PhotoPromptDialog
 import se.imorn.ui.PreviewData
-import se.imorn.ui.dayText
+import se.imorn.ui.dayNumber
+import se.imorn.ui.longDayText
+import se.imorn.ui.monthShort
+import java.util.Locale
 
 /**
- * *Imorgon*, stateless. The sky at this hour opens the screen, counting down to the anchor coming up, with the one
- * thing to do now and its *Done* and *Tomorrow*. Then at most two more, what is getting close further ahead, the
- * chapters with how far along they are, and the assistant. With no chapters it invites the first one; with nothing
- * to do it says so, calmly. No streaks, no guilt, no red numbers: a late step is only marked as late.
+ * *Imorgon*, stateless. The day and a greeting, the countdown to the anchor coming up, and the one thing to do now
+ * in its apricot block with *Done* and *Tomorrow*. Then at most two more, each with a date and a box to tick, what
+ * is getting close further ahead, the assistant, and the chapters as books on a shelf. With no chapters it invites
+ * the first one; with nothing to do it says so, calmly. No streaks, no guilt, no red numbers: a late step is only
+ * marked as late.
  */
 @Composable
 fun TodayScreen(
@@ -88,34 +86,39 @@ fun TodayScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                // The sky reaches up behind the status bar and keeps its text clear of it itself.
-                .padding(bottom = scaffoldPadding.calculateBottomPadding())
-                .padding(contentPadding),
+                .padding(scaffoldPadding)
+                .padding(contentPadding)
+                .padding(horizontal = ImornTheme.spacing.md + ImornTheme.spacing.xs, vertical = ImornTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.lg),
         ) {
-            Hero(state, done, onTomorrow, onOpenStep, onNewChapter)
-            Column(
-                modifier = Modifier.padding(horizontal = ImornTheme.spacing.md),
-                verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
-            ) {
-                val rest = state.plan.items.drop(1)
-                if (rest.isNotEmpty()) {
-                    SectionTitle(stringResource(R.string.today_after_that))
-                    rest.forEach { item -> ItemCard(item, state, done, onTomorrow, onOpenStep) }
+            Header(state)
+            val first = state.plan.items.firstOrNull()
+            when {
+                !state.hasChapters -> EmptyCard(onNewChapter)
+
+                first == null -> ImornCard(modifier = Modifier.fillMaxWidth()) {
+                    ImornText(text = stringResource(R.string.today_all_done), style = ImornTheme.typography.titleLarge)
                 }
-                if (state.plan.later.isNotEmpty()) {
+
+                else -> NowCard(first, done, onTomorrow, onOpenStep)
+            }
+            val rest = state.plan.items.drop(1)
+            if (rest.isNotEmpty()) {
+                Column {
+                    rest.forEach { item -> NextRow(item.planned, state, onCheck = done, onOpenStep = onOpenStep) }
+                }
+            }
+            if (state.plan.later.isNotEmpty()) {
+                Column {
                     SectionTitle(stringResource(R.string.today_later))
-                    LaterCard(state.plan.later, state, onOpenStep)
+                    state.plan.later.forEach { NextRow(it, state, onCheck = null, onOpenStep = onOpenStep) }
                 }
-                if (state.plan.items.isNotEmpty()) {
-                    AssistantCard(state.assistant, onAskAssistant, onDownloadAssistant)
-                }
-                if (state.hasChapters) {
-                    SectionTitle(stringResource(R.string.today_chapters))
-                    state.chapters.forEach { ChapterCard(it, state, onOpenChapter) }
-                    NewChapterCard(onNewChapter)
-                }
-                Spacer(Modifier.height(ImornTheme.spacing.lg))
+            }
+            if (state.plan.items.isNotEmpty()) {
+                AssistantCard(state.assistant, onAskAssistant, onDownloadAssistant)
+            }
+            if (state.hasChapters) {
+                Shelf(state, onOpenChapter, onNewChapter)
             }
         }
     }
@@ -131,267 +134,165 @@ fun TodayScreen(
     }
 }
 
-/** The sky: a greeting for the hour, the countdown, and the one thing to do now (or the invitation to start). */
+/** The day and a greeting for the hour, with the countdown to the anchor coming up beside them. */
 @Composable
-private fun Hero(
-    state: TodayUiState,
-    onDone: (PlannedStep) -> Unit,
-    onTomorrow: (PlannedStep) -> Unit,
-    onOpenStep: (PlannedStep) -> Unit,
-    onNewChapter: () -> Unit,
-) {
-    ImornSkyHero(hour = state.hour) {
-        Column(verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs)) {
-            ImornSceneText(text = stringResource(greeting(state.hour)), style = ImornTheme.typography.headlineMedium)
-            ImornSceneText(text = subtitle(state), style = ImornTheme.typography.bodyLarge, muted = true)
+private fun Header(state: TodayUiState) {
+    Row(verticalAlignment = Alignment.Top) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs),
+        ) {
+            ImornText(
+                text = longDayText(state.today),
+                style = ImornTheme.typography.bodyMedium,
+                color = ImornTheme.colors.onSurfaceVariant,
+            )
+            ImornText(
+                text = stringResource(greeting(state.hour)),
+                style = ImornTheme.typography.headlineLarge,
+                color = ImornTheme.colors.onBackground,
+                modifier = Modifier.semantics { heading() },
+            )
         }
-        val first = state.plan.items.firstOrNull()
-        when {
-            !state.hasChapters -> ImornGlassPanel(modifier = Modifier.fillMaxWidth()) {
-                ImornSceneText(
-                    text = stringResource(R.string.today_empty_title),
-                    style = ImornTheme.typography.titleLarge,
-                )
-                ImornSceneText(
-                    text = stringResource(R.string.today_empty_body),
-                    style = ImornTheme.typography.bodyLarge,
-                    muted = true,
-                )
-                Spacer(Modifier.height(ImornTheme.spacing.sm))
-                ImornSceneButton(text = stringResource(R.string.today_start_chapter), onClick = onNewChapter)
-            }
-
-            first == null -> ImornGlassPanel(modifier = Modifier.fillMaxWidth()) {
-                ImornSceneText(
-                    text = stringResource(R.string.today_all_done),
-                    style = ImornTheme.typography.titleMedium,
-                )
-            }
-
-            else -> NowPanel(first, state, onDone, onTomorrow, onOpenStep)
+        val milestone = state.milestone
+        if (milestone != null) {
+            val days = milestone.daysFrom(state.today).toInt()
+            ImornCountdown(
+                number = days.toString(),
+                label = pluralStringResource(R.plurals.today_countdown, days, milestone.anchor.label),
+            )
         }
     }
 }
 
-/** The one thing to do now, on glass in the sky: big, with why it matters and the two answers. */
 @Composable
-private fun NowPanel(
+private fun EmptyCard(onNewChapter: () -> Unit) {
+    ImornCard(modifier = Modifier.fillMaxWidth()) {
+        ImornText(text = stringResource(R.string.today_empty_title), style = ImornTheme.typography.headlineSmall)
+        ImornBodyText(text = stringResource(R.string.today_empty_body))
+        ImornButton(text = stringResource(R.string.today_start_chapter), onClick = onNewChapter)
+    }
+}
+
+/** The one thing to do now, big, in apricot. */
+@Composable
+private fun NowCard(
     item: TomorrowItem,
-    state: TodayUiState,
     onDone: (PlannedStep) -> Unit,
     onTomorrow: (PlannedStep) -> Unit,
     onOpenStep: (PlannedStep) -> Unit,
 ) {
     val planned = item.planned
-    ImornGlassPanel(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(onClickLabel = stringResource(R.string.today_open_step)) { onOpenStep(planned) },
-            verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs),
-        ) {
-            ImornSceneText(
-                text = stringResource(
-                    R.string.today_item_meta,
-                    planned.chapterTitle,
-                    dayText(planned.date, state.today),
-                ),
-                style = ImornTheme.typography.labelLarge,
-                muted = true,
-            )
-            ImornSceneText(text = planned.step.title, style = ImornTheme.typography.headlineSmall)
-            planned.step.why?.let { ImornSceneText(text = it, style = ImornTheme.typography.bodyMedium, muted = true) }
-        }
-        if (item.late) {
-            ImornTag(text = stringResource(R.string.today_late), tone = ImornTagTone.Now)
-        }
-        Spacer(Modifier.height(ImornTheme.spacing.xs))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm),
-        ) {
-            ImornSceneButton(text = stringResource(R.string.today_done), onClick = { onDone(planned) })
-            ImornSceneTextButton(text = stringResource(R.string.today_tomorrow), onClick = { onTomorrow(planned) })
-        }
-    }
-}
-
-private fun greeting(hour: Int) = when (ImornSkyTime.at(hour)) {
-    ImornSkyTime.Morning -> R.string.today_greeting_morning
-    ImornSkyTime.Day -> R.string.today_greeting_day
-    ImornSkyTime.Evening -> R.string.today_greeting_evening
-    ImornSkyTime.Night -> R.string.today_greeting_night
-}
-
-/** Under the greeting: the countdown to the anchor coming up, or a calm word. */
-@Composable
-private fun subtitle(state: TodayUiState): String {
-    val milestone = state.milestone
-    return when {
-        milestone != null -> {
-            val days = milestone.daysFrom(state.today)
-            val label = milestone.anchor.label
-            when (days) {
-                0L -> stringResource(R.string.today_milestone_today, label)
-                1L -> stringResource(R.string.today_milestone_tomorrow, label)
-                else -> pluralStringResource(R.plurals.today_milestone_days, days.toInt(), days.toInt(), label)
-            }
-        }
-
-        state.hasChapters -> stringResource(R.string.today_one_thing)
-
-        else -> stringResource(R.string.today_welcome)
-    }
-}
-
-@Composable
-private fun SectionTitle(text: String) {
-    ImornText(
-        text = text,
-        style = ImornTheme.typography.titleMedium,
-        color = ImornTheme.colors.onBackground,
-        modifier = Modifier.semantics { heading() },
+    ImornNowCard(
+        chapter = planned.chapterTitle,
+        meta = if (item.late) stringResource(R.string.today_late) else null,
+        title = planned.step.title,
+        why = planned.step.why,
+        doneText = stringResource(R.string.today_done),
+        tomorrowText = stringResource(R.string.today_tomorrow),
+        onDone = { onDone(planned) },
+        onTomorrow = { onTomorrow(planned) },
+        onOpen = { onOpenStep(planned) },
+        openLabel = stringResource(R.string.today_open_step),
     )
 }
 
+/** A step coming up: its day, its title and chapter, and with [onCheck] a box to tick it off. */
 @Composable
-private fun ItemCard(
-    item: TomorrowItem,
+private fun NextRow(
+    planned: PlannedStep,
     state: TodayUiState,
-    onDone: (PlannedStep) -> Unit,
-    onTomorrow: (PlannedStep) -> Unit,
+    onCheck: ((PlannedStep) -> Unit)?,
     onOpenStep: (PlannedStep) -> Unit,
 ) {
-    val planned = item.planned
-    ImornCard(modifier = Modifier.fillMaxWidth(), onClick = { onOpenStep(planned) }) {
-        Row(horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md)) {
-            ImornChapterMark(icon = state.iconOf(planned.chapterId))
-            Column(verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm)) {
-                ImornText(
-                    text = stringResource(
-                        R.string.today_item_meta,
-                        planned.chapterTitle,
-                        dayText(planned.date, state.today),
-                    ),
-                    style = ImornTheme.typography.labelLarge,
-                    color = ImornTheme.colors.onSurfaceVariant,
-                )
-                ImornText(text = planned.step.title, style = ImornTheme.typography.titleMedium)
-                if (item.late) {
-                    ImornTag(text = stringResource(R.string.today_late), tone = ImornTagTone.Now)
-                }
-                Row(horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm)) {
-                    ImornButton(text = stringResource(R.string.today_done), onClick = { onDone(planned) })
-                    ImornSecondaryButton(
-                        text = stringResource(R.string.today_tomorrow),
-                        onClick = { onTomorrow(planned) },
-                    )
-                }
-            }
-        }
-    }
-}
-
-/** A chapter: its mark with a ring for how far along it is, what is next, and the share done. */
-@Composable
-private fun ChapterCard(chapter: Chapter, state: TodayUiState, onOpenChapter: (String) -> Unit) {
-    val progress = chapter.progress()
-    ImornCard(modifier = Modifier.fillMaxWidth(), onClick = { onOpenChapter(chapter.id) }) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
-        ) {
-            ImornChapterMark(icon = state.iconOf(chapter), progress = progress.share)
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs),
-            ) {
-                ImornText(text = chapter.title, style = ImornTheme.typography.titleMedium)
-                val next = chapter.next()
-                ImornText(
-                    text = when {
-                        chapter.state == ChapterState.Resting -> stringResource(R.string.today_chapter_resting)
-                        chapter.state == ChapterState.Closed -> stringResource(R.string.today_chapter_closed)
-                        next != null -> stringResource(R.string.today_chapter_next, next.step.title)
-                        else -> stringResource(R.string.today_chapter_nothing_left)
-                    },
-                    style = ImornTheme.typography.bodyMedium,
-                    color = ImornTheme.colors.onSurfaceVariant,
-                )
-                if (progress.total > 0) {
-                    ImornText(
-                        text = stringResource(R.string.today_chapter_progress, progress.done, progress.total),
-                        style = ImornTheme.typography.labelMedium,
-                        color = ImornTheme.colors.secondary,
-                    )
-                }
-            }
-            ImornIcon(icon = ImornIcons.Forward, contentDescription = null)
-        }
-    }
-}
-
-/** Starting another chapter, as a card among the chapters. */
-@Composable
-private fun NewChapterCard(onNewChapter: () -> Unit) {
-    ImornCard(modifier = Modifier.fillMaxWidth(), onClick = onNewChapter) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
-        ) {
-            ImornIcon(
-                icon = ImornIcons.Add,
-                contentDescription = null,
-                tint = ImornTheme.colors.primary,
-                modifier = Modifier.size(ImornTheme.spacing.xl),
+    val date = planned.date
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onOpenStep(planned) }
+            .padding(vertical = ImornTheme.spacing.sm),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
+    ) {
+        ImornDateBadge(
+            day = dayNumber(date),
+            month = date?.let { monthShort(it) },
+            tone = if (date != null && date < state.today) ImornDayTone.Now else ImornDayTone.Ahead,
+        )
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            ImornText(text = planned.step.title, style = ImornTheme.typography.titleMedium)
+            ImornText(
+                text = planned.chapterTitle,
+                style = ImornTheme.typography.bodySmall,
+                color = ImornTheme.colors.onSurfaceVariant,
             )
-            Column(verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs)) {
-                ImornText(
-                    text = stringResource(R.string.today_new_chapter),
-                    style = ImornTheme.typography.titleMedium,
-                    color = ImornTheme.colors.primary,
-                )
-                ImornText(
-                    text = stringResource(R.string.today_new_chapter_body),
-                    style = ImornTheme.typography.bodyMedium,
-                    color = ImornTheme.colors.onSurfaceVariant,
-                )
-            }
+        }
+        if (onCheck != null) {
+            ImornCheckCircle(
+                contentDescription = stringResource(R.string.today_mark_done, planned.step.title),
+                onClick = { onCheck(planned) },
+            )
         }
     }
 }
 
-/** The long threads getting close, in one quiet card. */
+/** The chapters as books on a shelf, with the way to start another. */
 @Composable
-private fun LaterCard(later: List<PlannedStep>, state: TodayUiState, onOpenStep: (PlannedStep) -> Unit) {
-    ImornCard(modifier = Modifier.fillMaxWidth()) {
-        later.forEach { planned ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onOpenStep(planned) },
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
-            ) {
-                ImornIcon(icon = ImornIcons.Calendar, contentDescription = null, tint = ImornTheme.colors.primary)
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs),
-                ) {
-                    ImornText(text = planned.step.title, style = ImornTheme.typography.bodyLarge)
-                    ImornText(
-                        text = stringResource(
-                            R.string.today_item_meta,
-                            planned.chapterTitle,
-                            dayText(planned.date, state.today),
-                        ),
-                        style = ImornTheme.typography.bodyMedium,
-                        color = ImornTheme.colors.onSurfaceVariant,
-                    )
-                }
-            }
+private fun Shelf(state: TodayUiState, onOpenChapter: (String) -> Unit, onNewChapter: () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            SectionTitle(stringResource(R.string.today_chapters), modifier = Modifier.weight(1f))
+            ImornTextButton(text = stringResource(R.string.today_new_chapter), onClick = onNewChapter)
         }
+        val fractionFormat = stringResource(R.string.today_chapter_fraction)
+        val resting = stringResource(R.string.today_chapter_resting)
+        val closed = stringResource(R.string.today_chapter_closed)
+        ImornShelf(
+            spines = state.chapters.mapIndexed { index, chapter ->
+                val progress = chapter.progress()
+                ImornSpine(
+                    title = chapter.title,
+                    meta = when (chapter.state) {
+                        ChapterState.Resting -> resting
+                        ChapterState.Closed -> closed
+                        ChapterState.Active -> fraction(fractionFormat, progress.done, progress.total)
+                    },
+                    tone = SpineTones[index % SpineTones.size],
+                    height = SpineHeights[index % SpineHeights.size],
+                    onClick = { onOpenChapter(chapter.id) },
+                )
+            },
+        )
     }
+}
+
+/** *2/5*, or nothing for a chapter without steps. */
+private fun fraction(format: String, done: Int, total: Int): String? =
+    if (total > 0) String.format(Locale.ROOT, format, done, total) else null
+
+private val SpineTones = listOf(ImornSpineTone.Indigo, ImornSpineTone.Rose, ImornSpineTone.Sand, ImornSpineTone.Apricot)
+private val SpineHeights = listOf(1f, 0.82f, 0.9f, 0.76f)
+
+private fun greeting(hour: Int) = when (hour) {
+    in MORNING until DAY -> R.string.today_greeting_morning
+    in DAY until EVENING -> R.string.today_greeting_day
+    in EVENING until NIGHT -> R.string.today_greeting_evening
+    else -> R.string.today_greeting_night
+}
+
+private const val MORNING = 5
+private const val DAY = 10
+private const val EVENING = 17
+private const val NIGHT = 22
+
+@Composable
+private fun SectionTitle(text: String, modifier: Modifier = Modifier) {
+    ImornText(
+        text = text,
+        style = ImornTheme.typography.titleLarge,
+        color = ImornTheme.colors.onBackground,
+        modifier = modifier.semantics { heading() },
+    )
 }
 
 @Composable
@@ -457,7 +358,6 @@ private fun previewState(hasChapters: Boolean = true): TodayUiState {
         chapters = chapters,
         assistant = AssistantUiState(availability = AssistantAvailability.Available),
         hour = PreviewData.HOUR,
-        templateIcons = PreviewData.templateIcons,
     )
 }
 
@@ -492,16 +392,10 @@ private fun TodayScreenPreview() {
 
 @Preview(showBackground = true, heightDp = 1400, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun TodayScreenEveningDarkPreview() {
+private fun TodayScreenDarkPreview() {
     ImornTheme(darkTheme = true) {
         PreviewContent(previewState().copy(hour = 19))
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun TodayScreenNightPreview() {
-    PreviewScreen(previewState().copy(hour = 23))
 }
 
 @Preview(showBackground = true)

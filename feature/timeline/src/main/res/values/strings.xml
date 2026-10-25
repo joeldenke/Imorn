@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="chapter_anchor_unknown">Not known yet. Tap to choose a date.</string>
-    <!-- How far along the whole chapter is, such as "12 of 40 done". -->
-    <string name="chapter_progress">%1$d of %2$d done</string>
     <string name="chapter_more">More for this chapter</string>
-    <!-- How far off an anchor date is, such as "in 19 days". -->
-    <plurals name="chapter_anchor_in_days">
-        <item quantity="one">in %1$d day</item>
-        <item quantity="other">in %1$d days</item>
+    <!-- An anchor on the chapter's cover, such as "Moving day · Mar 1". -->
+    <string name="chapter_anchor_chip">%1$s · %2$s</string>
+    <string name="chapter_anchor_choose">%1$s · choose a date</string>
+    <string name="chapter_stat_none" translatable="false">–</string>
+    <!-- Under the number of days to the next anchor, such as "19 / days left". -->
+    <plurals name="chapter_stat_days">
+        <item quantity="one">day left</item>
+        <item quantity="other">days left</item>
     </plurals>
+    <string name="chapter_stat_fraction" translatable="false">%1$d/%2$d</string>
+    <string name="chapter_stat_done">steps done</string>
+    <plurals name="chapter_stat_memories">
+        <item quantity="one">memory</item>
+        <item quantity="other">memories</item>
+    </plurals>
+    <string name="chapter_undated">NO DATE YET</string>
+    <string name="chapter_late">A little late</string>
     <string name="chapter_view_list">List</string>
     <string name="chapter_view_timeline">Timeline</string>
     <string name="chapter_view_papers">Papers</string>
@@ -26,7 +35,6 @@
     <string name="chapter_nothing_done">What you do ends up here, below the line.</string>
     <!-- When a step was done, such as "Done Feb 1, 2027" or "Done Yesterday". -->
     <string name="chapter_done_on">Done: %1$s</string>
-    <string name="chapter_late_since">%1$s, a little late</string>
     <string name="chapter_add_step">Add a step</string>
     <string name="chapter_add_step_label">What do you need to do?</string>
     <string name="chapter_add_step_confirm">Add</string>

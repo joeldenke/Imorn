@@ -1,13 +1,7 @@
 package se.imorn.designsystem.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -20,9 +14,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import se.imorn.designsystem.theme.ImornTheme
@@ -117,48 +108,4 @@ fun ImornTag(text: String, modifier: Modifier = Modifier, tone: ImornTagTone = I
             .background(background)
             .padding(horizontal = ImornTheme.spacing.sm + ImornTheme.spacing.xs, vertical = ImornTheme.spacing.xs),
     )
-}
-
-/**
- * Tabs for the views of one thing, such as a chapter's *List*, *Timeline* and *Papers*: a soft track with the
- * chosen one raised on a card. Each reads as a tab to TalkBack.
- */
-@Composable
-fun ImornTabs(labels: List<String>, selected: Int, onSelect: (Int) -> Unit, modifier: Modifier = Modifier) {
-    val colors = ImornTheme.colors
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(CircleShape)
-            .background(colors.surfaceContainer)
-            .padding(ImornTheme.spacing.xs),
-        horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs),
-    ) {
-        labels.forEachIndexed { index, label ->
-            val chosen = index == selected
-            val tab = if (chosen) {
-                Modifier
-                    .background(ImornTheme.surfaces.card, CircleShape)
-                    .border(1.dp, ImornTheme.surfaces.cardOutline, CircleShape)
-            } else {
-                Modifier
-            }
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(min = 44.dp)
-                    .clip(CircleShape)
-                    .then(tab)
-                    .semantics { this.selected = chosen }
-                    .clickable(role = Role.Tab) { onSelect(index) },
-                contentAlignment = Alignment.Center,
-            ) {
-                ImornText(
-                    text = label,
-                    style = ImornTheme.typography.labelLarge,
-                    color = if (chosen) colors.primary else colors.onSurfaceVariant,
-                )
-            }
-        }
-    }
 }

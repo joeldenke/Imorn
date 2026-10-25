@@ -3,16 +3,20 @@ package se.imorn.designsystem.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -30,7 +34,7 @@ import java.time.LocalDate
 
 private const val MILLIS_PER_DAY = 86_400_000L
 
-/** A secondary action beside the screen's [ImornButton]: outlined, so the main action is the one that stands out. */
+/** A secondary action beside the screen's [ImornButton]: a soft pill, so the main action is the one that stands out. */
 @Composable
 fun ImornSecondaryButton(
     text: String,
@@ -38,8 +42,18 @@ fun ImornSecondaryButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    OutlinedButton(onClick = onClick, modifier = modifier, enabled = enabled) {
-        Text(text = text)
+    Button(
+        onClick = onClick,
+        modifier = modifier.heightIn(min = ButtonHeight),
+        enabled = enabled,
+        shape = CircleShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = ImornTheme.colors.surfaceVariant,
+            contentColor = ImornTheme.colors.onSurface,
+        ),
+        contentPadding = PaddingValues(horizontal = ImornTheme.spacing.lg),
+    ) {
+        Text(text = text, style = ImornTheme.typography.titleSmall)
     }
 }
 
@@ -76,10 +90,13 @@ fun ImornChoiceCard(
         },
         shape = ImornTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = if (selected) colors.primaryContainer else ImornTheme.surfaces.card,
-            contentColor = if (selected) colors.onPrimaryContainer else colors.onSurface,
+            containerColor = if (selected) colors.secondaryContainer else ImornTheme.surfaces.card,
+            contentColor = if (selected) colors.onSecondaryContainer else colors.onSurface,
         ),
-        border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) colors.primary else colors.outline),
+        border = BorderStroke(
+            if (selected) 2.dp else 1.dp,
+            if (selected) colors.onBackground else ImornTheme.surfaces.cardOutline,
+        ),
     ) {
         Column(
             modifier = Modifier.padding(ImornTheme.spacing.md),

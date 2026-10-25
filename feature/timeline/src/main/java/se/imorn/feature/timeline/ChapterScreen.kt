@@ -1,19 +1,17 @@
 package se.imorn.feature.timeline
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,36 +20,40 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import se.imorn.designsystem.component.ImornBodyText
+import se.imorn.designsystem.component.ImornCalendarRow
 import se.imorn.designsystem.component.ImornCard
-import se.imorn.designsystem.component.ImornChapterMark
 import se.imorn.designsystem.component.ImornConfirmDialog
+import se.imorn.designsystem.component.ImornCover
+import se.imorn.designsystem.component.ImornCoverButton
+import se.imorn.designsystem.component.ImornCoverChip
+import se.imorn.designsystem.component.ImornCoverTitle
+import se.imorn.designsystem.component.ImornDateBadge
 import se.imorn.designsystem.component.ImornDatePickerDialog
+import se.imorn.designsystem.component.ImornDayTone
 import se.imorn.designsystem.component.ImornFloatingButton
-import se.imorn.designsystem.component.ImornIcon
 import se.imorn.designsystem.component.ImornIcons
 import se.imorn.designsystem.component.ImornImage
-import se.imorn.designsystem.component.ImornMarkSize
-import se.imorn.designsystem.component.ImornNowLine
+import se.imorn.designsystem.component.ImornMonthHeading
+import se.imorn.designsystem.component.ImornNowBand
+import se.imorn.designsystem.component.ImornPolaroid
 import se.imorn.designsystem.component.ImornProgressBar
-import se.imorn.designsystem.component.ImornRailMark
 import se.imorn.designsystem.component.ImornScaffold
 import se.imorn.designsystem.component.ImornSecondaryButton
+import se.imorn.designsystem.component.ImornSegments
 import se.imorn.designsystem.component.ImornSheet
 import se.imorn.designsystem.component.ImornSheetAction
+import se.imorn.designsystem.component.ImornStat
 import se.imorn.designsystem.component.ImornTabs
 import se.imorn.designsystem.component.ImornTag
 import se.imorn.designsystem.component.ImornTagTone
 import se.imorn.designsystem.component.ImornText
 import se.imorn.designsystem.component.ImornTextInputDialog
-import se.imorn.designsystem.component.ImornTimelineRow
 import se.imorn.designsystem.theme.ImornTheme
 import se.imorn.model.Anchor
 import se.imorn.model.Chapter
@@ -71,8 +73,13 @@ import se.imorn.model.subflows
 import se.imorn.model.timeline
 import se.imorn.ui.Capture
 import se.imorn.ui.PreviewData
+import se.imorn.ui.dayNumber
 import se.imorn.ui.dayText
+import se.imorn.ui.longDayText
+import se.imorn.ui.monthHeading
+import se.imorn.ui.monthShort
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.temporal.ChronoUnit
 
 /**
@@ -121,33 +128,38 @@ fun ChapterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(scaffoldPadding)
-                .padding(contentPadding)
-                .padding(horizontal = ImornTheme.spacing.md, vertical = ImornTheme.spacing.md),
-            verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
+                // The cover reaches up behind the status bar and keeps its text clear of it itself.
+                .padding(bottom = scaffoldPadding.calculateBottomPadding())
+                .padding(contentPadding),
+            verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.lg),
         ) {
-            ChapterHeader(chapter, state.icon, onMore = { more = true })
-            if (chapter.state != ChapterState.Active) {
-                ImornTag(text = stringResource(stateNote(chapter.state)), tone = ImornTagTone.Memory)
+            Cover(chapter, state, onPickAnchor = { picking = it }, onMore = { more = true })
+            Column(
+                modifier = Modifier.padding(horizontal = ScreenPadding),
+                verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
+            ) {
+                if (chapter.state != ChapterState.Active) {
+                    ImornTag(text = stringResource(stateNote(chapter.state)), tone = ImornTagTone.Memory)
+                }
+                ImornTabs(
+                    labels = ChapterView.entries.map { stringResource(viewLabel(it)) },
+                    selected = state.view.ordinal,
+                    onSelect = { onShow(ChapterView.entries[it]) },
+                )
+                when (state.view) {
+                    ChapterView.List -> ListView(chapter, state.today, onOpenStep)
+                    ChapterView.Timeline -> TimelineView(chapter, state, onOpenStep, onOpenEntry) { picking = it }
+                    ChapterView.Papers -> PapersView(chapter, state, capture.choosePaper, onOpenEntry)
+                }
+                if (state.view != ChapterView.Papers) {
+                    ImornSecondaryButton(
+                        text = stringResource(R.string.chapter_add_step),
+                        onClick = { adding = true },
+                    )
+                }
+                // Room below the last button for the quick +.
+                Spacer(Modifier.height(ImornTheme.spacing.xl * 2))
             }
-            chapter.anchors.forEach { anchor ->
-                AnchorCard(anchor, state.today, onClick = { picking = anchor.id })
-            }
-            ImornTabs(
-                labels = ChapterView.entries.map { stringResource(viewLabel(it)) },
-                selected = state.view.ordinal,
-                onSelect = { onShow(ChapterView.entries[it]) },
-            )
-            when (state.view) {
-                ChapterView.List -> ListView(chapter, state.today, onOpenStep)
-                ChapterView.Timeline -> TimelineView(chapter, state, onOpenStep, onOpenEntry)
-                ChapterView.Papers -> PapersView(chapter, state, capture.choosePaper, onOpenEntry)
-            }
-            if (state.view != ChapterView.Papers) {
-                ImornSecondaryButton(text = stringResource(R.string.chapter_add_step), onClick = { adding = true })
-            }
-            // Room below the last button for the quick +.
-            Spacer(Modifier.height(ImornTheme.spacing.xl * 2))
         }
     }
     if (more) {
@@ -267,77 +279,66 @@ private fun FinishSheet(
     }
 }
 
-/** The chapter's mark with its progress ring, its title, how far along it is, and the way to rest or finish it. */
+/** The side padding of the chapter's content, wide enough for the calendar's day column to breathe. */
+private val ScreenPadding: Dp
+    @Composable get() = ImornTheme.spacing.md + ImornTheme.spacing.xs
+
+/**
+ * The chapter's cover: its title, the anchor dates as pills (the next one in apricot; tapping one changes it), how
+ * far along it is in segments, and three numbers: days to the next anchor, steps done and memories kept.
+ */
 @Composable
-private fun ChapterHeader(chapter: Chapter, icon: String?, onMore: () -> Unit) {
+private fun Cover(chapter: Chapter, state: ChapterUiState, onPickAnchor: (String) -> Unit, onMore: () -> Unit) {
+    val today = state.today
     val progress = chapter.progress()
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
-    ) {
-        ImornChapterMark(icon = icon, progress = progress.share, size = ImornMarkSize.Large)
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs),
-        ) {
-            ImornText(
-                text = chapter.title,
-                style = ImornTheme.typography.headlineSmall,
-                color = ImornTheme.colors.onBackground,
-                modifier = Modifier.semantics { heading() },
+    val next = chapter.anchors.filter { it.date?.let { date -> date >= today } == true }.minByOrNull { it.date!! }
+    ImornCover {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+            ImornCoverButton(
+                icon = ImornIcons.More,
+                contentDescription = stringResource(R.string.chapter_more),
+                onClick = onMore,
             )
-            if (progress.total > 0) {
-                ImornText(
-                    text = stringResource(R.string.chapter_progress, progress.done, progress.total),
-                    style = ImornTheme.typography.labelLarge,
-                    color = ImornTheme.colors.secondary,
+        }
+        ImornCoverTitle(text = chapter.title)
+        Row(
+            modifier = Modifier.horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm),
+        ) {
+            chapter.anchors.forEach { anchor ->
+                val date = anchor.date
+                ImornCoverChip(
+                    text = if (date == null) {
+                        stringResource(R.string.chapter_anchor_choose, anchor.label)
+                    } else {
+                        stringResource(R.string.chapter_anchor_chip, anchor.label, dayText(date, today))
+                    },
+                    onClick = { onPickAnchor(anchor.id) },
+                    strong = anchor == next,
                 )
             }
         }
-        ImornIcon(
-            icon = ImornIcons.More,
-            contentDescription = stringResource(R.string.chapter_more),
-            modifier = Modifier
-                .clip(CircleShape)
-                .clickable(role = Role.Button, onClick = onMore)
-                .padding(ImornTheme.spacing.sm),
-        )
-    }
-}
-
-/** An anchor date, such as the moving day: its day and how far off it is. Tapping it changes the date. */
-@Composable
-private fun AnchorCard(anchor: Anchor, today: LocalDate, onClick: () -> Unit) {
-    val date = anchor.date
-    ImornCard(modifier = Modifier.fillMaxWidth(), onClick = onClick) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
-        ) {
-            ImornIcon(icon = ImornIcons.Calendar, contentDescription = null, tint = ImornTheme.colors.primary)
-            Column(
+        if (progress.total > 0) {
+            ImornSegments(done = progress.done, total = progress.total, onCover = true)
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm)) {
+            val days = next?.date?.let { ChronoUnit.DAYS.between(today, it).toInt() }
+            ImornStat(
+                value = days?.toString() ?: stringResource(R.string.chapter_stat_none),
+                label = pluralStringResource(R.plurals.chapter_stat_days, days ?: 0),
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.xs),
-            ) {
-                ImornText(
-                    text = anchor.label,
-                    style = ImornTheme.typography.labelLarge,
-                    color = ImornTheme.colors.onSurfaceVariant,
-                )
-                ImornText(
-                    text = date?.let { dayText(it, today) } ?: stringResource(R.string.chapter_anchor_unknown),
-                    style = ImornTheme.typography.titleMedium,
-                )
-            }
-            if (date != null) {
-                val days = ChronoUnit.DAYS.between(today, date)
-                if (days > 0) {
-                    ImornTag(
-                        text = pluralStringResource(R.plurals.chapter_anchor_in_days, days.toInt(), days.toInt()),
-                        tone = ImornTagTone.Ahead,
-                    )
-                }
-            }
+            )
+            ImornStat(
+                value = stringResource(R.string.chapter_stat_fraction, progress.done, progress.total),
+                label = stringResource(R.string.chapter_stat_done),
+                modifier = Modifier.weight(1f),
+            )
+            val memories = state.kept.count { it.entry.kind != EntryKind.Paper }
+            ImornStat(
+                value = memories.toString(),
+                label = pluralStringResource(R.plurals.chapter_stat_memories, memories),
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }
@@ -408,11 +409,9 @@ private fun QuickAddSheet(capture: Capture, onAddStep: () -> Unit, onWriteNote: 
     }
 }
 
-private const val PHOTO_ASPECT = 4f / 3f
-
 @Composable
 private fun SectionTitle(text: String) {
-    ImornText(text = text, style = ImornTheme.typography.titleMedium, color = ImornTheme.colors.onBackground)
+    ImornText(text = text, style = ImornTheme.typography.titleLarge, color = ImornTheme.colors.onBackground)
 }
 
 @Composable
@@ -493,106 +492,173 @@ private fun SubflowCard(
     }
 }
 
+/** Something on the calendar ahead of the now-band: a step, or an anchor such as the moving day. */
+private class Ahead(val date: LocalDate?, val step: PlannedStep? = null, val anchor: Anchor? = null)
+
+/**
+ * The chapter as a calendar: what waits furthest ahead at the top (steps without a date above it all), the anchors
+ * among the steps, the apricot band of now, and below it what was done and kept, latest first, in rose. A month's
+ * name heads its days.
+ */
 @Composable
 private fun TimelineView(
     chapter: Chapter,
     state: ChapterUiState,
     onOpenStep: (String) -> Unit,
     onOpenEntry: (String) -> Unit,
+    onPickAnchor: (String) -> Unit,
 ) {
     val today = state.today
     val kept = state.kept.associateBy { it.entry.id }
-    // One column without gaps, so the rail runs unbroken from the furthest step down to the first memory.
+    val steps = chapter.timeline().ahead.map { Ahead(it.date, step = it) }
+    val anchors = chapter.anchors
+        .filter { it.date?.let { date -> date >= today } == true }
+        .map { Ahead(it.date, anchor = it) }
+    val undated = steps.filter { it.date == null }
+    val dated = (steps + anchors).filter { it.date != null }.sortedByDescending { it.date }
     Column {
-        // Furthest ahead at the top, so the next step sits right above the now-line.
-        val ahead = chapter.timeline().ahead.asReversed()
-        ahead.forEachIndexed { index, planned ->
-            ImornTimelineRow(
-                mark = if (index == ahead.lastIndex) ImornRailMark.Next else ImornRailMark.Ahead,
-                first = index == 0,
-            ) {
-                StepCard(planned, today, onOpenStep)
-            }
+        if (undated.isNotEmpty()) {
+            ImornMonthHeading(text = stringResource(R.string.chapter_undated))
+            undated.forEach { AheadRow(it, today, onOpenStep, onPickAnchor) }
         }
-        ImornNowLine(label = stringResource(R.string.chapter_now))
+        var month: YearMonth? = null
+        dated.forEach { item ->
+            val date = item.date!!
+            if (YearMonth.from(date) != month) {
+                month = YearMonth.from(date)
+                ImornMonthHeading(text = monthHeading(date, today))
+            }
+            AheadRow(item, today, onOpenStep, onPickAnchor)
+        }
+        ImornNowBand(
+            label = stringResource(R.string.chapter_now),
+            text = longDayText(today),
+            bleed = ScreenPadding,
+            modifier = Modifier.padding(vertical = ImornTheme.spacing.sm),
+        )
         val story = chapter.story(state.kept.map { it.entry })
         if (story.isEmpty()) {
-            ImornTimelineRow(mark = ImornRailMark.Memory, last = true) {
+            ImornCalendarRow(day = dayNumber(today), tone = ImornDayTone.Quiet) {
                 ImornBodyText(text = stringResource(R.string.chapter_nothing_done))
             }
         }
+        var storyMonth: YearMonth? = YearMonth.from(today)
         story.forEachIndexed { index, item ->
-            val last = index == story.lastIndex
+            val date = when (item) {
+                is StoryItem.Done -> item.step.step.doneOn
+                is StoryItem.Kept -> item.entry.on
+            }
+            if (date != null && YearMonth.from(date) != storyMonth) {
+                storyMonth = YearMonth.from(date)
+                ImornMonthHeading(text = monthHeading(date, today))
+            }
             when (item) {
-                is StoryItem.Done -> ImornTimelineRow(mark = ImornRailMark.Done, last = last) {
-                    DoneCard(item, today, kept, onOpenStep, onOpenEntry)
-                }
-
-                is StoryItem.Kept -> ImornTimelineRow(mark = ImornRailMark.Memory, last = last) {
-                    KeptCard(kept[item.entry.id] ?: KeptEntry(item.entry), today, onOpenEntry)
-                }
+                is StoryItem.Done -> DoneRow(item, kept, index, onOpenStep, onOpenEntry)
+                is StoryItem.Kept -> KeptRow(kept[item.entry.id] ?: KeptEntry(item.entry), index, onOpenEntry)
             }
         }
     }
 }
 
-/** A step that was done, with the photos (as a row of thumbnails) and notes kept with it. */
 @Composable
-private fun DoneCard(
+private fun AheadRow(item: Ahead, today: LocalDate, onOpenStep: (String) -> Unit, onPickAnchor: (String) -> Unit) {
+    val date = item.date
+    val anchor = item.anchor
+    if (anchor != null) {
+        ImornCalendarRow(day = dayNumber(date), tone = ImornDayTone.Anchor, onClick = { onPickAnchor(anchor.id) }) {
+            ImornText(text = anchor.label, style = ImornTheme.typography.titleMedium, color = ImornTheme.colors.primary)
+        }
+        return
+    }
+    val planned = item.step ?: return
+    val late = date != null && date < today
+    ImornCalendarRow(
+        day = dayNumber(date),
+        tone = when {
+            date == null -> ImornDayTone.Quiet
+            late || date == today -> ImornDayTone.Now
+            planned.step.longThread -> ImornDayTone.Quiet
+            else -> ImornDayTone.Ahead
+        },
+        onClick = { onOpenStep(planned.step.id) },
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            ImornText(text = planned.step.title, style = ImornTheme.typography.bodyLarge)
+            if (late) {
+                ImornText(
+                    text = stringResource(R.string.chapter_late),
+                    style = ImornTheme.typography.labelMedium,
+                    color = ImornTheme.colors.secondary,
+                )
+            }
+        }
+    }
+}
+
+/** Every other print leans the other way, like photos pinned to a board. */
+private fun tilt(index: Int) = if (index % 2 == 0) -TILT else TILT
+
+private const val TILT = 2.5f
+
+/** A step that was done, on its day, with the photos (as prints) and notes kept with it. */
+@Composable
+private fun DoneRow(
     item: StoryItem.Done,
-    today: LocalDate,
     kept: Map<String, KeptEntry>,
+    index: Int,
     onOpenStep: (String) -> Unit,
     onOpenEntry: (String) -> Unit,
 ) {
     val step = item.step.step
-    ImornCard(modifier = Modifier.fillMaxWidth(), onClick = { onOpenStep(step.id) }) {
-        ImornTag(
-            text = stringResource(R.string.chapter_done_on, dayText(step.doneOn, today)),
-            tone = ImornTagTone.Memory,
-        )
-        ImornText(text = step.title, style = ImornTheme.typography.titleMedium)
-        val photos = item.kept.filter { it.kind == EntryKind.Photo }
-        if (photos.isNotEmpty()) {
-            Row(horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm)) {
-                photos.forEach { photo ->
-                    ImornImage(
-                        path = kept[photo.id]?.thumbnail,
-                        contentDescription = stringResource(R.string.photo_of, step.title),
-                        modifier = Modifier
-                            .size(ImornTheme.spacing.xl * 3)
-                            .clickableEntry(photo.id, onOpenEntry),
-                    )
+    ImornCalendarRow(day = dayNumber(step.doneOn), tone = ImornDayTone.Memory, onClick = { onOpenStep(step.id) }) {
+        Column(verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm)) {
+            ImornText(text = step.title, style = ImornTheme.typography.titleMedium)
+            val photos = item.kept.filter { it.kind == EntryKind.Photo }
+            if (photos.isNotEmpty()) {
+                Row(
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .padding(vertical = ImornTheme.spacing.sm),
+                    horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
+                ) {
+                    photos.forEachIndexed { photoIndex, photo ->
+                        ImornPolaroid(
+                            path = kept[photo.id]?.thumbnail,
+                            contentDescription = stringResource(R.string.photo_of, step.title),
+                            tilt = tilt(index + photoIndex),
+                            modifier = Modifier.clickableEntry(photo.id, onOpenEntry),
+                        )
+                    }
                 }
             }
-        }
-        item.kept.filter { it.kind == EntryKind.Note }.forEach { note ->
-            ImornText(
-                text = note.text.orEmpty(),
-                style = ImornTheme.typography.bodyMedium,
-                color = ImornTheme.colors.onSurfaceVariant,
-                modifier = Modifier.clickableEntry(note.id, onOpenEntry),
-            )
+            item.kept.filter { it.kind == EntryKind.Note }.forEach { note ->
+                ImornText(
+                    text = note.text.orEmpty(),
+                    style = ImornTheme.typography.bodyMedium,
+                    color = ImornTheme.colors.onSurfaceVariant,
+                    modifier = Modifier.clickableEntry(note.id, onOpenEntry),
+                )
+            }
         }
     }
 }
 
-/** A photo or a note kept on its own, on the day it was kept. */
+/** A photo (as a print) or a note kept on its own, on the day it was kept. */
 @Composable
-private fun KeptCard(kept: KeptEntry, today: LocalDate, onOpenEntry: (String) -> Unit) {
+private fun KeptRow(kept: KeptEntry, index: Int, onOpenEntry: (String) -> Unit) {
     val entry = kept.entry
-    ImornCard(modifier = Modifier.fillMaxWidth(), onClick = { onOpenEntry(entry.id) }) {
-        ImornTag(text = dayText(entry.on, today), tone = ImornTagTone.Memory)
+    ImornCalendarRow(day = dayNumber(entry.on), tone = ImornDayTone.Memory, onClick = { onOpenEntry(entry.id) }) {
         if (entry.kind == EntryKind.Photo) {
-            ImornImage(
+            ImornPolaroid(
                 path = kept.thumbnail,
                 contentDescription = entry.text ?: stringResource(R.string.photo),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(PHOTO_ASPECT),
+                caption = entry.text,
+                tilt = tilt(index),
+                modifier = Modifier.padding(vertical = ImornTheme.spacing.sm),
             )
+        } else {
+            ImornText(text = entry.text.orEmpty(), style = ImornTheme.typography.bodyLarge)
         }
-        entry.text?.let { ImornText(text = it, style = ImornTheme.typography.bodyLarge) }
     }
 }
 
@@ -644,15 +710,26 @@ private fun StepCard(planned: PlannedStep, today: LocalDate, onOpenStep: (String
     val date = planned.date
     val late = date != null && date < today
     ImornCard(modifier = Modifier.fillMaxWidth(), onClick = { onOpenStep(planned.step.id) }) {
-        ImornText(text = planned.step.title, style = ImornTheme.typography.bodyLarge)
-        ImornTag(
-            text = if (late) {
-                stringResource(R.string.chapter_late_since, dayText(date, today))
-            } else {
-                dayText(date, today)
-            },
-            tone = if (late || date == today) ImornTagTone.Now else ImornTagTone.Quiet,
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
+        ) {
+            ImornDateBadge(
+                day = dayNumber(date),
+                month = date?.let { monthShort(it) },
+                tone = if (late || date == today) ImornDayTone.Now else ImornDayTone.Ahead,
+            )
+            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                ImornText(text = planned.step.title, style = ImornTheme.typography.bodyLarge)
+                if (late) {
+                    ImornText(
+                        text = stringResource(R.string.chapter_late),
+                        style = ImornTheme.typography.labelMedium,
+                        color = ImornTheme.colors.secondary,
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -665,7 +742,6 @@ private fun PreviewScreen(view: ChapterView) {
                 today = PreviewData.TODAY,
                 view = view,
                 kept = PreviewData.kept.map(::KeptEntry),
-                icon = PreviewData.templateIcons["move"],
             ),
             chapter = PreviewData.moving,
             capture = Capture({}, {}, {}),
@@ -690,7 +766,7 @@ private fun ChapterListPreview() {
     PreviewScreen(ChapterView.List)
 }
 
-@Preview(showBackground = true, heightDp = 1400)
+@Preview(showBackground = true, heightDp = 1600)
 @Composable
 private fun ChapterTimelinePreview() {
     PreviewScreen(ChapterView.Timeline)

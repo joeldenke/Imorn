@@ -19,7 +19,6 @@ import se.imorn.coach.AssistantAvailability
 import se.imorn.coach.AssistantPrompt
 import se.imorn.coach.AssistantRequest
 import se.imorn.coach.LanguageModel
-import se.imorn.data.BundledContent
 import se.imorn.database.ChapterRepository
 import se.imorn.model.Chapter
 import se.imorn.model.Entry
@@ -44,7 +43,7 @@ data class AssistantUiState(
 )
 
 /**
- * What *Imorgon* shows: the sky at this [hour] with the anchor coming up, at most three things to do, what is
+ * What *Imorgon* shows: a greeting for this [hour] with the anchor coming up, at most three things to do, what is
  * getting close later, the chapters and the assistant.
  */
 data class TodayUiState(
@@ -53,19 +52,13 @@ data class TodayUiState(
     /** Every chapter, for the quiet list under the plan. */
     val chapters: List<Chapter>,
     val assistant: AssistantUiState = AssistantUiState(),
-    /** The hour on the phone, for the sky and the greeting only. */
+    /** The hour on the phone, for the greeting only. */
     val hour: Int = Today.NOON,
-    /** Each template's icon by template id, so a chapter shows the mark of the template it was made from. */
-    val templateIcons: Map<String, String> = emptyMap(),
 ) {
     val hasChapters: Boolean get() = chapters.isNotEmpty()
 
     /** The anchor the sky counts down to, such as the moving day. */
     val milestone: Milestone? get() = nextMilestone(chapters, today)
-
-    fun iconOf(chapter: Chapter): String? = chapter.templateId?.let(templateIcons::get)
-
-    fun iconOf(chapterId: String): String? = chapters.firstOrNull { it.id == chapterId }?.let { iconOf(it) }
 }
 
 /**
@@ -78,8 +71,6 @@ data class TodayUiState(
 @Inject
 class TodayViewModel(
     private val chapters: ChapterRepository,
-    /** The templates, for each chapter's icon. */
-    private val content: BundledContent,
     /** Gemini Nano on the device. Bound in :core:data and chosen nowhere else. */
     private val languageModel: LanguageModel,
     /** The day it is on the phone, so the plan follows the phone's own time zone. */
@@ -88,15 +79,6 @@ class TodayViewModel(
     private val currentDay = MutableStateFlow(today.now())
     private val currentHour = MutableStateFlow(today.hour())
     private val assistant = MutableStateFlow(AssistantUiState())
-    private val templateIcons = MutableStateFlow<Map<String, String>>(emptyMap())
-
-    init {
-        viewModelScope.launch {
-            templateIcons.value = content.pack().templates
-                .mapNotNull { template -> template.icon?.let { template.id to it } }
-                .toMap()
-        }
-    }
 
     /** Null until the chapters are read, so the screen never flashes an empty state. */
     val state: StateFlow<TodayUiState?> = combine(
@@ -104,15 +86,13 @@ class TodayViewModel(
         currentDay,
         currentHour,
         assistant,
-        templateIcons,
-    ) { all, day, hour, assistant, icons ->
+    ) { all, day, hour, assistant ->
         TodayUiState(
             today = day,
             plan = tomorrowPlan(all, day),
             chapters = all,
             assistant = assistant,
             hour = hour,
-            templateIcons = icons,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
