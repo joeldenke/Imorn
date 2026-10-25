@@ -226,10 +226,12 @@ sätt att leverera samma data.
 ### Fas 3 – Påminnelser och långa trådar
 **Mål:** inget viktigt glöms, även ett år senare – och ingen känner sig tjatad på.
 - [ ] `:core:reminders` med WorkManager (samma mönster som Novila: ett engångsjobb, lägger nästa själv, inga exakta larm)
-- [ ] Notisbudget: sammanslagning per dag, tysta timmar, *Imorgon*-knapp i notisen
+- [ ] Notisbudget: sammanslagning per dag, tysta timmar, *Imorgon*-knapp i notisen – reglerna är klara och testade
+  i `:core:notificationpolicy`; kvar: koppla in dem i `:core:reminders` och *Imorgon*-knappen i notisen
 - [ ] Försenat-flödet: Klart · Imorgon · Nytt datum · Gäller inte
 - [ ] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
-- [ ] *Veckan som kommer* (valfri söndagsnotis)
+- [ ] *Veckan som kommer* (valfri söndagsnotis) – reglerna är klara i `:core:notificationpolicy` (av som standard);
+  kvar: koppla in när `:core:reminders` finns
 - [ ] Widget (Glance): nästa steg + snabbfoto
 - [ ] Omstart, tidszoner, sommartid och ändrade ankare testade
 
@@ -286,7 +288,8 @@ Samma ryggrad som i dag (Metro, Navigation 3, en ViewModel per skärm, tillstån
 
 | Modul | Typ | Ansvar |
 | --- | --- | --- |
-| `:core:model` | ren Kotlin | Kapitel, steg, ankare, relativ tid, framsteg, notisbudget |
+| `:core:model` | ren Kotlin | Kapitel, steg, ankare, relativ tid, framsteg |
+| `:core:notificationpolicy` | ren Kotlin | Notisbudget: sammanslagning per dag, tysta timmar, *Veckan som kommer* |
 | `:core:content` | ren Kotlin | Mallformat, länkregister, brevtyper, validering, mallinstansiering, versionsjämförelse |
 | `:core:letters` | ren Kotlin | Utvinning ur brevtext, matchning mot brevtyper |
 | `:core:database` | Android | Room, DAO:er, migrationer, repositories |

@@ -42,6 +42,7 @@ include(":core:database")
 include(":core:designsystem")
 include(":core:model")
 include(":core:navigation")
+include(":core:notificationpolicy")
 include(":core:ui")
 
 include(":feature:chapters")

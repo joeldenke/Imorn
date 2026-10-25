@@ -61,6 +61,10 @@ Moduler. Namespace och paket följer sökvägen (`:core:ui` → `se.imorn.ui`, `
 - `:core:navigation` – `NavigationState` (en back stack per flik) och `Navigator`
 - `:core:coach` – ren Kotlin: assistentens `LanguageModel`-gränssnitt och `AssistantPrompt` (bygger prompten och
   tvättar svaret, enhetstestat). Se *Assistenten* under Regler.
+- `:core:notificationpolicy` – ren Kotlin: notisbudgeten (`NotificationPolicy`): allt som är försenat eller dags
+  samlas i en notis per dag, högst två om ett hårt datum får stå ensamt, aldrig under tysta timmar, och *Veckan som
+  kommer* bara om användaren slagit på den. `Chapter.reminders()` gör kapitlets öppna, daterade steg till `Reminder`.
+  Policyn skriver inga texter; notislagret hämtar dem från `strings.xml`.
 - `:core:data` – lagring i Preferences DataStore: `SettingsStore` (tema, bakgrundsfärger och om välkomsten är klar,
   `AppSettings`) och `ProfileStore` (livsfaserna, `Profile`). `SettingsStore` är en
   singleton i `AppScope` vars `StateFlow` får läsarna att läsa om efter en sparning. `PreferencesStore` (samma som
