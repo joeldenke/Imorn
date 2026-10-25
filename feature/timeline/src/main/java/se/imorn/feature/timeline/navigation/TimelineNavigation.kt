@@ -60,6 +60,8 @@ fun EntryProviderScope<NavKey>.timelineEntries(
             onAddStep = viewModel::addStep,
             onAddNote = viewModel::addNote,
             onSetState = viewModel::setState,
+            onFinishKeeping = viewModel::finishKeepingThreads,
+            onFinishClosing = viewModel::finishAndClose,
             onDelete = viewModel::delete,
             contentPadding = contentPadding,
         )
