@@ -21,9 +21,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -90,9 +93,9 @@ private val Star = Color.White.copy(alpha = 0.7f)
 /** How high the sun stands over the horizon, in its own radii: half up at dawn and dusk, well up by day. */
 private fun sky(time: ImornSkyTime) = when (time) {
     ImornSkyTime.Morning -> Sky(listOf(Deep, Night, Rose, Dawn), SunCore, Dawn, sunHeight = 0f)
-    ImornSkyTime.Day -> Sky(listOf(Night, DayBlue, DayBlue, Haze), SunCore, Dawn, sunHeight = 1.6f)
+    ImornSkyTime.Day -> Sky(listOf(Night, DayBlue, DayBlue, Haze), SunCore, Dawn, sunHeight = 0.9f)
     ImornSkyTime.Evening -> Sky(listOf(Deep, Dusk, Ember, Dawn), Dawn, Ember, sunHeight = 0.35f)
-    ImornSkyTime.Night -> Sky(listOf(Deep, Deep, Night, NightLow), Moon, Moon, sunHeight = 2.2f)
+    ImornSkyTime.Night -> Sky(listOf(Deep, Deep, Night, NightLow), Moon, Moon, sunHeight = 1f)
 }
 
 /** The sun's place across the sky, as a share of the width: off to the side, so text never sits on it. */
@@ -101,11 +104,17 @@ private const val SUN_X = 0.8f
 /** The reflection's bars, widest at the waterline, as a share of the sun's diameter (as in the app icon). */
 private val ReflectionBars = listOf(1f, 0.7f, 0.45f, 0.25f)
 
-/** Stars at night, as shares of the sky's width and height: fixed, so every screenshot has the same night. */
-private val Stars = listOf(0.08f to 0.3f, 0.22f to 0.12f, 0.37f to 0.42f, 0.55f to 0.2f, 0.66f to 0.5f, 0.93f to 0.16f)
+/**
+ * Stars at night, as shares of the sky's width and height: fixed, so every screenshot has the same night, and off to
+ * the side of the greeting.
+ */
+private val Stars = listOf(0.62f to 0.06f, 0.74f to 0.14f, 0.86f to 0.05f, 0.95f to 0.2f, 0.68f to 0.3f, 0.9f to 0.38f)
 
 private val SunRadius = 26.dp
 private val WaterHeight = 48.dp
+
+/** The strip of landscape kept clear under the content: the sun on the horizon, the water and its reflection. */
+private val Landscape = WaterHeight + SunRadius * 2
 
 /**
  * The sky at [hour] as the head of a screen, edge to edge from the top: [content] sits on it in light text
@@ -131,7 +140,7 @@ fun ImornSkyHero(hour: Int, modifier: Modifier = Modifier, content: @Composable 
                 start = ImornTheme.spacing.md,
                 end = ImornTheme.spacing.md,
                 top = ImornTheme.spacing.lg,
-                bottom = ImornTheme.spacing.lg + WaterHeight / 2,
+                bottom = Landscape,
             ),
         verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
         content = content,
@@ -159,9 +168,10 @@ private fun DrawScope.drawSky(sky: Sky, night: Boolean) {
         center = sun,
     )
     if (night) {
-        // A crescent: the moon, with the night sky's color laid over most of it.
-        drawCircle(Moon, radius = radius * 0.7f, center = sun)
-        drawCircle(Night, radius = radius * 0.62f, center = sun + Offset(radius * 0.32f, -radius * 0.18f))
+        // A crescent: the moon with a smaller circle cut out of it, so the sky shows through.
+        val moon = Path().apply { addOval(Rect(sun, radius * 0.7f)) }
+        val shadow = Path().apply { addOval(Rect(sun + Offset(radius * 0.32f, -radius * 0.18f), radius * 0.62f)) }
+        drawPath(Path.combine(PathOperation.Difference, moon, shadow), Moon)
     } else {
         drawCircle(brush = Brush.radialGradient(listOf(SunCore, sky.sun), sun, radius), radius = radius, center = sun)
     }
