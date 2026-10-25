@@ -48,7 +48,7 @@ fun ImornSecondaryButton(
         enabled = enabled,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = ImornTheme.colors.surfaceContainer,
+            containerColor = ImornTheme.colors.surfaceVariant,
             contentColor = ImornTheme.colors.onSurface,
         ),
         contentPadding = PaddingValues(horizontal = ImornTheme.spacing.lg),

@@ -260,7 +260,7 @@ private fun Spine(spine: ImornSpine, width: Dp) {
         Text(text = spine.meta.orEmpty(), style = ImornTheme.typography.labelMedium, color = content)
         Text(
             text = spine.title,
-            style = ImornTheme.typography.titleMedium,
+            style = ImornTheme.typography.labelLarge,
             color = content,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
