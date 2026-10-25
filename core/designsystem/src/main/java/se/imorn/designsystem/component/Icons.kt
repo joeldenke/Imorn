@@ -72,7 +72,6 @@ object ImornIcons {
             "M10,17l-5,-5 1.41,-1.41L10,14.17l7.59,-7.59L19,8l-9,9z",
     )
 
-
     val Check: ImageVector = icon("check", "M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z")
 
     val More: ImageVector = icon(
