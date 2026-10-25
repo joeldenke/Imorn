@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Nästa steg och snabbfoto</string>
+    <string name="widget_no_steps">Inget planerat än</string>
+    <string name="widget_quick_photo">Snabbfoto</string>
+    <string name="widget_done">Klart</string>
+</resources>
