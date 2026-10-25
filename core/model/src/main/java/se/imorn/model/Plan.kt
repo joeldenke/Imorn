@@ -114,5 +114,16 @@ fun Chapter.subflows(): List<Subflow> {
     return (grouped + subflow(null) { it.phaseId !in known }).filter { it.total > 0 }
 }
 
+/** How far along a chapter is: done steps out of those that apply, long threads left out, as in [subflows]. */
+data class Progress(val done: Int, val total: Int) {
+    /** From 0 to 1; a chapter without steps has come nowhere. */
+    val share: Float get() = if (total == 0) 0f else done.toFloat() / total
+}
+
+fun Chapter.progress(): Progress {
+    val flows = subflows()
+    return Progress(done = flows.sumOf { it.done }, total = flows.sumOf { it.total })
+}
+
 /** Rests, closes or wakes the chapter. A resting chapter keeps only its long threads in view. */
 fun Chapter.withState(state: ChapterState): Chapter = copy(state = state)

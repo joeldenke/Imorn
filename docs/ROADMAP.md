@@ -239,10 +239,12 @@ sätt att leverera samma data.
 - [ ] Veckovis länkkontroll som öppnar issue
 - [ ] Appen: hämtning i bakgrunden (WorkManager, ETag, signaturkontroll, reserv till inbakat paket)
 - [ ] **Beslut:** `INTERNET`-behörigheten tillbaka, bara för innehållet (ägarens ok, badging, integritetspolicy)
-- [ ] Mallbibliotek med sök, kategorier och livsfaser
+- [ ] Mallbibliotek med sök, kategorier och livsfaser (biblioteket med ikoner och *Föreslaget för dig* finns; sök
+      och kategorier återstår)
 - [ ] Mall-uppdateringar: länkar automatiskt, nya steg som förslag
 - [ ] Säsongstips
-- [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna
+- [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna (13 inbakade, utan
+      `reviewedAt` än; *När någon har dött* och *Framtidsfullmakt och testamente* återstår)
 
 ### Fas 5 – Brevtolken
 **Mål:** vem som helst kan fota ett obegripligt brev och veta vad som behöver göras.

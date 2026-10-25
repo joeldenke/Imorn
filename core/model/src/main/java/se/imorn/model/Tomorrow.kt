@@ -1,6 +1,7 @@
 package se.imorn.model
 
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 /**
  * The start screen, *Imorgon*: never more than [MAX_ITEMS] things, so it never shouts. What is late comes first,
@@ -37,3 +38,19 @@ fun tomorrowPlan(chapters: List<Chapter>, today: LocalDate): TomorrowPlan {
         .sortedBy { it.date }
     return TomorrowPlan(items = (late + next).take(TomorrowPlan.MAX_ITEMS), later = later)
 }
+
+/** The anchor coming up in a chapter, such as the moving day in 19 days: the start screen counts down to it. */
+data class Milestone(val chapterId: String, val chapterTitle: String, val anchor: Anchor, val date: LocalDate) {
+    /** How many days until it, 0 on the day. */
+    fun daysFrom(today: LocalDate): Long = ChronoUnit.DAYS.between(today, date)
+}
+
+/** The nearest known anchor, today or later, in an active chapter; null when there is none. */
+fun nextMilestone(chapters: List<Chapter>, today: LocalDate): Milestone? = chapters
+    .filter { it.state == ChapterState.Active }
+    .flatMap { chapter ->
+        chapter.anchors.mapNotNull { anchor ->
+            anchor.date?.takeIf { it >= today }?.let { Milestone(chapter.id, chapter.title, anchor, it) }
+        }
+    }
+    .minByOrNull { it.date }

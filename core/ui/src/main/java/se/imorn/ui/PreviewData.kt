@@ -23,6 +23,12 @@ object PreviewData {
     /** The day every preview is drawn on. */
     val TODAY: LocalDate = LocalDate.of(2027, 2, 10)
 
+    /** The hour every preview is drawn at: the morning, when the sky is the app icon's dawn. */
+    const val HOUR = 8
+
+    /** The templates' icons by template id, as `content/` names them. */
+    val templateIcons: Map<String, String> = mapOf("move" to "home")
+
     /** Moving on 1 March: some steps done, one late, the rest ahead. */
     val moving: Chapter = Chapter(
         id = "preview-move",

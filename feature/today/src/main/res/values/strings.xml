@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="today_screen_title">Imorn</string>
-    <!-- The start screen's title when the user gave a name, such as "Hi, Alex". -->
+    <string name="today_greeting_morning">Good morning</string>
+    <string name="today_greeting_day">Hello</string>
+    <string name="today_greeting_evening">Good evening</string>
+    <string name="today_greeting_night">Good night</string>
+    <!-- The countdown under the greeting, such as "19 days until Moving day". %2$s is the anchor's name. -->
+    <plurals name="today_milestone_days">
+        <item quantity="one">%1$d day until %2$s</item>
+        <item quantity="other">%1$d days until %2$s</item>
+    </plurals>
+    <string name="today_milestone_tomorrow">%1$s is tomorrow</string>
+    <string name="today_milestone_today">%1$s is today</string>
+    <string name="today_one_thing">One thing at a time.</string>
+    <string name="today_welcome">Big things go better one step at a time.</string>
+    <string name="today_open_step">Open the step</string>
+    <string name="today_after_that">After that</string>
+    <!-- How far along a chapter is, such as "12 of 40 done". -->
+    <string name="today_chapter_progress">%1$d of %2$d done</string>
+    <string name="today_new_chapter_body">A move, a baby, a renovation or something else</string>
     <string name="today_empty_title">Nothing planned yet</string>
     <string name="today_empty_body">Start a chapter, such as a move, and Imorn shows you one thing at a time.</string>
     <string name="today_start_chapter">Start a chapter</string>

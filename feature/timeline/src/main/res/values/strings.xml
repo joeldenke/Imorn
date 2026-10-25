@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="chapter_anchor_unknown">Not known yet. Tap to choose a date.</string>
+    <!-- How far along the whole chapter is, such as "12 of 40 done". -->
+    <string name="chapter_progress">%1$d of %2$d done</string>
+    <string name="chapter_more">More for this chapter</string>
+    <!-- How far off an anchor date is, such as "in 19 days". -->
+    <plurals name="chapter_anchor_in_days">
+        <item quantity="one">in %1$d day</item>
+        <item quantity="other">in %1$d days</item>
+    </plurals>
     <string name="chapter_view_list">List</string>
     <string name="chapter_view_timeline">Timeline</string>
     <string name="chapter_view_papers">Papers</string>
