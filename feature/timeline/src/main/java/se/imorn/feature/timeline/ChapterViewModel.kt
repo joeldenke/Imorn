@@ -29,6 +29,8 @@ import se.imorn.model.EntryKind
 import se.imorn.model.Step
 import se.imorn.model.Today
 import se.imorn.model.complete
+import se.imorn.model.completedAndClosed
+import se.imorn.model.completedAndResting
 import se.imorn.model.withAnchor
 import se.imorn.model.withOwnStep
 import se.imorn.model.withState
@@ -95,6 +97,12 @@ class ChapterViewModel(
     fun addStep(title: String) = change { it.withOwnStep(Step(id = "own-${UUID.randomUUID()}", title = title)) }
 
     fun setState(state: ChapterState) = change { it.withState(state) }
+
+    /** Finishes the chapter and keeps what lies far ahead: it rests with its long threads in view. */
+    fun finishKeepingThreads() = change { it.completedAndResting(today.now()) }
+
+    /** Finishes the chapter and lets everything go: it becomes a memory. */
+    fun finishAndClose() = change { it.completedAndClosed(today.now()) }
 
     fun addNote(text: String) {
         viewModelScope.launch { chapters.save(newEntry(EntryKind.Note).copy(text = text.trim())) }

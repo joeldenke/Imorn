@@ -61,6 +61,7 @@ import se.imorn.model.EntryKind
 import se.imorn.model.PlannedStep
 import se.imorn.model.StoryItem
 import se.imorn.model.Subflow
+import se.imorn.model.farAhead
 import se.imorn.model.longThreads
 import se.imorn.model.next
 import se.imorn.model.papers
@@ -92,6 +93,8 @@ fun ChapterScreen(
     onAddStep: (String) -> Unit,
     onAddNote: (String) -> Unit,
     onSetState: (ChapterState) -> Unit,
+    onFinishKeeping: () -> Unit,
+    onFinishClosing: () -> Unit,
     onDelete: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
@@ -102,6 +105,7 @@ fun ChapterScreen(
     var quickAdd by rememberSaveable { mutableStateOf(false) }
     var deleting by rememberSaveable { mutableStateOf(false) }
     var more by rememberSaveable { mutableStateOf(false) }
+    var finishing by rememberSaveable { mutableStateOf(false) }
     ImornScaffold(
         modifier = modifier,
         floatingAction = {
@@ -150,6 +154,7 @@ fun ChapterScreen(
         MoreSheet(
             state = chapter.state,
             onSetState = onSetState,
+            onFinish = { finishing = true },
             onDelete = { deleting = true },
             onDismiss = { more = false },
         )
@@ -213,6 +218,52 @@ fun ChapterScreen(
             },
             onDismiss = { deleting = false },
         )
+    }
+    if (finishing) {
+        FinishSheet(
+            farAhead = chapter.farAhead(),
+            onKeep = {
+                finishing = false
+                onFinishKeeping()
+            },
+            onClose = {
+                finishing = false
+                onFinishClosing()
+            },
+            onDismiss = { finishing = false },
+        )
+    }
+}
+
+/**
+ * Finishing a chapter. When steps lie far ahead (the tax return next spring, the guarantee) the question is
+ * whether to keep an eye on them: yes rests the chapter with its threads in view, no lets it become a memory.
+ * With nothing ahead the chapter simply closes.
+ */
+@Composable
+private fun FinishSheet(
+    farAhead: List<PlannedStep>,
+    onKeep: () -> Unit,
+    onClose: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    if (farAhead.isEmpty()) {
+        ImornConfirmDialog(
+            title = stringResource(R.string.chapter_finish_title),
+            text = stringResource(R.string.chapter_finish_text),
+            confirmText = stringResource(R.string.chapter_close),
+            dismissText = stringResource(R.string.dialog_cancel),
+            onConfirm = onClose,
+            onDismiss = onDismiss,
+        )
+        return
+    }
+    ImornSheet(onDismiss = onDismiss) {
+        SectionTitle(stringResource(R.string.chapter_finish_title))
+        ImornBodyText(text = pluralStringResource(R.plurals.chapter_finish_keep_text, farAhead.size, farAhead.size))
+        ImornSheetAction(ImornIcons.Keep, stringResource(R.string.chapter_finish_keep), onKeep)
+        ImornSheetAction(ImornIcons.Close, stringResource(R.string.chapter_finish_close), onClose)
+        Spacer(Modifier.height(ImornTheme.spacing.lg))
     }
 }
 
@@ -296,6 +347,7 @@ private fun AnchorCard(anchor: Anchor, today: LocalDate, onClick: () -> Unit) {
 private fun MoreSheet(
     state: ChapterState,
     onSetState: (ChapterState) -> Unit,
+    onFinish: () -> Unit,
     onDelete: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -313,7 +365,7 @@ private fun MoreSheet(
             ImornSheetAction(
                 ImornIcons.Check,
                 stringResource(R.string.chapter_close),
-                choose { onSetState(ChapterState.Closed) },
+                choose(onFinish),
             )
         } else {
             ImornSheetAction(
@@ -624,6 +676,8 @@ private fun PreviewScreen(view: ChapterView) {
             onAddStep = {},
             onAddNote = {},
             onSetState = {},
+            onFinishKeeping = {},
+            onFinishClosing = {},
             onDelete = {},
             contentPadding = PaddingValues(),
         )

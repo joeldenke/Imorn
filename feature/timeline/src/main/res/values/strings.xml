@@ -33,6 +33,15 @@
     <string name="chapter_rest">Rest the chapter</string>
     <string name="chapter_close">Finish it</string>
     <string name="chapter_wake">Wake the chapter</string>
+    <string name="chapter_finish_title">Finish the chapter?</string>
+    <string name="chapter_finish_text">Everything left in the plan is done. The chapter becomes a memory.</string>
+    <!-- When far-ahead steps remain, such as "There are 3 things further ahead. Keep an eye on them?" -->
+    <plurals name="chapter_finish_keep_text">
+        <item quantity="one">There is %1$d thing further ahead. Keep an eye on it?</item>
+        <item quantity="other">There are %1$d things further ahead. Keep an eye on them?</item>
+    </plurals>
+    <string name="chapter_finish_keep">Yes, keep track</string>
+    <string name="chapter_finish_close">No, let it go</string>
     <string name="chapter_delete">Delete</string>
     <string name="chapter_delete_title">Delete the chapter?</string>
     <string name="chapter_delete_text">Its plan, photos, notes and papers are deleted from this phone. Photos you chose from your gallery stay there; photos taken in Imorn are deleted with it. This can\'t be undone.</string>

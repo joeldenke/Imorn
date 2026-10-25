@@ -6,6 +6,7 @@ import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metrox.viewmodel.ViewModelGraph
 import se.imorn.data.SettingsStore
+import se.imorn.database.ChapterRepository
 
 /**
  * The app's Metro graph. Modules contribute to [AppScope]: the stores and the assistant's on-device language model
@@ -18,6 +19,7 @@ import se.imorn.data.SettingsStore
 interface AppGraph : ViewModelGraph {
     /** The theme, read by [se.imorn.MainActivity] before it draws anything. */
     val settingsStore: SettingsStore
+    val chapterRepository: ChapterRepository
 
     @DependencyGraph.Factory
     fun interface Factory {
