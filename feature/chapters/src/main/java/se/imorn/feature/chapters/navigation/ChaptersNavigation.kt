@@ -10,6 +10,7 @@ import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlinx.serialization.Serializable
 import se.imorn.feature.chapters.NewChapterScreen
 import se.imorn.feature.chapters.NewChapterViewModel
+import se.imorn.feature.chapters.Stage
 
 /** Starting a new chapter from a template. Opens on top of the current tab. */
 @Serializable data object NewChapterRoute : NavKey
@@ -35,8 +36,10 @@ fun EntryProviderScope<NavKey>.chaptersEntries(
             state = state,
             language = language,
             onChooseTemplate = viewModel::chooseTemplate,
+            onStartBlank = viewModel::startBlank,
+            onCreateBlank = viewModel::createBlank,
             onAnswer = viewModel::answer,
-            onBack = { if (state.template == null) onBack() else viewModel.back() },
+            onBack = { if (state.stage == Stage.Template) onBack() else viewModel.back() },
             onSetAnchor = viewModel::setAnchor,
             onCreate = { viewModel.create(language) },
             contentPadding = contentPadding,

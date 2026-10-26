@@ -245,6 +245,7 @@ private fun Shelf(state: TodayUiState, onOpenChapter: (String) -> Unit, onNewCha
             ImornTextButton(text = stringResource(R.string.today_new_chapter), onClick = onNewChapter)
         }
         val fractionFormat = stringResource(R.string.today_chapter_fraction)
+        val noSteps = stringResource(R.string.today_chapter_no_steps)
         val resting = stringResource(R.string.today_chapter_resting)
         val closed = stringResource(R.string.today_chapter_closed)
         ImornShelf(
@@ -254,8 +255,14 @@ private fun Shelf(state: TodayUiState, onOpenChapter: (String) -> Unit, onNewCha
                     title = chapter.title,
                     meta = when (chapter.state) {
                         ChapterState.Resting -> resting
+
                         ChapterState.Closed -> closed
-                        ChapterState.Active -> fraction(fractionFormat, progress.done, progress.total)
+
+                        ChapterState.Active -> if (progress.total == 0) {
+                            noSteps
+                        } else {
+                            fraction(fractionFormat, progress.done, progress.total)
+                        }
                     },
                     tone = SpineTones[index % SpineTones.size],
                     height = SpineHeights[index % SpineHeights.size],

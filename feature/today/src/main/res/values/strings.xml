@@ -25,6 +25,7 @@
     <string name="today_chapters">Your chapters</string>
     <string name="today_chapter_resting">Resting</string>
     <string name="today_chapter_closed">Finished</string>
+    <string name="today_chapter_no_steps">No steps yet</string>
 
     <string name="assistant_title">Assistant</string>
     <string name="assistant_checking">Checking whether the on-device assistant is available…</string>

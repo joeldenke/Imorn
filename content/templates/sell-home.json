@@ -10,7 +10,12 @@
     "sv": "Från mäklaren till deklarationen året efter",
     "en": "From the estate agent to next year's tax return"
   },
+  "category": "home",
   "icon": "sign",
+  "helps": {
+    "sv": "Samla besluten, visningarna och kvittona på ett ställe.",
+    "en": "Keep the decisions, viewings and receipts in one place."
+  },
   "lifestages": [
     "building",
     "midlife",

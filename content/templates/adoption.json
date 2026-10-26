@@ -1,0 +1,171 @@
+{
+  "id": "adoption",
+  "version": 1,
+  "order": 14,
+  "title": {
+    "sv": "Adoptera",
+    "en": "Adopting"
+  },
+  "summary": {
+    "sv": "En lång process med samtal, utredning och väntan.",
+    "en": "A long process with conversations, assessment and waiting."
+  },
+  "category": "family",
+  "icon": "heart",
+  "helps": {
+    "sv": "Hjälper er hålla ihop stegen utan att lova en tidsplan.",
+    "en": "Helps you keep the steps together without promising a timeline."
+  },
+  "note": {
+    "sv": "Adoption regleras av lag och myndighetsbedömningar. Imorn ersätter inte rådgivning från kommunen eller Socialstyrelsen.",
+    "en": "Adoption is governed by law and official assessments. Imorn does not replace advice from the municipality or the National Board of Health and Welfare."
+  },
+  "lifestages": [
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Hemkomst",
+        "en": "Coming home"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "start",
+      "title": {
+        "sv": "Börja",
+        "en": "Start"
+      },
+      "steps": [
+        {
+          "id": "information",
+          "title": {
+            "sv": "Gå på informationsmöte",
+            "en": "Attend an information meeting"
+          },
+          "why": {
+            "sv": "Kommunen eller organisationen berättar vad som gäller där ni bor.",
+            "en": "The municipality or organisation explains what applies where you live."
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "application",
+          "title": {
+            "sv": "Skicka in ansökan",
+            "en": "Submit the application"
+          },
+          "why": {
+            "sv": "Läs kraven noga och fråga om det ni inte förstår.",
+            "en": "Read the requirements carefully and ask about anything you do not understand."
+          },
+          "links": [
+            "socialstyrelsen.start"
+          ]
+        },
+        {
+          "id": "home-study",
+          "title": {
+            "sv": "Förbered er på hemutredningen",
+            "en": "Prepare for the home study"
+          },
+          "why": {
+            "sv": "Samtalen handlar om vardag, relationer och barnets bästa.",
+            "en": "The conversations are about everyday life, relationships and the child's best interests."
+          }
+        }
+      ]
+    },
+    {
+      "id": "prepare",
+      "title": {
+        "sv": "Förbered",
+        "en": "Prepare"
+      },
+      "steps": [
+        {
+          "id": "education",
+          "title": {
+            "sv": "Gå utbildningen",
+            "en": "Take the preparation course"
+          },
+          "why": {
+            "sv": "Den ger verktyg för barnets första tid och frågor som kan komma.",
+            "en": "It gives tools for the child's first time and questions that may come."
+          }
+        },
+        {
+          "id": "room",
+          "title": {
+            "sv": "Gör i ordning ett hem för ett barn",
+            "en": "Prepare a home for a child"
+          },
+          "why": {
+            "sv": "Vänta med detaljer tills ni vet mer om barnets behov.",
+            "en": "Wait with the details until you know more about the child's needs."
+          }
+        },
+        {
+          "id": "leave",
+          "title": {
+            "sv": "Kolla ledighet och ekonomi",
+            "en": "Check leave and finances"
+          },
+          "why": {
+            "sv": "Prata med arbetsgivare och Försäkringskassan om vad som gäller.",
+            "en": "Talk to your employer and Försäkringskassan about what applies."
+          },
+          "links": [
+            "fk.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "title": {
+        "sv": "Hemma",
+        "en": "Home"
+      },
+      "steps": [
+        {
+          "id": "arrival",
+          "title": {
+            "sv": "Ta emot barnet i lugn takt",
+            "en": "Welcome the child at a calm pace"
+          },
+          "why": {
+            "sv": "Bygg trygghet först, planera mindre.",
+            "en": "Build safety first, plan less."
+          },
+          "photoPrompt": {
+            "sv": "Fota första tiden hemma",
+            "en": "Photograph the first time at home"
+          }
+        },
+        {
+          "id": "support",
+          "title": {
+            "sv": "Ta emot stöd",
+            "en": "Accept support"
+          },
+          "why": {
+            "sv": "Fråga efter stöd från kommunen och nätverk, även när det känns bra.",
+            "en": "Ask for support from the municipality and your network, even when things feel fine."
+          },
+          "links": [
+            "kommun.start",
+            "1177.start"
+          ]
+        }
+      ]
+    }
+  ]
+}

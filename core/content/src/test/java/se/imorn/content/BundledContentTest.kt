@@ -90,6 +90,25 @@ class BundledContentTest {
         assertFalse("water-waste" in ids || "deferral" in ids || "hidden-defects" in ids)
     }
 
+    @Test fun `the library covers every category`() {
+        assertEquals(TemplateCategory.entries.toSet(), pack.templates.map { it.category }.toSet())
+        assertTrue(pack.templates.size >= 31)
+    }
+
+    @Test fun `every template can start without answers`() {
+        pack.templates.forEach { template ->
+            val chapter = template.instantiate(
+                chapterId = template.id,
+                language = SWEDISH,
+                answers = emptyMap(),
+                anchorDates = emptyMap(),
+                today = LocalDate.of(2026, 10, 21),
+            )
+            assertEquals(template.id, chapter.templateId)
+            assertTrue("${template.id} has no steps", chapter.steps.isNotEmpty())
+        }
+    }
+
     @Test fun `moving from a rented flat without kids`() {
         val chapter = pack.template("move")!!.instantiate(
             chapterId = "c1",

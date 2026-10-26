@@ -10,7 +10,12 @@
     "sv": "Kontraktet, elen, försäkringen och första kvällen",
     "en": "The lease, the electricity, the insurance and the first evening"
   },
+  "category": "home",
   "icon": "sprout",
+  "helps": {
+    "sv": "En enkel start för den som gör det här första gången.",
+    "en": "A simple start for the first time you do this."
+  },
   "lifestages": [
     "first-home"
   ],

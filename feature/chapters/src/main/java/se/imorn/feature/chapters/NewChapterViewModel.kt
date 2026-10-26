@@ -21,6 +21,7 @@ import se.imorn.content.suggestedFirst
 import se.imorn.data.BundledContent
 import se.imorn.data.ProfileStore
 import se.imorn.database.ChapterRepository
+import se.imorn.model.Chapter
 import se.imorn.model.Today
 import java.time.LocalDate
 import java.util.UUID
@@ -32,10 +33,12 @@ import java.util.UUID
 data class NewChapterUiState(
     /** Every template, those for the user's life stages first. */
     val templates: List<Template>,
+    /** The templates made for the user's life stages; the gallery shows them first. */
+    val suggestedTemplateIds: Set<String> = emptySet(),
     val today: LocalDate,
-    /** How many of the first [templates] are for the user's life stages, shown as *Suggested for you*. */
-    val suggested: Int = 0,
     val template: Template? = null,
+    /** Starting from a blank project: a name first, then an empty chapter. */
+    val blank: Boolean = false,
     /** The question being asked, an index into the template's questions; past the last one come the dates. */
     val question: Int = 0,
     val answers: Map<String, Answer> = emptyMap(),
@@ -46,6 +49,7 @@ data class NewChapterUiState(
 ) {
     val stage: Stage
         get() = when {
+            blank -> Stage.Blank
             template == null -> Stage.Template
             question < template.questions.size -> Stage.Question
             else -> Stage.Dates
@@ -54,7 +58,7 @@ data class NewChapterUiState(
     val currentQuestion: Question? get() = template?.questions?.getOrNull(question)
 }
 
-enum class Stage { Template, Question, Dates }
+enum class Stage { Template, Blank, Question, Dates }
 
 @ViewModelKey
 @ContributesIntoMap(AppScope::class)
@@ -75,18 +79,32 @@ class NewChapterViewModel(
         viewModelScope.launch {
             // The templates for the user's life stages first; every template is always there.
             val stages = profiles.profile.filterNotNull().first().lifeStages
-            val templates = content.pack().templates
-            val ids = stages.map { it.id }.toSet()
+            val templates = content.pack().templates.suggestedFirst(stages)
+            val stageIds = stages.map { it.id }.toSet()
             _state.value = NewChapterUiState(
-                templates = templates.suggestedFirst(stages),
+                templates = templates,
+                suggestedTemplateIds = templates
+                    .filter { template -> template.lifestages.any { it in stageIds } }
+                    .map { it.id }
+                    .toSet(),
                 today = today.now(),
-                suggested = templates.count { template -> template.lifestages.any { it in ids } },
             )
         }
     }
 
     fun chooseTemplate(template: Template) = _state.update {
-        it?.copy(template = template, question = 0, answers = emptyMap(), anchorDates = emptyMap())
+        it?.copy(
+            template = template,
+            blank = false,
+            question = 0,
+            answers = emptyMap(),
+            anchorDates = emptyMap(),
+        )
+    }
+
+    /** Starts a blank chapter: just a name, then the user adds the steps. */
+    fun startBlank() = _state.update {
+        it?.copy(template = null, blank = true, question = 0, answers = emptyMap(), anchorDates = emptyMap())
     }
 
     /** Answers the current question and moves on; null skips it, which hides nothing. */
@@ -96,10 +114,11 @@ class NewChapterViewModel(
         state.copy(answers = answers, question = state.question + 1)
     }
 
-    /** One stage back: the previous question, or the list of templates. */
+    /** One stage back: the previous question, the template's first question, or the gallery. */
     fun back() = _state.update { state ->
         when {
             state == null -> null
+            state.blank -> state.copy(blank = false)
             state.question > 0 -> state.copy(question = state.question - 1)
             else -> state.copy(template = null)
         }
@@ -124,6 +143,24 @@ class NewChapterViewModel(
                 today = state.today,
             )
             chapters.save(chapter)
+            _state.update { it?.copy(saving = false, created = true) }
+        }
+    }
+
+    /** Saves an empty chapter with [title]; the user adds steps and dates from the chapter screen. */
+    fun createBlank(title: String) {
+        val state = _state.value ?: return
+        val name = title.trim()
+        if (name.isEmpty() || state.saving) return
+        _state.value = state.copy(saving = true)
+        viewModelScope.launch {
+            chapters.save(
+                Chapter(
+                    id = UUID.randomUUID().toString(),
+                    title = name,
+                    createdOn = state.today,
+                ),
+            )
             _state.update { it?.copy(saving = false, created = true) }
         }
     }

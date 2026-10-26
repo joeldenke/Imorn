@@ -10,7 +10,16 @@
     "sv": "Hindersprövningen, dagen och namnet efteråt",
     "en": "The marriage licence, the day and the name afterwards"
   },
+  "category": "family",
   "icon": "rings",
+  "helps": {
+    "sv": "Håll koll på hindersprövning, platser, gäster och namnbyte.",
+    "en": "Keep track of the marriage check, venues, guests and name change."
+  },
+  "note": {
+    "sv": "Reglerna för vigsel och namnförändring kan ändras. Kontrollera hos Skatteverket.",
+    "en": "The rules for marriage and name changes can change. Check with Skatteverket."
+  },
   "lifestages": [
     "building",
     "midlife"

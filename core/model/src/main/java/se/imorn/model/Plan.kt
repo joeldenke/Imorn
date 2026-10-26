@@ -76,6 +76,44 @@ fun Chapter.notApplicable(stepId: String): Chapter =
 /** The user's own day for the step, or null to count from its anchor again. "Tomorrow" is `today + 1`. */
 fun Chapter.withStepDate(stepId: String, date: LocalDate?): Chapter = updateStep(stepId) { it.copy(date = date) }
 
+/** The user's own name for the step. A blank name is not a name, so it is ignored. */
+fun Chapter.withStepTitle(stepId: String, title: String): Chapter {
+    require(title.isNotBlank()) { "A step needs a name" }
+    return updateStep(stepId) { it.copy(title = title.trim()) }
+}
+
+/** The step's nearest neighbour in the same phase, or null at the edge. */
+private fun Chapter.stepNeighbour(stepId: String, earlier: Boolean): Int? {
+    val index = steps.indexOfFirst { it.id == stepId }
+    if (index < 0) return null
+    val phaseId = steps[index].phaseId
+    return if (earlier) {
+        (index - 1 downTo 0).firstOrNull { steps[it].phaseId == phaseId }
+    } else {
+        (index + 1 until steps.size).firstOrNull { steps[it].phaseId == phaseId }
+    }
+}
+
+/** True when [moveStep] would change the plan: the step has a neighbour in its own phase. */
+fun Chapter.canMoveStep(stepId: String, earlier: Boolean): Boolean = stepNeighbour(stepId, earlier) != null
+
+/** Moves the step one place earlier or later among the steps in its own phase. */
+fun Chapter.moveStep(stepId: String, earlier: Boolean): Chapter {
+    val index = steps.indexOfFirst { it.id == stepId }
+    if (index < 0) return this
+    val target = stepNeighbour(stepId, earlier) ?: return this
+    val reordered = steps.toMutableList()
+    val step = reordered.removeAt(index)
+    reordered.add(target, step)
+    return copy(steps = reordered)
+}
+
+/** Removes the step from the plan. Photos and notes kept with it stay in the chapter's story. */
+fun Chapter.withoutStep(stepId: String): Chapter {
+    require(steps.any { it.id == stepId }) { "No step $stepId in chapter $id" }
+    return copy(steps = steps.filterNot { it.id == stepId })
+}
+
 /** Adds the user's own step at the end of the plan. */
 fun Chapter.withOwnStep(step: Step): Chapter {
     require(steps.none { it.id == step.id }) { "Step ${step.id} already exists in chapter $id" }

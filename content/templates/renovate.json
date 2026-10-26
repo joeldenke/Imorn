@@ -10,7 +10,12 @@
     "sv": "Före-foton, offerter, intyg och garantin",
     "en": "Before photos, quotes, certificates and the warranty"
   },
+  "category": "home",
   "icon": "hammer",
+  "helps": {
+    "sv": "Håll koll på tillstånd, hantverkare, foton och kvitton.",
+    "en": "Keep track of permits, tradespeople, photos and receipts."
+  },
   "lifestages": [
     "building",
     "midlife"

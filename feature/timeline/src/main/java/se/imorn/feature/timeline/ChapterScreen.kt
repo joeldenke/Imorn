@@ -416,6 +416,10 @@ private fun SectionTitle(text: String) {
 
 @Composable
 private fun ListView(chapter: Chapter, today: LocalDate, onOpenStep: (String) -> Unit) {
+    if (chapter.steps.isEmpty()) {
+        ImornBodyText(text = stringResource(R.string.chapter_no_steps))
+        return
+    }
     val subflows = chapter.subflows()
     if (subflows.all { it.finished }) {
         ImornBodyText(text = stringResource(R.string.chapter_nothing_left))

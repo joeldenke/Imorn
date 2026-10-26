@@ -10,7 +10,16 @@
     "sv": "Tillståndet, övningskörningen och uppkörningen",
     "en": "The permit, the practice and the driving test"
   },
+  "category": "work-study",
   "icon": "road",
+  "helps": {
+    "sv": "Samlar kraven, övningen och dagarna som gäller.",
+    "en": "Gathers the requirements, practice and the days that count."
+  },
+  "note": {
+    "sv": "Kraven och provens innehåll kan ändras. Kontrollera hos Transportstyrelsen.",
+    "en": "The requirements and test content can change. Check with Transportstyrelsen."
+  },
   "lifestages": [
     "first-home",
     "new-in-sweden"

@@ -28,12 +28,16 @@ import se.imorn.model.Entry
 import se.imorn.model.EntryKind
 import se.imorn.model.Step
 import se.imorn.model.Today
+import se.imorn.model.canMoveStep
 import se.imorn.model.complete
 import se.imorn.model.dateOf
 import se.imorn.model.deadlineOf
+import se.imorn.model.moveStep
 import se.imorn.model.notApplicable
 import se.imorn.model.reopen
 import se.imorn.model.withStepDate
+import se.imorn.model.withStepTitle
+import se.imorn.model.withoutStep
 import java.time.LocalDate
 import java.util.UUID
 
@@ -47,6 +51,9 @@ data class StepUiState(
     val today: LocalDate,
     /** The photos and notes kept with this step. */
     val kept: List<KeptEntry> = emptyList(),
+    /** True when the step has a step before or after it in its own phase. */
+    val canMoveEarlier: Boolean = false,
+    val canMoveLater: Boolean = false,
 )
 
 /** The step detail: what, why, when and where, and the answers *Done*, *Tomorrow*, a date or *Doesn't apply*. */
@@ -78,6 +85,8 @@ class StepViewModel(
             links = step.links.mapNotNull { pack.link(it.id) },
             today = day,
             kept = entries.sortedBy { it.on }.map { chapters.kept(it) },
+            canMoveEarlier = chapter.canMoveStep(stepId, earlier = true),
+            canMoveLater = chapter.canMoveStep(stepId, earlier = false),
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
@@ -95,6 +104,19 @@ class StepViewModel(
     fun setDate(date: LocalDate?) = change { it.withStepDate(stepId, date) }
 
     fun notApplicable() = change { it.notApplicable(stepId) }
+
+    /** The user's own name for the step; a blank name changes nothing. */
+    fun rename(title: String) {
+        if (title.isBlank()) return
+        change { it.withStepTitle(stepId, title) }
+    }
+
+    fun moveEarlier() = change { it.moveStep(stepId, earlier = true) }
+
+    fun moveLater() = change { it.moveStep(stepId, earlier = false) }
+
+    /** Removes the step; what was kept with it stays in the chapter's story. */
+    fun remove() = change { it.withoutStep(stepId) }
 
     fun saveNote(note: String) = change { chapter ->
         chapter.copy(

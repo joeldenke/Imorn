@@ -10,7 +10,16 @@
     "sv": "Historiken, avtalet, ägarbytet och försäkringen",
     "en": "The history, the contract, the change of owner and the insurance"
   },
+  "category": "finance-admin",
   "icon": "car",
+  "helps": {
+    "sv": "Samlar kontroll, papper, försäkring och ägande.",
+    "en": "Gathers checks, paperwork, insurance and ownership."
+  },
+  "note": {
+    "sv": "Regler för ägarbyte, skatt och besiktning finns hos Transportstyrelsen. Kontrollera fordonet innan köp.",
+    "en": "Rules for ownership, tax and inspection are at Transportstyrelsen. Check the vehicle before buying."
+  },
   "lifestages": [
     "first-home",
     "building",
