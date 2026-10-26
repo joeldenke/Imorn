@@ -8,7 +8,7 @@ gäller, faser med steg i relativ tid, länkar ur länkregistret, foto-uppmaning
 > Mallar beskriver vanliga steg, aldrig "allt du måste göra".
 
 **I appen:** 1–6 och 8–13 och 15 finns i `content/templates/` (12 *Nytt jobb / förlora jobbet* heter `job`, en fråga
-väljer vilket). 7 och 14 återstår. Ingen mall har `reviewedAt` än.
+väljer vilket). 7, 14 och 16 återstår. Ingen mall har `reviewedAt` än.
 
 Förkortningar: **T** = ankardatum (flyttdag, tillträde, förlossning …). `T−6v` = sex veckor före.
 
@@ -256,9 +256,30 @@ Enkel svenska och fler språk. Folkbokföring och personnummer (`skatteverket.st
 bankkonto · BankID · vård (`1177.start`) · Mina meddelanden (`minameddelanden.start`) · Försäkringskassan (`fk.start`)
 · svenska för invandrare (`kommun.start`). Brevtolken lyfts fram i den här mallen.
 
+## 16. Bilen
+Att äga en bil, år efter år. Ett vilande kapitel som vaknar när det är dags; stegen är återkommande (se
+`ROADMAP.md`, fas 3) och höstens och vårens förskjuts efter landsdelen.
+Frågor: *Byter du däck själv eller på verkstad?* · *Har bilen ett serviceavtal?* Ankare: **B** = besiktning senast
+(står på Transportstyrelsens sida och i brevet), **S** = nästa service (okänt är okej).
+
+| Delflöde | Steg | När | Länkar |
+| --- | --- | --- | --- |
+| Hösten | Boka däckbytet *(om verkstad)* | varje år, sep (norr) – okt (söder) | – |
+| | Byt till vinterdäck, kolla mönsterdjupet **[foto]** | varje år, okt (norr) – nov (söder) | `transportstyrelsen.start` |
+| | Lägg vinterkitet i bilen: filt, varningstriangel, skrapa, startkablar, mössa och vantar | varje år, med däcken | `krisinformation.start` |
+| | Fyll på spolarvätska för vintern, kolla batteriet | varje år, med däcken | – |
+| Våren | Byt till sommardäck, tvätta bort saltet | varje år, apr (söder) – maj (norr) | – |
+| Underhållet | Service | S, sedan varje år | – |
+| | Besiktning | B−4v, sedan varje år | `transportstyrelsen.start` |
+| | Fordonsskatten, se över försäkringen | varje år | `transportstyrelsen.start`, `konsumenternas.start` |
+
+Vinterdäck krävs vid vinterväglag 1 dec–31 mars; tidsgränserna och mönsterdjupet länkas, de skrivs inte in.
+Med väderprognosen (beslut 8) kan vinterkitet komma tillbaka vid den första riktigt kalla natten.
+
 ---
 
 ## Senare
 Skilsmässa och separation (bodelning, `domstol.se`) · Skaffa hund · Starta företag (`verksamt.start`) · Barnet
 flyttar hemifrån · Hjälpa en förälder (hemtjänst, `kommun.start`) · Flytta till mindre · Stor resa · Bygga hus ·
-Årets ekonomi (deklaration, försäkringar, abonnemang) · Krisberedskap hemma (`krisinformation.start`).
+Årets ekonomi (deklaration, försäkringar, abonnemang) · Krisberedskap hemma (`krisinformation.start`) · Hemmet
+(återkommande: brandvarnare, sotning, hängrännor, vattenavstängning inför vintern).
