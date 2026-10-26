@@ -16,6 +16,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -160,5 +162,32 @@ fun ImornProgressBar(progress: Float, modifier: Modifier = Modifier) {
         strokeCap = StrokeCap.Round,
         gapSize = 0.dp,
         drawStopIndicator = {},
+    )
+}
+
+/**
+ * A small choice in a row, such as a template category: one of many, selected or not. The text is the caller's
+ * string, so categories stay translated with the rest of the screen.
+ */
+@Composable
+fun ImornFilterChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = ImornTheme.colors
+    FilterChip(
+        selected = selected,
+        onClick = onClick,
+        label = { Text(text = text) },
+        modifier = modifier,
+        shape = ImornTheme.shapes.small,
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = ImornTheme.surfaces.card,
+            labelColor = colors.onSurface,
+            selectedContainerColor = colors.primaryContainer,
+            selectedLabelColor = colors.onPrimaryContainer,
+        ),
     )
 }

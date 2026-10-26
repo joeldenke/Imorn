@@ -10,7 +10,16 @@
     "sv": "Överblicken, ansökan och sista arbetsdagen",
     "en": "The overview, the application and the last working day"
   },
+  "category": "life-events",
   "icon": "sun",
+  "helps": {
+    "sv": "Samlar pension, papper, försäkring och den nya vardagen.",
+    "en": "Gathers pension, paperwork, insurance and the new everyday life."
+  },
+  "note": {
+    "sv": "Pensionsregler och skatter ändras. Kontrollera hos Pensionsmyndigheten och Skatteverket.",
+    "en": "Pension rules and taxes change. Check with the Swedish Pensions Agency and Skatteverket."
+  },
   "lifestages": [
     "next-chapter"
   ],

@@ -10,7 +10,16 @@
     "sv": "Från barnmorskan till namnet och förskolan",
     "en": "From the midwife to the name and preschool"
   },
+  "category": "family",
   "icon": "heart",
+  "helps": {
+    "sv": "Samlar det som behöver göras före och efter förlossningen.",
+    "en": "Gathers what needs doing before and after the birth."
+  },
+  "note": {
+    "sv": "Det här är vanliga steg, inte medicinsk rådgivning. Fråga barnmorskan eller BVC om det som känns osäkert.",
+    "en": "These are usual steps, not medical advice. Ask your midwife or child health centre about anything you are unsure of."
+  },
   "lifestages": [
     "building"
   ],

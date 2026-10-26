@@ -10,7 +10,12 @@
     "sv": "Lånelöftet, visningarna och nycklarna",
     "en": "The pre-approval, the viewings and the keys"
   },
+  "category": "home",
   "icon": "key",
+  "helps": {
+    "sv": "Håll ordning på lån, budgivning, besiktning och papper.",
+    "en": "Keep track of the loan, bidding, inspection and paperwork."
+  },
   "lifestages": [
     "building",
     "midlife",

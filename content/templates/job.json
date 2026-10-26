@@ -10,7 +10,12 @@
     "sv": "Nytt jobb, eller när jobbet tar slut",
     "en": "A new job, or when a job ends"
   },
+  "category": "work-study",
   "icon": "briefcase",
+  "helps": {
+    "sv": "Håller koll på papper, praktiska saker och första tiden.",
+    "en": "Keeps track of paperwork, practicalities and the first time."
+  },
   "lifestages": [
     "first-home",
     "building",

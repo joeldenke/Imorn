@@ -10,7 +10,12 @@
     "sv": "Ansökan, CSN, boendet och första terminen",
     "en": "The application, student finance, housing and the first term"
   },
+  "category": "work-study",
   "icon": "book",
+  "helps": {
+    "sv": "Hjälper dig få plats, pengar och vardag att gå ihop.",
+    "en": "Helps you get a place, funding and everyday life to fit together."
+  },
   "lifestages": [
     "first-home"
   ],

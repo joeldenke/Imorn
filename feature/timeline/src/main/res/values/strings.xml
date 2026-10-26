@@ -32,6 +32,7 @@
     <string name="chapter_subflow_hide">Hide the steps</string>
     <string name="chapter_now">Now</string>
     <string name="chapter_nothing_left">Nothing left to do in this chapter.</string>
+    <string name="chapter_no_steps">No steps yet. Add the first thing you need to do.</string>
     <string name="chapter_nothing_done">What you do ends up here, below the line.</string>
     <!-- When a step was done, such as "Done Feb 1, 2027" or "Done Yesterday". -->
     <string name="chapter_done_on">Done: %1$s</string>
@@ -67,6 +68,16 @@
     <string name="step_reopen">Not done after all</string>
     <string name="step_note">Note</string>
     <string name="step_save_note">Save the note</string>
+    <string name="step_rename">Change name</string>
+    <string name="step_rename_title">Change the name</string>
+    <string name="step_name">Name</string>
+    <string name="step_save_name">Save</string>
+    <string name="step_move_earlier">Move up</string>
+    <string name="step_move_later">Move down</string>
+    <string name="step_remove">Remove the step</string>
+    <string name="step_remove_title">Remove this step?</string>
+    <string name="step_remove_text">It leaves the plan. Photos and notes you kept with it stay in the chapter.</string>
+    <string name="step_remove_confirm">Remove</string>
     <string name="step_add_photo">Add a photo</string>
     <!-- What to search for on a site, such as "Search for: change of address". -->
     <string name="step_search_for">Search for: %1$s</string>

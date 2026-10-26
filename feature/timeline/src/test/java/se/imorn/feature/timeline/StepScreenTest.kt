@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextClearance
+import androidx.compose.ui.test.performTextInput
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -37,6 +40,10 @@ class StepScreenTest {
         onDone: () -> Unit = {},
         onReopen: () -> Unit = {},
         onTakePhoto: () -> Unit = {},
+        onRename: (String) -> Unit = {},
+        onMoveEarlier: () -> Unit = {},
+        onMoveLater: () -> Unit = {},
+        onRemove: () -> Unit = {},
     ) {
         compose.setContent {
             ImornTheme {
@@ -49,6 +56,10 @@ class StepScreenTest {
                     onSetDate = {},
                     onNotApplicable = {},
                     onSaveNote = {},
+                    onRename = onRename,
+                    onMoveEarlier = onMoveEarlier,
+                    onMoveLater = onMoveLater,
+                    onRemove = onRemove,
                     onTakePhoto = onTakePhoto,
                     onOpenEntry = {},
                     contentPadding = PaddingValues(),
@@ -110,6 +121,41 @@ class StepScreenTest {
         compose.onNodeWithText("Not now").performClick()
         compose.onNodeWithText("Done. Keep a photo?").assertDoesNotExist()
         assertEquals(0, photos)
+    }
+
+    @Test
+    fun aStepCanBeRenamed() {
+        val names = mutableListOf<String>()
+        show(open, onRename = { names += it })
+        compose.onNodeWithText("Change name").performScrollTo().performClick()
+        compose.onNodeWithText("Name").performTextClearance()
+        compose.onNodeWithText("Name").performTextInput("Tell the new landlord")
+        compose.onNodeWithText("Save").performClick()
+        assertEquals(listOf("Tell the new landlord"), names)
+    }
+
+    @Test
+    fun aStepCanBeMovedAmongItsPeers() {
+        var earlier = 0
+        var later = 0
+        show(
+            open.copy(canMoveEarlier = true, canMoveLater = true),
+            onMoveEarlier = { earlier++ },
+            onMoveLater = { later++ },
+        )
+        compose.onNodeWithText("Move up").performScrollTo().performClick()
+        compose.onNodeWithText("Move down").performScrollTo().performClick()
+        assertEquals(1, earlier)
+        assertEquals(1, later)
+    }
+
+    @Test
+    fun aStepCanBeRemoved() {
+        var removed = 0
+        show(open, onRemove = { removed++ })
+        compose.onNodeWithText("Remove the step").performScrollTo().performClick()
+        compose.onNodeWithText("Remove").performClick()
+        assertEquals(1, removed)
     }
 
     @Test

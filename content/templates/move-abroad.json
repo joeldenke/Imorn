@@ -1,0 +1,260 @@
+{
+  "id": "move-abroad",
+  "version": 1,
+  "order": 25,
+  "title": {
+    "sv": "Flytta utomlands",
+    "en": "Moving abroad"
+  },
+  "summary": {
+    "sv": "Förbered papper, boende och avsked innan du flyttar.",
+    "en": "Prepare paperwork, housing and goodbyes before you move."
+  },
+  "category": "life-events",
+  "icon": "globe",
+  "helps": {
+    "sv": "Hjälper dig komma ihåg det som är lätt att glömma.",
+    "en": "Helps you remember what is easy to forget."
+  },
+  "note": {
+    "sv": "Regler för visum, skatt och folkbokföring beror på ditt medborgarskap och din situation. Kontrollera hos Migrationsverket, Skatteverket och UD.",
+    "en": "Visa, tax and registration rules depend on your citizenship and situation. Check with the Swedish Migration Agency, Skatteverket and the Ministry for Foreign Affairs."
+  },
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife",
+    "next-chapter"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Avresedag",
+        "en": "Departure day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "before",
+      "title": {
+        "sv": "Före",
+        "en": "Before"
+      },
+      "steps": [
+        {
+          "id": "passport",
+          "title": {
+            "sv": "Kolla pass och visum",
+            "en": "Check your passport and visa"
+          },
+          "why": {
+            "sv": "Passet ska vara giltigt tillräckligt länge och visumreglerna kan ändras.",
+            "en": "Your passport must be valid long enough, and visa rules can change."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -6
+          },
+          "links": [
+            "polisen.pass",
+            "migrationsverket.start"
+          ]
+        },
+        {
+          "id": "advice",
+          "title": {
+            "sv": "Läs reseråd",
+            "en": "Read the travel advice"
+          },
+          "why": {
+            "sv": "Kolla läget i landet du flyttar till.",
+            "en": "Check the situation in the country you are moving to."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -6
+          },
+          "links": [
+            "ud.start"
+          ]
+        },
+        {
+          "id": "tax",
+          "title": {
+            "sv": "Kolla skatt och folkbokföring",
+            "en": "Check tax and population registration"
+          },
+          "why": {
+            "sv": "Reglerna beror på hur länge och var du ska bo.",
+            "en": "The rules depend on how long and where you will live."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -4
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Ordna försäkring",
+            "en": "Arrange insurance"
+          },
+          "why": {
+            "sv": "Hem, resa och sjukvård. Kolla vad som gäller utomlands.",
+            "en": "Home, travel and healthcare. Check what applies abroad."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "move",
+      "title": {
+        "sv": "Flytta",
+        "en": "Move"
+      },
+      "steps": [
+        {
+          "id": "moving-company",
+          "title": {
+            "sv": "Boka flytt eller frakt",
+            "en": "Book movers or shipping"
+          },
+          "why": {
+            "sv": "Jämför försäkring och leveranstid.",
+            "en": "Compare insurance and delivery times."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          }
+        },
+        {
+          "id": "address",
+          "title": {
+            "sv": "Ordna eftersändning och adress",
+            "en": "Arrange forwarding and address"
+          },
+          "why": {
+            "sv": "Säg upp abonnemang och ordna post.",
+            "en": "End subscriptions and arrange post."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "adressandring.eftersandning",
+            "skatteverket.flytt"
+          ]
+        },
+        {
+          "id": "bank",
+          "title": {
+            "sv": "Kolla bank och betalkort",
+            "en": "Check banking and cards"
+          },
+          "why": {
+            "sv": "Berätta att du flyttar och kolla avgifter utomlands.",
+            "en": "Tell your bank you are moving and check overseas fees."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          }
+        },
+        {
+          "id": "goodbyes",
+          "title": {
+            "sv": "Ta farväl",
+            "en": "Say goodbye"
+          },
+          "why": {
+            "sv": "Ett litet minne av dem och platsen du lämnar.",
+            "en": "A small memory of the people and place you are leaving."
+          },
+          "photoPrompt": {
+            "sv": "Fota avskeden",
+            "en": "Photograph the goodbyes"
+          }
+        }
+      ]
+    },
+    {
+      "id": "arrive",
+      "title": {
+        "sv": "Framme",
+        "en": "Arrive"
+      },
+      "steps": [
+        {
+          "id": "register",
+          "title": {
+            "sv": "Registrera dig där du bor",
+            "en": "Register where you live"
+          },
+          "why": {
+            "sv": "Kolla vad som krävs för uppehållstillstånd och adress.",
+            "en": "Check what is required for residence and address registration."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "migrationsverket.start"
+          ]
+        },
+        {
+          "id": "embassy",
+          "title": {
+            "sv": "Hitta svenska ambassaden",
+            "en": "Find the Swedish embassy"
+          },
+          "why": {
+            "sv": "Bra att veta var den finns om något händer.",
+            "en": "Good to know where it is if something happens."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          },
+          "links": [
+            "ud.start"
+          ]
+        },
+        {
+          "id": "first-week",
+          "title": {
+            "sv": "Lär känna vardagen",
+            "en": "Get to know everyday life"
+          },
+          "why": {
+            "sv": "Matbutik, vård, transport och någon att fråga.",
+            "en": "Grocery store, healthcare, transport and someone to ask."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          },
+          "photoPrompt": {
+            "sv": "Fota första veckan",
+            "en": "Photograph the first week"
+          }
+        }
+      ]
+    }
+  ]
+}

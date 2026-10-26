@@ -27,6 +27,7 @@ import se.imorn.content.text
 import se.imorn.designsystem.component.ImornBodyText
 import se.imorn.designsystem.component.ImornButton
 import se.imorn.designsystem.component.ImornCard
+import se.imorn.designsystem.component.ImornConfirmDialog
 import se.imorn.designsystem.component.ImornDatePickerDialog
 import se.imorn.designsystem.component.ImornImage
 import se.imorn.designsystem.component.ImornScaffold
@@ -34,6 +35,7 @@ import se.imorn.designsystem.component.ImornSecondaryButton
 import se.imorn.designsystem.component.ImornText
 import se.imorn.designsystem.component.ImornTextButton
 import se.imorn.designsystem.component.ImornTextField
+import se.imorn.designsystem.component.ImornTextInputDialog
 import se.imorn.designsystem.theme.ImornTheme
 import se.imorn.model.EntryKind
 import se.imorn.model.StepStatus
@@ -57,6 +59,10 @@ fun StepScreen(
     onSetDate: (LocalDate?) -> Unit,
     onNotApplicable: () -> Unit,
     onSaveNote: (String) -> Unit,
+    onRename: (String) -> Unit,
+    onMoveEarlier: () -> Unit,
+    onMoveLater: () -> Unit,
+    onRemove: () -> Unit,
     onTakePhoto: () -> Unit,
     onOpenEntry: (String) -> Unit,
     contentPadding: PaddingValues,
@@ -67,6 +73,8 @@ fun StepScreen(
     // The photo prompt, asked once right after *Done*.
     var prompting by rememberSaveable { mutableStateOf(false) }
     var note by rememberSaveable(step.note) { mutableStateOf(step.note.orEmpty()) }
+    var renaming by rememberSaveable { mutableStateOf(false) }
+    var removing by rememberSaveable { mutableStateOf(false) }
     ImornScaffold(title = state.chapterTitle, modifier = modifier) { scaffoldPadding ->
         Column(
             modifier = Modifier
@@ -78,6 +86,7 @@ fun StepScreen(
             verticalArrangement = Arrangement.spacedBy(ImornTheme.spacing.md),
         ) {
             ImornText(text = step.title, style = ImornTheme.typography.headlineSmall)
+            ImornTextButton(text = stringResource(R.string.step_rename), onClick = { renaming = true })
             ImornText(
                 text = when (step.status) {
                     StepStatus.Done -> stringResource(R.string.chapter_done_on, dayText(step.doneOn, state.today))
@@ -133,6 +142,21 @@ fun StepScreen(
             if (note.trim() != step.note.orEmpty()) {
                 ImornSecondaryButton(text = stringResource(R.string.step_save_note), onClick = { onSaveNote(note) })
             }
+            if (step.status == StepStatus.Open) {
+                Row(horizontalArrangement = Arrangement.spacedBy(ImornTheme.spacing.sm)) {
+                    ImornTextButton(
+                        text = stringResource(R.string.step_move_earlier),
+                        onClick = onMoveEarlier,
+                        enabled = state.canMoveEarlier,
+                    )
+                    ImornTextButton(
+                        text = stringResource(R.string.step_move_later),
+                        onClick = onMoveLater,
+                        enabled = state.canMoveLater,
+                    )
+                }
+            }
+            ImornTextButton(text = stringResource(R.string.step_remove), onClick = { removing = true })
         }
     }
     val prompt = step.photoPrompt
@@ -144,6 +168,33 @@ fun StepScreen(
                 onTakePhoto()
             },
             onDismiss = { prompting = false },
+        )
+    }
+    if (renaming) {
+        ImornTextInputDialog(
+            title = stringResource(R.string.step_rename_title),
+            label = stringResource(R.string.step_name),
+            confirmText = stringResource(R.string.step_save_name),
+            dismissText = stringResource(R.string.dialog_cancel),
+            initialText = step.title,
+            onConfirm = {
+                onRename(it)
+                renaming = false
+            },
+            onDismiss = { renaming = false },
+        )
+    }
+    if (removing) {
+        ImornConfirmDialog(
+            title = stringResource(R.string.step_remove_title),
+            text = stringResource(R.string.step_remove_text),
+            confirmText = stringResource(R.string.step_remove_confirm),
+            dismissText = stringResource(R.string.dialog_cancel),
+            onConfirm = {
+                removing = false
+                onRemove()
+            },
+            onDismiss = { removing = false },
         )
     }
     if (picking) {
@@ -247,6 +298,10 @@ private fun StepPreview() {
             onSetDate = {},
             onNotApplicable = {},
             onSaveNote = {},
+            onRename = {},
+            onMoveEarlier = {},
+            onMoveLater = {},
+            onRemove = {},
             onTakePhoto = {},
             onOpenEntry = {},
             contentPadding = PaddingValues(),
@@ -277,6 +332,10 @@ private fun StepDonePreview() {
             onSetDate = {},
             onNotApplicable = {},
             onSaveNote = {},
+            onRename = {},
+            onMoveEarlier = {},
+            onMoveLater = {},
+            onRemove = {},
             onTakePhoto = {},
             onOpenEntry = {},
             contentPadding = PaddingValues(),

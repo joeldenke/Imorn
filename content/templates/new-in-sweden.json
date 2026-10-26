@@ -10,7 +10,16 @@
     "sv": "Personnummer, id, bank och vård",
     "en": "Personal number, ID, bank and healthcare"
   },
+  "category": "life-events",
   "icon": "globe",
+  "helps": {
+    "sv": "Samlar myndigheter, vård, arbete och vardag på ett ställe.",
+    "en": "Gathers authorities, healthcare, work and everyday life in one place."
+  },
+  "note": {
+    "sv": "Reglerna beror på ditt medborgarskap och varför du flyttat hit. Kontrollera med Migrationsverket och Skatteverket.",
+    "en": "The rules depend on your citizenship and why you moved here. Check with the Swedish Migration Agency and Skatteverket."
+  },
   "lifestages": [
     "new-in-sweden"
   ],

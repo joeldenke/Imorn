@@ -33,3 +33,27 @@ fun List<Template>.suggestedFirst(lifeStages: Set<LifeStage>): List<Template> {
     val (suggested, rest) = partition { template -> template.lifestages.any { it in ids } }
     return suggested + rest
 }
+
+/** The templates in [category], or all of them when it is null, in the pack's order. */
+fun List<Template>.inCategory(category: TemplateCategory?): List<Template> =
+    if (category == null) this else filter { it.category == category }
+
+/**
+ * Templates whose title, summary or helps contain [query] in [language], ignoring case and surrounding space.
+ * An empty query keeps everything. The order stays the same, so the gallery can keep suggestions first.
+ */
+fun List<Template>.matching(query: String, language: String): List<Template> {
+    val needle = query.trim().lowercase()
+    if (needle.isEmpty()) return this
+    return filter { template ->
+        listOf(template.title, template.summary, template.helps).any { text ->
+            text.text(language).lowercase().contains(needle)
+        }
+    }
+}
+
+/** The templates grouped by category, in the enum's order; empty categories are left out. */
+fun List<Template>.groupedByCategory(): List<Pair<TemplateCategory, List<Template>>> =
+    TemplateCategory.entries.mapNotNull { category ->
+        filter { it.category == category }.takeIf { it.isNotEmpty() }?.let { category to it }
+    }

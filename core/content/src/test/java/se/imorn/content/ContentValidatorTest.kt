@@ -23,6 +23,9 @@ class ContentValidatorTest {
         id = "move",
         version = 1,
         title = both,
+        summary = both,
+        category = TemplateCategory.Home,
+        helps = both,
         anchors = listOf(TemplateAnchor("moveDay", both)),
         questions = listOf(
             Question("housing", both, options = listOf(Option("rental", both), Option("house", both))),
@@ -46,9 +49,24 @@ class ContentValidatorTest {
         assertEquals(listOf("Template move step address title has no en text"), found)
     }
 
-    @Test fun `a summary needs both languages`() {
-        val found = problems(template.copy(summary = mapOf(SWEDISH to "Från uppsägningen till frukosten")))
-        assertEquals(listOf("Template move summary has no en text"), found)
+    @Test fun `the gallery texts are required`() {
+        val found = problems(template.copy(summary = emptyMap(), helps = emptyMap()))
+        assertEquals(
+            listOf(
+                "Template move summary has no sv text",
+                "Template move summary has no en text",
+                "Template move helps has no sv text",
+                "Template move helps has no en text",
+            ),
+            found,
+        )
+    }
+
+    @Test fun `a note must be in both languages`() {
+        assertEquals(
+            listOf("Template move note has no en text"),
+            problems(template.copy(note = mapOf(SWEDISH to "Bara en anteckning"))),
+        )
     }
 
     @Test fun `links must be in the registry`() {

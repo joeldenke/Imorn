@@ -34,7 +34,7 @@ Remote Config kan bli aktuellt för feature-flaggor senare; innehållet hör hem
 ```
 content/
   links.json            länkregistret
-  templates/move.json   en fil per mall
+  templates/*.json      en fil per mall (31 i första biblioteket)
   letters/*.json        brevtyper för brevtolken
   tips.json             säsongstips
   lifestages.json       livsfaser → föreslagna mallar
@@ -66,9 +66,15 @@ content/
 ```json
 {
   "id": "move",
-  "version": 3,
-  "reviewedAt": "2026-10-20",
+  "version": 2,
+  "order": 1,
+  "reviewedAt": null,
   "title": { "sv": "Flytta", "en": "Moving" },
+  "summary": { "sv": "Från uppsägningen till första frukosten", "en": "From giving notice to the first breakfast" },
+  "category": "home",
+  "icon": "home",
+  "helps": { "sv": "Hålla koll på papper, abonnemang och flyttdagen.", "en": "Keep track of papers, utilities and moving day." },
+  "note": null,
   "lifestages": ["building", "midlife", "first-home"],
   "anchors": [{ "id": "moveDay", "label": { "sv": "Flyttdag", "en": "Moving day" }, "required": false }],
   "questions": [
@@ -115,6 +121,11 @@ content/
 - **Id:n är för evigt.** Ett steg byter text, aldrig id; ett borttaget steg markeras `"retired": true`.
   Användarens kapitel minns `templateId`, `templateVersion` och varje stegs `stepId`, och det är så uppdateringar
   kopplas ihop.
+- `category` är en av `home`, `family`, `work-study`, `health`, `life-events` och `finance-admin`. Galleriet
+  grupperar och filtrerar på den, i den ordningen.
+- `summary` och `helps` krävs på svenska och engelska: de är galleriets korta texter. `note` är valfri och
+  används för en varsam notering (juridik, sorg, hälsa), alltid på båda språken.
+- `order` är mallens plats i biblioteket och `icon` namnet på dess märke; okänt märke blir en enkel markering.
 - `at` är relativ tid: `{anchor, offsetDays}`, `{anchor, offsetMonths}` eller `{anchor, nextYear: {month: 4}}`
   för långa trådar som deklarationen.
 - `when` gömmer steg som inte gäller enligt svaren. Uttrycken är medvetet enkla (`equals`, `in`, `isTrue`) och
@@ -122,8 +133,8 @@ content/
 - Frågor är val (`options`, med id och etikett) eller ja/nej (`"type": "bool"`).
 - `reviewedAt` och länkarnas `verifiedAt` sätts först när någon har kontrollerat fakta mot källan.
 - Formatet är `Template` och `Link` i `:core:content`; `ContentValidator` kontrollerar det JSON inte kan säga
-  (språk, länk-id, ankare, villkor), och `BundledContentTest` kör den på hela `content/` i CI. Det JSON Schema som
-  nämns nedan kommer i fas 4.
+  (språk, länk-id, ankare, villkor, galleritexter), och `BundledContentTest` kör den på hela `content/` i CI. Det
+  JSON Schema som nämns nedan kommer i fas 4.
 
 ### Långa trådar – regeln
 

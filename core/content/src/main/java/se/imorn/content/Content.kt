@@ -60,6 +60,31 @@ enum class LinkKind {
 @Serializable
 data class LinkRegistry(val links: List<Link>)
 
+/**
+ * The shelf a template belongs to in the gallery. The categories are fixed in the app so their names can be
+ * translated; a new one needs a string as well as an entry here.
+ */
+@Serializable
+enum class TemplateCategory {
+    @SerialName("home")
+    Home,
+
+    @SerialName("family")
+    Family,
+
+    @SerialName("work-study")
+    WorkStudy,
+
+    @SerialName("health")
+    Health,
+
+    @SerialName("life-events")
+    LifeEvents,
+
+    @SerialName("finance-admin")
+    FinanceAdmin,
+}
+
 @Serializable
 data class Template(
     val id: String,
@@ -71,8 +96,14 @@ data class Template(
     val title: Localized,
     /** One short line under the title in the library, saying what the template covers. */
     val summary: Localized = emptyMap(),
+    /** The shelf this template belongs to in the gallery. */
+    val category: TemplateCategory,
     /** The name of the template's icon in the app (`home`, `key` …); an unknown or missing one gets a plain mark. */
     val icon: String? = null,
+    /** A short summary of what the template helps with, shown once it is chosen. */
+    val helps: Localized = emptyMap(),
+    /** A gentle extra note for templates whose facts carry legal, medical or money weight. */
+    val note: Localized? = null,
     val lifestages: List<String> = emptyList(),
     val anchors: List<TemplateAnchor> = emptyList(),
     val questions: List<Question> = emptyList(),
