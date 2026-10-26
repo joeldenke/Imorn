@@ -1,0 +1,190 @@
+{
+  "id": "graduation",
+  "version": 1,
+  "title": {
+    "sv": "Ta examen",
+    "en": "Graduating"
+  },
+  "description": {
+    "sv": "Få papperen klara och fira det som du har gjort.",
+    "en": "Get the paperwork done and celebrate what you have achieved."
+  },
+  "helps": {
+    "sv": "Små steg för examen, diplom och nästa steg.",
+    "en": "Small steps for the degree, diploma and what comes next."
+  },
+  "category": "work-study",
+  "lifestages": [
+    "first-home",
+    "building"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Examensdag",
+        "en": "Graduation day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "before",
+      "title": {
+        "sv": "Före",
+        "en": "Before"
+      },
+      "steps": [
+        {
+          "id": "credits",
+          "title": {
+            "sv": "Kolla att alla poäng är klara",
+            "en": "Check that all credits are complete"
+          },
+          "why": {
+            "sv": "Prata med studievägledaren om något saknas.",
+            "en": "Talk to your study adviser if anything is missing."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          },
+          "links": [
+            "csn.start"
+          ]
+        },
+        {
+          "id": "apply",
+          "title": {
+            "sv": "Ansök om examensbevis",
+            "en": "Apply for the degree certificate"
+          },
+          "why": {
+            "sv": "Gör det i tid, handläggningen tar tid.",
+            "en": "Apply in time; processing takes a while."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          }
+        },
+        {
+          "id": "invite",
+          "title": {
+            "sv": "Bjud in dem som betyder något",
+            "en": "Invite the people who matter"
+          },
+          "why": {
+            "sv": "Det behöver inte vara stort för att vara en fest.",
+            "en": "It does not have to be big to be a celebration."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          }
+        }
+      ]
+    },
+    {
+      "id": "day",
+      "title": {
+        "sv": "Dagen",
+        "en": "The day"
+      },
+      "steps": [
+        {
+          "id": "clothes",
+          "title": {
+            "sv": "Ordna kläder",
+            "en": "Sort out clothes"
+          },
+          "why": {
+            "sv": "Något du känner dig trygg i.",
+            "en": "Something you feel comfortable in."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "photos",
+          "title": {
+            "sv": "Fota dagen",
+            "en": "Photograph the day"
+          },
+          "why": {
+            "sv": "Ta också en bild på dig själv, inte bara på alla andra.",
+            "en": "Take a photo of yourself too, not only of everyone else."
+          },
+          "photoPrompt": {
+            "sv": "Fota dagen",
+            "en": "Photograph the day"
+          }
+        },
+        {
+          "id": "ceremony",
+          "title": {
+            "sv": "Gå på ceremonin",
+            "en": "Attend the ceremony"
+          },
+          "why": {
+            "sv": "Ta emot diplomet och stanna kvar en stund.",
+            "en": "Collect your diploma and stay for a while."
+          }
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "title": {
+        "sv": "Efter",
+        "en": "After"
+      },
+      "steps": [
+        {
+          "id": "diploma",
+          "title": {
+            "sv": "Spara examensbeviset",
+            "en": "Keep the degree certificate"
+          },
+          "why": {
+            "sv": "Både digitalt och på ett ställe du hittar.",
+            "en": "Both digitally and somewhere you can find it."
+          }
+        },
+        {
+          "id": "cv",
+          "title": {
+            "sv": "Uppdatera CV och profil",
+            "en": "Update your CV and profile"
+          },
+          "why": {
+            "sv": "Lägg till examensarbetet och det du lärde dig.",
+            "en": "Add your thesis and what you learned."
+          }
+        },
+        {
+          "id": "celebrate",
+          "title": {
+            "sv": "Gör något litet för dig själv",
+            "en": "Do something small for yourself"
+          },
+          "why": {
+            "sv": "Du är klar. Det får ta plats.",
+            "en": "You are done. Let that take up space."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 1
+          },
+          "photoPrompt": {
+            "sv": "Fota firandet",
+            "en": "Photograph the celebration"
+          }
+        }
+      ]
+    }
+  ]
+}

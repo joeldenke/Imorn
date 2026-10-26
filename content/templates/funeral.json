@@ -1,0 +1,199 @@
+{
+  "id": "funeral",
+  "version": 1,
+  "title": {
+    "sv": "Begravning",
+    "en": "A funeral"
+  },
+  "description": {
+    "sv": "Planera en begravning eller minnesstund i den takt som passar.",
+    "en": "Plan a funeral or memorial at a pace that suits you."
+  },
+  "helps": {
+    "sv": "Hjälper er samla valen kring ceremoni, plats och gäster.",
+    "en": "Helps you gather the choices around ceremony, place and guests."
+  },
+  "note": {
+    "sv": "Kostnader och regler för begravning varierar. Fråga begravningsbyrån och kontrollera villkoren.",
+    "en": "Funeral costs and rules vary. Ask the funeral home and check the terms."
+  },
+  "category": "life-events",
+  "lifestages": [
+    "midlife",
+    "next-chapter",
+    "hard-times"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Begravningsdag",
+        "en": "Funeral day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "plan",
+      "title": {
+        "sv": "Planera",
+        "en": "Plan"
+      },
+      "steps": [
+        {
+          "id": "funeral-home",
+          "title": {
+            "sv": "Välj begravningsbyrå",
+            "en": "Choose a funeral home"
+          },
+          "why": {
+            "sv": "Jämför vad som ingår och fråga om kostnader.",
+            "en": "Compare what is included and ask about costs."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          },
+          "links": [
+            "konsumentverket.hallakonsument"
+          ]
+        },
+        {
+          "id": "form",
+          "title": {
+            "sv": "Välj begravningsform",
+            "en": "Choose the form of funeral"
+          },
+          "why": {
+            "sv": "Kista eller urna, ceremoni och gravsättning.",
+            "en": "Coffin or urn, ceremony and burial."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          }
+        },
+        {
+          "id": "officiant",
+          "title": {
+            "sv": "Boka officiant eller präst",
+            "en": "Book an officiant or priest"
+          },
+          "why": {
+            "sv": "Fråga om samtal innan ceremonin.",
+            "en": "Ask about a conversation before the ceremony."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          }
+        }
+      ]
+    },
+    {
+      "id": "arrange",
+      "title": {
+        "sv": "Ordna",
+        "en": "Arrange"
+      },
+      "steps": [
+        {
+          "id": "music",
+          "title": {
+            "sv": "Välj musik och texter",
+            "en": "Choose music and readings"
+          },
+          "why": {
+            "sv": "Ta hjälp av den som leder ceremonin.",
+            "en": "Ask the person leading the ceremony for help."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "flowers",
+          "title": {
+            "sv": "Ordna blommor",
+            "en": "Arrange flowers"
+          },
+          "why": {
+            "sv": "Fråga begravningsbyrån vad som brukar ingå.",
+            "en": "Ask the funeral home what is usually included."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "guests",
+          "title": {
+            "sv": "Bjud in och ordna mat",
+            "en": "Invite guests and arrange food"
+          },
+          "why": {
+            "sv": "Berätta tid, plats och om det går att delta digitalt.",
+            "en": "Share the time, place and whether people can join remotely."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        }
+      ]
+    },
+    {
+      "id": "day",
+      "title": {
+        "sv": "Dagen",
+        "en": "The day"
+      },
+      "steps": [
+        {
+          "id": "transport",
+          "title": {
+            "sv": "Ordna transport",
+            "en": "Arrange transport"
+          },
+          "why": {
+            "sv": "Särskilt för äldre och för dem som reser långt.",
+            "en": "Especially for older guests and those travelling far."
+          }
+        },
+        {
+          "id": "ceremony",
+          "title": {
+            "sv": "Ceremonin",
+            "en": "The ceremony"
+          },
+          "why": {
+            "sv": "Låt någon annan hålla i tiderna.",
+            "en": "Let someone else keep the schedule."
+          },
+          "photoPrompt": {
+            "sv": "Fota blommor och minnesbord",
+            "en": "Photograph flowers and the memorial table"
+          }
+        },
+        {
+          "id": "thanks",
+          "title": {
+            "sv": "Tacka dem som kom",
+            "en": "Thank the people who came"
+          },
+          "why": {
+            "sv": "Ett kort räcker. Gör det när du orkar.",
+            "en": "A short note is enough. Do it when you have the energy."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "id": "caring-for-relative",
+  "version": 1,
+  "title": {
+    "sv": "Hjälpa en närstående",
+    "en": "Caring for a relative"
+  },
+  "description": {
+    "sv": "Stöd någon du tycker om, utan att glömma bort dig själv.",
+    "en": "Support someone you love without forgetting yourself."
+  },
+  "helps": {
+    "sv": "Samlar samtal, praktiska steg och eget stöd.",
+    "en": "Gathers conversations, practical steps and support for you."
+  },
+  "note": {
+    "sv": "Stödet som finns skiljer sig mellan kommuner. Imorn ersätter inte vårdens eller kommunens bedömning.",
+    "en": "The support available differs between municipalities. Imorn does not replace assessments by care providers or the municipality."
+  },
+  "category": "health",
+  "lifestages": [
+    "midlife",
+    "next-chapter",
+    "hard-times"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Startdag",
+        "en": "Start day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "start",
+      "title": {
+        "sv": "Börja",
+        "en": "Start"
+      },
+      "steps": [
+        {
+          "id": "talk",
+          "title": {
+            "sv": "Prata med din närstående",
+            "en": "Talk with your relative"
+          },
+          "why": {
+            "sv": "Fråga vad hen vill ha hjälp med och vad hen vill klara själv.",
+            "en": "Ask what they want help with and what they want to manage themselves."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "needs",
+          "title": {
+            "sv": "Skriv ner behoven",
+            "en": "Write down the needs"
+          },
+          "why": {
+            "sv": "Vardag, hälsa, ekonomi och trygghet.",
+            "en": "Everyday life, health, money and safety."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "municipality",
+          "title": {
+            "sv": "Kontakta kommunen",
+            "en": "Contact the municipality"
+          },
+          "why": {
+            "sv": "Fråga vilket stöd som finns där din närstående bor.",
+            "en": "Ask what support is available where your relative lives."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -3
+          },
+          "links": [
+            "kommun.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "everyday",
+      "title": {
+        "sv": "Vardagen",
+        "en": "Everyday"
+      },
+      "steps": [
+        {
+          "id": "care",
+          "title": {
+            "sv": "Planera hemhjälp eller stöd",
+            "en": "Plan home help or support"
+          },
+          "why": {
+            "sv": "Gör en lista tillsammans och fråga efter en genomgång.",
+            "en": "Make a list together and ask for a review."
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "aids",
+          "title": {
+            "sv": "Kolla hjälpmedel",
+            "en": "Check aids and adaptations"
+          },
+          "why": {
+            "sv": "Vården eller kommunen kan hjälpa till att bedöma behovet.",
+            "en": "Your care provider or municipality can help assess the need."
+          },
+          "links": [
+            "1177.start",
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "medicines",
+          "title": {
+            "sv": "Gör en medicinlista",
+            "en": "Make a medicine list"
+          },
+          "why": {
+            "sv": "Ta hjälp av apotek eller vård om listan är lång.",
+            "en": "Ask a pharmacy or care provider if the list is long."
+          },
+          "photoPrompt": {
+            "sv": "Fota medicinlistan",
+            "en": "Photograph the medicine list"
+          }
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "title": {
+        "sv": "Stöd",
+        "en": "Support"
+      },
+      "steps": [
+        {
+          "id": "caregiver-support",
+          "title": {
+            "sv": "Fråga efter stöd till dig",
+            "en": "Ask for support for yourself"
+          },
+          "why": {
+            "sv": "Kommunen kan ha stöd för anhöriga.",
+            "en": "The municipality may offer support for relatives."
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "respite",
+          "title": {
+            "sv": "Planera en paus",
+            "en": "Plan a break"
+          },
+          "why": {
+            "sv": "Avlösning är inte att svika, det är att orka längre.",
+            "en": "Respite is not letting someone down; it helps you keep going."
+          }
+        },
+        {
+          "id": "own-health",
+          "title": {
+            "sv": "Ta hand om din egen hälsa",
+            "en": "Look after your own health"
+          },
+          "why": {
+            "sv": "Sömn, mat och någon att prata med.",
+            "en": "Sleep, food and someone to talk to."
+          },
+          "links": [
+            "1177.start"
+          ]
+        }
+      ]
+    }
+  ]
+}

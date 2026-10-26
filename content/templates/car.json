@@ -1,0 +1,233 @@
+{
+  "id": "car",
+  "version": 1,
+  "title": {
+    "sv": "Köpa bil",
+    "en": "Buying a car"
+  },
+  "description": {
+    "sv": "Från behov och provkörning till ägarbyte och första servicen.",
+    "en": "From need and test drive to change of ownership and first service."
+  },
+  "helps": {
+    "sv": "Samlar kontroll, papper, försäkring och ägande.",
+    "en": "Gathers checks, paperwork, insurance and ownership."
+  },
+  "note": {
+    "sv": "Regler för ägarbyte, skatt och besiktning finns hos Transportstyrelsen. Kontrollera fordonet innan köp.",
+    "en": "Rules for ownership, tax and inspection are at Transportstyrelsen. Check the vehicle before buying."
+  },
+  "category": "finance-admin",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Hämtningsdag",
+        "en": "Pick-up day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "before",
+      "title": {
+        "sv": "Före",
+        "en": "Before"
+      },
+      "steps": [
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Räkna på hela kostnaden",
+            "en": "Work out the full cost"
+          },
+          "why": {
+            "sv": "Bränsle, försäkring, skatt, service och däck.",
+            "en": "Fuel, insurance, tax, servicing and tyres."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          }
+        },
+        {
+          "id": "compare",
+          "title": {
+            "sv": "Jämför bilar",
+            "en": "Compare cars"
+          },
+          "why": {
+            "sv": "Kolla förbrukning, säkerhet och reservdelar.",
+            "en": "Check consumption, safety and parts."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Kolla försäkring innan köpet",
+            "en": "Check insurance before buying"
+          },
+          "why": {
+            "sv": "Försäkringen kan skilja mycket mellan modeller.",
+            "en": "Insurance can vary a lot between models."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buy",
+      "title": {
+        "sv": "Köp",
+        "en": "Buy"
+      },
+      "steps": [
+        {
+          "id": "condition",
+          "title": {
+            "sv": "Kontrollera bilen",
+            "en": "Check the car"
+          },
+          "why": {
+            "sv": "Provkör, fråga om servicehistorik och ta hjälp om du är osäker.",
+            "en": "Test drive, ask about service history and get help if unsure."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "konsumentverket.hallakonsument"
+          ]
+        },
+        {
+          "id": "contract",
+          "title": {
+            "sv": "Skriv köpeavtal",
+            "en": "Sign the purchase agreement"
+          },
+          "why": {
+            "sv": "Läs vad som ingår och vad som inte gör det.",
+            "en": "Read what is included and what is not."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          }
+        },
+        {
+          "id": "ownership",
+          "title": {
+            "sv": "Gör ägarbyte",
+            "en": "Change ownership"
+          },
+          "why": {
+            "sv": "Görs hos Transportstyrelsen. Både köpare och säljare behöver vara med.",
+            "en": "Done at Transportstyrelsen. Both buyer and seller need to take part."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 1
+          },
+          "links": [
+            "transportstyrelsen.start"
+          ]
+        },
+        {
+          "id": "tax",
+          "title": {
+            "sv": "Kolla skatt och avgifter",
+            "en": "Check tax and fees"
+          },
+          "why": {
+            "sv": "Se vad som gäller för just den bilen.",
+            "en": "See what applies to that car."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "transportstyrelsen.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "own",
+      "title": {
+        "sv": "Äg",
+        "en": "Own"
+      },
+      "steps": [
+        {
+          "id": "service",
+          "title": {
+            "sv": "Boka första servicen",
+            "en": "Book the first service"
+          },
+          "why": {
+            "sv": "Följ serviceintervallet i boken.",
+            "en": "Follow the service interval in the book."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          }
+        },
+        {
+          "id": "parking",
+          "title": {
+            "sv": "Ordna parkering",
+            "en": "Arrange parking"
+          },
+          "why": {
+            "sv": "Kolla regler och avgifter där du bor.",
+            "en": "Check rules and fees where you live."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "photo",
+          "title": {
+            "sv": "Fota bilen",
+            "en": "Photograph the car"
+          },
+          "why": {
+            "sv": "Bra vid försäkring och framtida försäljning.",
+            "en": "Useful for insurance and a future sale."
+          },
+          "photoPrompt": {
+            "sv": "Fota bilen från flera håll",
+            "en": "Photograph the car from several angles"
+          }
+        }
+      ]
+    }
+  ]
+}

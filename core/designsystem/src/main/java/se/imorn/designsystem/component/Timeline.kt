@@ -77,8 +77,9 @@ fun ImornTextInputDialog(
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit,
     singleLine: Boolean = true,
+    initialText: String = "",
 ) {
-    var text by rememberSaveable { mutableStateOf("") }
+    var text by rememberSaveable(initialText) { mutableStateOf(initialText) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = title) },

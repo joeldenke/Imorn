@@ -1,0 +1,208 @@
+{
+  "id": "study",
+  "version": 1,
+  "title": {
+    "sv": "Börja studera",
+    "en": "Starting to study"
+  },
+  "description": {
+    "sv": "Från ansökan och studiemedel till första veckan på kursen.",
+    "en": "From application and student finance to the first week of the course."
+  },
+  "helps": {
+    "sv": "Hjälper dig få plats, pengar och vardag att gå ihop.",
+    "en": "Helps you get a place, funding and everyday life to fit together."
+  },
+  "category": "work-study",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Terminsstart",
+        "en": "Term start"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "apply",
+      "title": {
+        "sv": "Ansökan",
+        "en": "Apply"
+      },
+      "steps": [
+        {
+          "id": "choose",
+          "title": {
+            "sv": "Jämför utbildningar",
+            "en": "Compare courses"
+          },
+          "why": {
+            "sv": "Titta på innehåll, tempo och vad du vill göra efteråt.",
+            "en": "Look at content, pace and what you want to do afterwards."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -6
+          },
+          "links": [
+            "csn.start"
+          ]
+        },
+        {
+          "id": "apply",
+          "title": {
+            "sv": "Skicka ansökan",
+            "en": "Submit the application"
+          },
+          "why": {
+            "sv": "Håll koll på datum och kompletteringar.",
+            "en": "Keep track of dates and any extra documents."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -5
+          }
+        },
+        {
+          "id": "housing",
+          "title": {
+            "sv": "Ordna boende",
+            "en": "Arrange housing"
+          },
+          "why": {
+            "sv": "Sök i tid om du flyttar till en ny stad.",
+            "en": "Apply early if you are moving to a new city."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          },
+          "links": [
+            "kommun.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "money",
+      "title": {
+        "sv": "Pengar",
+        "en": "Money"
+      },
+      "steps": [
+        {
+          "id": "csn",
+          "title": {
+            "sv": "Ansök om studiemedel",
+            "en": "Apply for student finance"
+          },
+          "why": {
+            "sv": "Gör det i tid och läs vad som gäller för din utbildning.",
+            "en": "Apply in time and read what applies to your course."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          },
+          "links": [
+            "csn.start"
+          ]
+        },
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Gör en studiebudget",
+            "en": "Make a study budget"
+          },
+          "why": {
+            "sv": "Böcker, resor och boende äter mer än man tror.",
+            "en": "Books, travel and housing cost more than you think."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          }
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Kolla försäkringar",
+            "en": "Check insurance"
+          },
+          "why": {
+            "sv": "Hemförsäkring och olycksfall kan behöva ses över.",
+            "en": "Home and accident insurance may need reviewing."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "start",
+      "title": {
+        "sv": "Start",
+        "en": "Start"
+      },
+      "steps": [
+        {
+          "id": "register",
+          "title": {
+            "sv": "Registrera dig på kursen",
+            "en": "Register for the course"
+          },
+          "why": {
+            "sv": "Missar du registreringen kan platsen gå förlorad.",
+            "en": "If you miss registration, you can lose your place."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "plan",
+          "title": {
+            "sv": "Lägg upp en studievecka",
+            "en": "Plan a study week"
+          },
+          "why": {
+            "sv": "Blocka tid för föreläsningar, läsning och återhämtning.",
+            "en": "Block time for lectures, reading and rest."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          }
+        },
+        {
+          "id": "group",
+          "title": {
+            "sv": "Hitta någon att studera med",
+            "en": "Find someone to study with"
+          },
+          "why": {
+            "sv": "Ett namn i klassen gör det lättare att fråga.",
+            "en": "One name in the class makes it easier to ask."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          }
+        }
+      ]
+    }
+  ]
+}

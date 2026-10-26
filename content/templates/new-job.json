@@ -1,0 +1,198 @@
+{
+  "id": "new-job",
+  "version": 1,
+  "title": {
+    "sv": "Nytt jobb",
+    "en": "A new job"
+  },
+  "description": {
+    "sv": "Från avtal och uppsägning till första lönen.",
+    "en": "From contract and notice to the first payslip."
+  },
+  "helps": {
+    "sv": "Håller koll på papper, praktiska saker och första tiden.",
+    "en": "Keeps track of paperwork, practicalities and the first time."
+  },
+  "category": "work-study",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Första arbetsdagen",
+        "en": "First day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "before",
+      "title": {
+        "sv": "Före",
+        "en": "Before"
+      },
+      "steps": [
+        {
+          "id": "contract",
+          "title": {
+            "sv": "Läs anställningsavtalet",
+            "en": "Read the employment contract"
+          },
+          "why": {
+            "sv": "Lön, arbetstid, uppsägningstid och förmåner.",
+            "en": "Pay, hours, notice period and benefits."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          }
+        },
+        {
+          "id": "notice",
+          "title": {
+            "sv": "Säg upp det gamla jobbet",
+            "en": "Give notice at your old job"
+          },
+          "why": {
+            "sv": "Kolla uppsägningstiden innan du berättar.",
+            "en": "Check your notice period before you tell them."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          }
+        },
+        {
+          "id": "tax",
+          "title": {
+            "sv": "Kolla skattetabell och bankkonto",
+            "en": "Check your tax table and bank details"
+          },
+          "why": {
+            "sv": "Så att första lönen hamnar rätt.",
+            "en": "So that the first pay lands correctly."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "first-week",
+      "title": {
+        "sv": "Första veckan",
+        "en": "First week"
+      },
+      "steps": [
+        {
+          "id": "commute",
+          "title": {
+            "sv": "Testa vägen till jobbet",
+            "en": "Test the commute"
+          },
+          "why": {
+            "sv": "Åk gärna samma tid som du kommer att göra.",
+            "en": "Travel at the same time you will normally travel."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "first-day",
+          "title": {
+            "sv": "Första dagen",
+            "en": "The first day"
+          },
+          "why": {
+            "sv": "Ta med det du behöver och ställ frågor. Ingen förväntar sig att du kan allt.",
+            "en": "Bring what you need and ask questions. Nobody expects you to know everything."
+          },
+          "photoPrompt": {
+            "sv": "Fota första dagen, om det känns rätt",
+            "en": "Photograph the first day, if it feels right"
+          }
+        },
+        {
+          "id": "onboarding",
+          "title": {
+            "sv": "Skriv ner det du lär dig",
+            "en": "Write down what you learn"
+          },
+          "why": {
+            "sv": "Namn, rutiner och var saker finns.",
+            "en": "Names, routines and where things are."
+          }
+        }
+      ]
+    },
+    {
+      "id": "months",
+      "title": {
+        "sv": "Första månaderna",
+        "en": "First months"
+      },
+      "steps": [
+        {
+          "id": "pension",
+          "title": {
+            "sv": "Kolla pension och försäkringar",
+            "en": "Check pension and insurance"
+          },
+          "why": {
+            "sv": "Fråga vad arbetsgivaren betalar in och vilka förmåner som ingår.",
+            "en": "Ask what your employer contributes and which benefits are included."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          },
+          "links": [
+            "minpension.start"
+          ]
+        },
+        {
+          "id": "payslip",
+          "title": {
+            "sv": "Läs första lönespecifikationen",
+            "en": "Read the first payslip"
+          },
+          "why": {
+            "sv": "Jämför med avtalet och fråga om något ser fel ut.",
+            "en": "Compare it with the contract and ask if something looks wrong."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 45
+          }
+        },
+        {
+          "id": "feedback",
+          "title": {
+            "sv": "Be om en kort återkoppling",
+            "en": "Ask for a short check-in"
+          },
+          "why": {
+            "sv": "Tidigt samtal gör det lättare att justera.",
+            "en": "An early conversation makes it easier to adjust."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 60
+          }
+        }
+      ]
+    }
+  ]
+}

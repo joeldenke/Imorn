@@ -1,0 +1,215 @@
+{
+  "id": "pet",
+  "version": 1,
+  "title": {
+    "sv": "Skaffa husdjur",
+    "en": "Getting a pet"
+  },
+  "description": {
+    "sv": "Förbered hemmet och vardagen innan djuret flyttar in.",
+    "en": "Prepare your home and everyday life before the animal moves in."
+  },
+  "helps": {
+    "sv": "Hjälper dig tänka på tid, pengar, regler och första tiden.",
+    "en": "Helps you think about time, money, rules and the first weeks."
+  },
+  "note": {
+    "sv": "Regler för djurhållning och märkning finns hos Jordbruksverket. Fråga veterinären om djurets hälsa.",
+    "en": "Rules for keeping and identifying animals are at the Swedish Board of Agriculture. Ask the vet about the animal's health."
+  },
+  "category": "family",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Inflyttningsdag",
+        "en": "Homecoming day"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "housing",
+      "text": {
+        "sv": "Bor du i hyresrätt?",
+        "en": "Do you rent your home?"
+      },
+      "type": "bool"
+    }
+  ],
+  "phases": [
+    {
+      "id": "before",
+      "title": {
+        "sv": "Före",
+        "en": "Before"
+      },
+      "steps": [
+        {
+          "id": "time-money",
+          "title": {
+            "sv": "Räkna på tid och kostnad",
+            "en": "Work out time and cost"
+          },
+          "why": {
+            "sv": "Mat, försäkring, veterinär och rastning varje dag.",
+            "en": "Food, insurance, vet visits and walks every day."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          },
+          "links": [
+            "jordbruksverket.start"
+          ]
+        },
+        {
+          "id": "landlord",
+          "title": {
+            "sv": "Fråga hyresvärden om djur",
+            "en": "Ask the landlord about pets"
+          },
+          "why": {
+            "sv": "Inte alla hyresavtal tillåter husdjur.",
+            "en": "Not every tenancy allows pets."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          },
+          "when": {
+            "question": "housing",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "supplies",
+          "title": {
+            "sv": "Köp det nödvändigaste",
+            "en": "Buy the basics"
+          },
+          "why": {
+            "sv": "Bädd, mat, skål och något tryggt att dra sig undan till.",
+            "en": "Bed, food, bowls and somewhere safe to retreat to."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          }
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Teckna djurförsäkring",
+            "en": "Take out pet insurance"
+          },
+          "why": {
+            "sv": "Jämför vad som täcks och vad självrisken är.",
+            "en": "Compare what is covered and what the excess is."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "title": {
+        "sv": "Hemma",
+        "en": "Home"
+      },
+      "steps": [
+        {
+          "id": "pickup",
+          "title": {
+            "sv": "Hämta djuret",
+            "en": "Pick up the animal"
+          },
+          "why": {
+            "sv": "Fråga om vanor, mat och vad det har varit med om.",
+            "en": "Ask about habits, food and what the animal has been through."
+          },
+          "photoPrompt": {
+            "sv": "Fota första dagen hemma",
+            "en": "Photograph the first day home"
+          }
+        },
+        {
+          "id": "register",
+          "title": {
+            "sv": "Registrera och märk djuret",
+            "en": "Register and identify the animal"
+          },
+          "why": {
+            "sv": "Kolla vilka regler som gäller för just ert djur.",
+            "en": "Check which rules apply to your animal."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "jordbruksverket.start"
+          ]
+        },
+        {
+          "id": "vet",
+          "title": {
+            "sv": "Boka första besöket hos veterinär",
+            "en": "Book the first vet visit"
+          },
+          "why": {
+            "sv": "Ta med papper från uppfödaren eller tidigare hem.",
+            "en": "Bring papers from the breeder or previous home."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          }
+        }
+      ]
+    },
+    {
+      "id": "weeks",
+      "title": {
+        "sv": "Första veckorna",
+        "en": "First weeks"
+      },
+      "steps": [
+        {
+          "id": "routines",
+          "title": {
+            "sv": "Bygg lugna rutiner",
+            "en": "Build calm routines"
+          },
+          "why": {
+            "sv": "Mat, sömn och rastning vid ungefär samma tider.",
+            "en": "Food, sleep and walks at roughly the same times."
+          }
+        },
+        {
+          "id": "alone",
+          "title": {
+            "sv": "Vänj djuret vid att vara ensam",
+            "en": "Get the animal used to being alone"
+          },
+          "why": {
+            "sv": "Korta stunder, ökade långsamt.",
+            "en": "Short stretches, increased slowly."
+          }
+        }
+      ]
+    }
+  ]
+}

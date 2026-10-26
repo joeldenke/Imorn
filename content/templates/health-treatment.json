@@ -1,0 +1,195 @@
+{
+  "id": "health-treatment",
+  "version": 1,
+  "title": {
+    "sv": "Behandling",
+    "en": "Treatment"
+  },
+  "description": {
+    "sv": "Förbered besök, behandling och tiden efteråt.",
+    "en": "Prepare for appointments, treatment and the time afterwards."
+  },
+  "helps": {
+    "sv": "Hjälper dig samla frågor, papper och stöd.",
+    "en": "Helps you gather questions, papers and support."
+  },
+  "note": {
+    "sv": "Imorn ger inte medicinsk rådgivning. Kontakta vården vid frågor eller om något förändras.",
+    "en": "Imorn does not provide medical advice. Contact your care provider with questions or if anything changes."
+  },
+  "category": "health",
+  "lifestages": [
+    "building",
+    "midlife",
+    "next-chapter",
+    "hard-times"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Behandlingsstart",
+        "en": "Treatment start"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "before",
+      "title": {
+        "sv": "Före",
+        "en": "Before"
+      },
+      "steps": [
+        {
+          "id": "appointment",
+          "title": {
+            "sv": "Boka tid",
+            "en": "Book an appointment"
+          },
+          "why": {
+            "sv": "Ring vårdcentralen eller 1177 om du är osäker på var du ska vända dig.",
+            "en": "Call your health centre or 1177 if you are unsure where to go."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          },
+          "links": [
+            "1177.start"
+          ]
+        },
+        {
+          "id": "notes",
+          "title": {
+            "sv": "Skriv ner symtom och frågor",
+            "en": "Write down symptoms and questions"
+          },
+          "why": {
+            "sv": "Ta med tider, mediciner och det du vill ha svar på.",
+            "en": "Bring dates, medicines and what you want answered."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          },
+          "photoPrompt": {
+            "sv": "Fota medicinlistan",
+            "en": "Photograph the medicine list"
+          }
+        },
+        {
+          "id": "support",
+          "title": {
+            "sv": "Fråga någon om stöd",
+            "en": "Ask someone for support"
+          },
+          "why": {
+            "sv": "En person som lyssnar och hjälper dig minnas.",
+            "en": "Someone who listens and helps you remember."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        }
+      ]
+    },
+    {
+      "id": "treatment",
+      "title": {
+        "sv": "Behandling",
+        "en": "Treatment"
+      },
+      "steps": [
+        {
+          "id": "leave",
+          "title": {
+            "sv": "Ordna ledighet och praktiska saker",
+            "en": "Arrange leave and practicalities"
+          },
+          "why": {
+            "sv": "Prata med arbetsgivaren och kolla vad som gäller.",
+            "en": "Talk to your employer and check what applies."
+          },
+          "links": [
+            "fk.start"
+          ]
+        },
+        {
+          "id": "transport",
+          "title": {
+            "sv": "Planera resor",
+            "en": "Plan transport"
+          },
+          "why": {
+            "sv": "Särskilt om du inte kan köra själv efteråt.",
+            "en": "Especially if you cannot drive yourself afterwards."
+          }
+        },
+        {
+          "id": "questions",
+          "title": {
+            "sv": "Ställ dina frågor",
+            "en": "Ask your questions"
+          },
+          "why": {
+            "sv": "Det är okej att be om att få svar igen.",
+            "en": "It is okay to ask for an answer again."
+          }
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "title": {
+        "sv": "Efter",
+        "en": "After"
+      },
+      "steps": [
+        {
+          "id": "follow-up",
+          "title": {
+            "sv": "Boka uppföljning",
+            "en": "Book a follow-up"
+          },
+          "why": {
+            "sv": "Skriv upp när och med vem.",
+            "en": "Write down when and with whom."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          }
+        },
+        {
+          "id": "medicines",
+          "title": {
+            "sv": "Håll koll på mediciner",
+            "en": "Keep track of medicines"
+          },
+          "why": {
+            "sv": "Fråga apoteket eller vården om något är oklart.",
+            "en": "Ask the pharmacy or your care team if anything is unclear."
+          }
+        },
+        {
+          "id": "recovery",
+          "title": {
+            "sv": "Ta den tid du behöver",
+            "en": "Take the time you need"
+          },
+          "why": {
+            "sv": "Återhämtning är också en del av behandlingen.",
+            "en": "Recovery is part of treatment too."
+          },
+          "photoPrompt": {
+            "sv": "Fota det som hjälper dig",
+            "en": "Photograph what helps you"
+          }
+        }
+      ]
+    }
+  ]
+}

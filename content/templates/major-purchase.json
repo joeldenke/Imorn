@@ -1,0 +1,186 @@
+{
+  "id": "major-purchase",
+  "version": 1,
+  "title": {
+    "sv": "Större köp",
+    "en": "A major purchase"
+  },
+  "description": {
+    "sv": "Tänk igenom behov, pris och villkor innan du köper.",
+    "en": "Think through the need, price and terms before you buy."
+  },
+  "helps": {
+    "sv": "Hjälper dig jämföra och spara papperen.",
+    "en": "Helps you compare and keep the paperwork."
+  },
+  "note": {
+    "sv": "Dina rättigheter beror på vad du köper och var. Kontrollera hos Hallå konsument.",
+    "en": "Your rights depend on what you buy and where. Check with Hallå konsument."
+  },
+  "category": "finance-admin",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Köpdag",
+        "en": "Purchase day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "before",
+      "title": {
+        "sv": "Före",
+        "en": "Before"
+      },
+      "steps": [
+        {
+          "id": "need",
+          "title": {
+            "sv": "Bestäm vad du faktiskt behöver",
+            "en": "Decide what you actually need"
+          },
+          "why": {
+            "sv": "Skriv tre saker som är viktiga och tre som är bonus.",
+            "en": "Write three things that matter and three that are nice to have."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          }
+        },
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Sätt en övre gräns",
+            "en": "Set an upper limit"
+          },
+          "why": {
+            "sv": "Räkna med leverans, tillbehör och försäkring.",
+            "en": "Include delivery, accessories and insurance."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          }
+        },
+        {
+          "id": "compare",
+          "title": {
+            "sv": "Jämför minst tre alternativ",
+            "en": "Compare at least three options"
+          },
+          "why": {
+            "sv": "Läs villkor och recensioner, inte bara priset.",
+            "en": "Read terms and reviews, not only the price."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          },
+          "links": [
+            "konsumentverket.hallakonsument"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "buy",
+      "title": {
+        "sv": "Köp",
+        "en": "Buy"
+      },
+      "steps": [
+        {
+          "id": "terms",
+          "title": {
+            "sv": "Läs retur- och garantivillkor",
+            "en": "Read return and warranty terms"
+          },
+          "why": {
+            "sv": "Spara dem direkt.",
+            "en": "Keep them straight away."
+          },
+          "links": [
+            "konsumentverket.hallakonsument"
+          ]
+        },
+        {
+          "id": "payment",
+          "title": {
+            "sv": "Välj betalsätt",
+            "en": "Choose how to pay"
+          },
+          "why": {
+            "sv": "Undvik att binda upp mer än du kan betala.",
+            "en": "Avoid committing to more than you can repay."
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "receipt",
+          "title": {
+            "sv": "Spara kvitto och orderbekräftelse",
+            "en": "Keep the receipt and order confirmation"
+          },
+          "why": {
+            "sv": "Fota dem om de bara finns på papper.",
+            "en": "Photograph them if they only exist on paper."
+          },
+          "photoPrompt": {
+            "sv": "Fota kvittot",
+            "en": "Photograph the receipt"
+          }
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "title": {
+        "sv": "Efter",
+        "en": "After"
+      },
+      "steps": [
+        {
+          "id": "test",
+          "title": {
+            "sv": "Testa och läs manualen",
+            "en": "Test it and read the manual"
+          },
+          "why": {
+            "sv": "Gör det innan returtiden går ut.",
+            "en": "Do it before the return period ends."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          }
+        },
+        {
+          "id": "review",
+          "title": {
+            "sv": "Utvärdera köpet",
+            "en": "Review the purchase"
+          },
+          "why": {
+            "sv": "Blev det som du tänkte?",
+            "en": "Did it turn out as you expected?"
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "id": "new-in-sweden",
+  "version": 1,
+  "title": {
+    "sv": "Ny i Sverige",
+    "en": "New in Sweden"
+  },
+  "description": {
+    "sv": "De första stegen för att komma in i vardagen i Sverige.",
+    "en": "The first steps to settle into everyday life in Sweden."
+  },
+  "helps": {
+    "sv": "Samlar myndigheter, vård, arbete och vardag på ett ställe.",
+    "en": "Gathers authorities, healthcare, work and everyday life in one place."
+  },
+  "note": {
+    "sv": "Reglerna beror på ditt medborgarskap och varför du flyttat hit. Kontrollera med Migrationsverket och Skatteverket.",
+    "en": "The rules depend on your citizenship and why you moved here. Check with the Swedish Migration Agency and Skatteverket."
+  },
+  "category": "life-events",
+  "lifestages": [
+    "new-in-sweden"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Ankomstdag",
+        "en": "Arrival day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "first",
+      "title": {
+        "sv": "Första dagarna",
+        "en": "First days"
+      },
+      "steps": [
+        {
+          "id": "housing",
+          "title": {
+            "sv": "Ordna någonstans att bo",
+            "en": "Arrange somewhere to live"
+          },
+          "why": {
+            "sv": "Fråga kommunen eller organisationen som tar emot dig.",
+            "en": "Ask the municipality or the organisation receiving you."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 1
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "money",
+          "title": {
+            "sv": "Ordna betalkort och kontanter",
+            "en": "Arrange a card and cash"
+          },
+          "why": {
+            "sv": "Det kan ta tid att öppna bankkonto.",
+            "en": "Opening a bank account can take time."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 3
+          }
+        },
+        {
+          "id": "phone",
+          "title": {
+            "sv": "Skaffa telefon och internet",
+            "en": "Get a phone and internet"
+          },
+          "why": {
+            "sv": "Du behöver kunna nå myndigheter och vård.",
+            "en": "You need to be able to reach authorities and healthcare."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "register",
+      "title": {
+        "sv": "Registrera",
+        "en": "Register"
+      },
+      "steps": [
+        {
+          "id": "personal-number",
+          "title": {
+            "sv": "Ansök om personnummer",
+            "en": "Apply for a personal identity number"
+          },
+          "why": {
+            "sv": "Görs hos Skatteverket. Ta med de papper som efterfrågas.",
+            "en": "Done at Skatteverket. Bring the requested documents."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        },
+        {
+          "id": "id",
+          "title": {
+            "sv": "Skaffa id-kort",
+            "en": "Get an ID card"
+          },
+          "why": {
+            "sv": "Fråga vad som gäller för dig som är ny i Sverige.",
+            "en": "Ask what applies to you as someone new to Sweden."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 21
+          },
+          "links": [
+            "skatteverket.start",
+            "polisen.pass"
+          ]
+        },
+        {
+          "id": "bank",
+          "title": {
+            "sv": "Öppna bankkonto",
+            "en": "Open a bank account"
+          },
+          "why": {
+            "sv": "Ofta behövs personnummer och id-kort.",
+            "en": "You often need a personal identity number and ID card."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          }
+        }
+      ]
+    },
+    {
+      "id": "settle",
+      "title": {
+        "sv": "Vardag",
+        "en": "Everyday"
+      },
+      "steps": [
+        {
+          "id": "healthcare",
+          "title": {
+            "sv": "Hitta vårdcentral",
+            "en": "Find a health centre"
+          },
+          "why": {
+            "sv": "Ring 1177 om du är osäker på var du ska vända dig.",
+            "en": "Call 1177 if you are unsure where to go."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          },
+          "links": [
+            "1177.start"
+          ]
+        },
+        {
+          "id": "language",
+          "title": {
+            "sv": "Börja med svenska",
+            "en": "Start learning Swedish"
+          },
+          "why": {
+            "sv": "Fråga kommunen om SFI och andra kurser.",
+            "en": "Ask the municipality about Swedish for immigrants and other courses."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "work",
+          "title": {
+            "sv": "Kolla arbete och studier",
+            "en": "Check work and studies"
+          },
+          "why": {
+            "sv": "Arbetsförmedlingen och CSN kan berätta vad som gäller.",
+            "en": "The Employment Service and CSN can explain what applies."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 45
+          },
+          "links": [
+            "arbetsformedlingen.start",
+            "csn.start"
+          ]
+        }
+      ]
+    }
+  ]
+}

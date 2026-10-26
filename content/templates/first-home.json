@@ -1,0 +1,192 @@
+{
+  "id": "first-home",
+  "version": 1,
+  "title": {
+    "sv": "Första egna hemmet",
+    "en": "Your first home"
+  },
+  "description": {
+    "sv": "Flytta hemifrån med koll på pengar, papper och första natten.",
+    "en": "Move out with a grip on money, paperwork and the first night."
+  },
+  "helps": {
+    "sv": "En enkel start för den som gör det här första gången.",
+    "en": "A simple start for the first time you do this."
+  },
+  "category": "home",
+  "lifestages": [
+    "first-home"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Inflyttningsdag",
+        "en": "Move-in day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "plan",
+      "title": {
+        "sv": "Planera",
+        "en": "Plan"
+      },
+      "steps": [
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Räkna på hyra och fasta kostnader",
+            "en": "Work out rent and fixed costs"
+          },
+          "why": {
+            "sv": "Ta med el, internet, försäkring och mat innan du bestämmer dig.",
+            "en": "Include electricity, internet, insurance and food before you decide."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "deposit",
+          "title": {
+            "sv": "Förbered depositionen",
+            "en": "Prepare the deposit"
+          },
+          "why": {
+            "sv": "Depositionen betalas ofta före inflyttning.",
+            "en": "The deposit is often paid before move-in."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          }
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Teckna hemförsäkring",
+            "en": "Take out home insurance"
+          },
+          "why": {
+            "sv": "Den ska gälla från dagen du flyttar in.",
+            "en": "It should apply from the day you move in."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paperwork",
+      "title": {
+        "sv": "Papper",
+        "en": "Paperwork"
+      },
+      "steps": [
+        {
+          "id": "address",
+          "title": {
+            "sv": "Gör flyttanmälan",
+            "en": "Register your move"
+          },
+          "why": {
+            "sv": "Gör det i tid så post och myndigheter hittar dig.",
+            "en": "Do it in time so post and authorities can reach you."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          },
+          "links": [
+            "skatteverket.flytt"
+          ]
+        },
+        {
+          "id": "utilities",
+          "title": {
+            "sv": "Teckna el och internet",
+            "en": "Set up electricity and internet"
+          },
+          "why": {
+            "sv": "Jämför avtal och säg upp det du inte längre behöver.",
+            "en": "Compare deals and cancel what you no longer need."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          },
+          "links": [
+            "elpriskollen.start",
+            "energimarknadsbyran.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "move-in",
+      "title": {
+        "sv": "Flytta in",
+        "en": "Move in"
+      },
+      "steps": [
+        {
+          "id": "pack",
+          "title": {
+            "sv": "Pack det nödvändigaste först",
+            "en": "Pack the essentials first"
+          },
+          "why": {
+            "sv": "Lakan, laddare, tandborste och något att äta.",
+            "en": "Sheets, charger, toothbrush and something to eat."
+          }
+        },
+        {
+          "id": "meter",
+          "title": {
+            "sv": "Läs av mätare och fota",
+            "en": "Read the meters and take photos"
+          },
+          "why": {
+            "sv": "Ett bra skydd om något ifrågasätts senare.",
+            "en": "Good protection if something is questioned later."
+          },
+          "photoPrompt": {
+            "sv": "Fota mätare och tomt hem",
+            "en": "Photograph meters and the empty home"
+          }
+        },
+        {
+          "id": "first-night",
+          "title": {
+            "sv": "Fira första natten",
+            "en": "Celebrate the first night"
+          },
+          "why": {
+            "sv": "Du behöver inte ha allt klart. Hemmet blir till med tiden.",
+            "en": "You do not need everything ready. A home grows with time."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 1
+          },
+          "photoPrompt": {
+            "sv": "Fota första kvällen",
+            "en": "Photograph the first evening"
+          }
+        }
+      ]
+    }
+  ]
+}

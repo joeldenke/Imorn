@@ -1,0 +1,174 @@
+{
+  "id": "child-moving-out",
+  "version": 1,
+  "title": {
+    "sv": "Barn flyttar ut",
+    "en": "A child moving out"
+  },
+  "description": {
+    "sv": "Förbered flytten och den nya vardagen, för både er och barnet.",
+    "en": "Prepare the move and the new everyday life, for both you and your child."
+  },
+  "helps": {
+    "sv": "Hjälper er prata igenom, packa och hålla kontakten.",
+    "en": "Helps you talk things through, pack and stay in touch."
+  },
+  "category": "family",
+  "lifestages": [
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Flyttdag",
+        "en": "Moving day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "prepare",
+      "title": {
+        "sv": "Förbered",
+        "en": "Prepare"
+      },
+      "steps": [
+        {
+          "id": "talk",
+          "title": {
+            "sv": "Prata igenom planen",
+            "en": "Talk through the plan"
+          },
+          "why": {
+            "sv": "Vad behöver barnet hjälp med, och vad vill hen klara själv?",
+            "en": "What does your child need help with, and what do they want to manage alone?"
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          }
+        },
+        {
+          "id": "papers",
+          "title": {
+            "sv": "Ordna adress och papper",
+            "en": "Sort out address and paperwork"
+          },
+          "why": {
+            "sv": "Flyttanmälan, försäkring och eventuella studier.",
+            "en": "Change of address, insurance and any studies."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "skatteverket.flytt"
+          ]
+        },
+        {
+          "id": "boxes",
+          "title": {
+            "sv": "Skaffa lådor och packa tillsammans",
+            "en": "Get boxes and pack together"
+          },
+          "why": {
+            "sv": "Låt barnet välja vad som följer med och vad som lämnas.",
+            "en": "Let your child choose what comes along and what stays."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "move",
+      "title": {
+        "sv": "Flytta",
+        "en": "Move"
+      },
+      "steps": [
+        {
+          "id": "transport",
+          "title": {
+            "sv": "Ordna transport",
+            "en": "Arrange transport"
+          },
+          "why": {
+            "sv": "Fråga om hjälp i tid, särskilt om det finns möbler.",
+            "en": "Ask for help in time, especially if there is furniture."
+          }
+        },
+        {
+          "id": "meter",
+          "title": {
+            "sv": "Läs av och fota",
+            "en": "Read meters and take photos"
+          },
+          "why": {
+            "sv": "Både i gamla och nya hemmet.",
+            "en": "In both the old and the new home."
+          },
+          "photoPrompt": {
+            "sv": "Fota mätare och tomt rum",
+            "en": "Photograph meters and the empty room"
+          }
+        },
+        {
+          "id": "first-night",
+          "title": {
+            "sv": "Första kvällen på nya stället",
+            "en": "The first evening in the new place"
+          },
+          "why": {
+            "sv": "Ett kort samtal kan betyda mer än en perfekt flytt.",
+            "en": "A short call can mean more than a perfect move."
+          },
+          "photoPrompt": {
+            "sv": "Fota första kvällen",
+            "en": "Photograph the first evening"
+          }
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "title": {
+        "sv": "Efter",
+        "en": "After"
+      },
+      "steps": [
+        {
+          "id": "room",
+          "title": {
+            "sv": "Gör något nytt av rummet hemma",
+            "en": "Make something new of the room at home"
+          },
+          "why": {
+            "sv": "Vänta tills känslan har landat, gör det sedan tillsammans.",
+            "en": "Wait until the feelings settle, then do it together."
+          }
+        },
+        {
+          "id": "visit",
+          "title": {
+            "sv": "Boka en första visit",
+            "en": "Plan a first visit"
+          },
+          "why": {
+            "sv": "En tid att se fram emot, utan krav på att allt är färdigt.",
+            "en": "Something to look forward to, with no pressure for everything to be ready."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          }
+        }
+      ]
+    }
+  ]
+}

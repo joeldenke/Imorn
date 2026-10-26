@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import se.imorn.designsystem.theme.ImornTheme
+import se.imorn.model.Chapter
 import se.imorn.model.PlannedStep
 import se.imorn.model.tomorrowPlan
 import se.imorn.ui.PreviewData
@@ -27,8 +28,9 @@ class TodayScreenTest {
         onDone: (PlannedStep) -> Unit = {},
         onTomorrow: (PlannedStep) -> Unit = {},
         onNewChapter: () -> Unit = {},
+        chapter: Chapter = PreviewData.moving,
     ) {
-        val chapters = if (hasChapters) listOf(PreviewData.moving) else emptyList()
+        val chapters = if (hasChapters) listOf(chapter) else emptyList()
         compose.setContent {
             ImornTheme {
                 TodayScreen(
@@ -68,6 +70,12 @@ class TodayScreenTest {
         compose.onAllNodesWithText("Tomorrow").onFirst().performClick()
         assertEquals(listOf("boxes"), done)
         assertEquals(listOf("boxes"), tomorrow)
+    }
+
+    @Test
+    fun aBlankChapterSaysItHasNoSteps() {
+        show(chapter = PreviewData.moving.copy(steps = emptyList(), phases = emptyList()))
+        compose.onNodeWithText("No steps yet").assertIsDisplayed()
     }
 
     @Test

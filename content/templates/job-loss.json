@@ -1,0 +1,200 @@
+{
+  "id": "job-loss",
+  "version": 1,
+  "title": {
+    "sv": "Förlora jobbet",
+    "en": "Losing your job"
+  },
+  "description": {
+    "sv": "Ta hand om det akuta först, sedan nästa steg.",
+    "en": "Take care of the urgent things first, then the next step."
+  },
+  "helps": {
+    "sv": "Ett lugnt stöd för papper, pengar och att hitta vidare.",
+    "en": "Calm support for paperwork, money and finding your way forward."
+  },
+  "note": {
+    "sv": "Reglerna för a-kassa och ersättning kan ändras. Kontrollera hos din a-kassa och Arbetsförmedlingen.",
+    "en": "The rules for unemployment benefits can change. Check with your unemployment fund and the Employment Service."
+  },
+  "category": "work-study",
+  "lifestages": [
+    "building",
+    "midlife",
+    "hard-times"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Sista arbetsdagen",
+        "en": "Last day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "first",
+      "title": {
+        "sv": "Första dagarna",
+        "en": "First days"
+      },
+      "steps": [
+        {
+          "id": "breathe",
+          "title": {
+            "sv": "Ta en dag innan du gör en plan",
+            "en": "Take a day before making a plan"
+          },
+          "why": {
+            "sv": "Det är okej att inte veta allt direkt.",
+            "en": "It is okay not to know everything straight away."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 1
+          }
+        },
+        {
+          "id": "certificate",
+          "title": {
+            "sv": "Be om tjänstgöringsintyg",
+            "en": "Ask for a service certificate"
+          },
+          "why": {
+            "sv": "Det behövs ofta för a-kassan och nya jobb.",
+            "en": "It is often needed for unemployment benefits and new jobs."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "arbetsformedlingen.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "money",
+      "title": {
+        "sv": "Pengar",
+        "en": "Money"
+      },
+      "steps": [
+        {
+          "id": "a-kassa",
+          "title": {
+            "sv": "Ansök hos a-kassan",
+            "en": "Apply for unemployment benefits"
+          },
+          "why": {
+            "sv": "Gör det i tid, reglerna och tidsfristerna finns hos dem.",
+            "en": "Apply in time; the rules and deadlines are with them."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "akassan.start"
+          ]
+        },
+        {
+          "id": "register",
+          "title": {
+            "sv": "Registrera dig hos Arbetsförmedlingen",
+            "en": "Register with the Employment Service"
+          },
+          "why": {
+            "sv": "Gör det även om du redan söker jobb på egen hand.",
+            "en": "Do it even if you are already job hunting on your own."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "arbetsformedlingen.start"
+          ]
+        },
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Gör en tillfällig budget",
+            "en": "Make a temporary budget"
+          },
+          "why": {
+            "sv": "Räkna på det som måste betalas närmaste månaderna.",
+            "en": "Work out what must be paid in the coming months."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "next",
+      "title": {
+        "sv": "Vidare",
+        "en": "Next"
+      },
+      "steps": [
+        {
+          "id": "cv",
+          "title": {
+            "sv": "Uppdatera CV och berättelse",
+            "en": "Update your CV and story"
+          },
+          "why": {
+            "sv": "Skriv vad du gjorde, inte bara vilken titel du hade.",
+            "en": "Write what you did, not just your job title."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 21
+          }
+        },
+        {
+          "id": "network",
+          "title": {
+            "sv": "Prata med någon i ditt nätverk",
+            "en": "Talk to someone in your network"
+          },
+          "why": {
+            "sv": "De flesta jobb kommer genom människor, inte bara annonser.",
+            "en": "Most jobs come through people, not only adverts."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 21
+          }
+        },
+        {
+          "id": "health",
+          "title": {
+            "sv": "Ta hand om sömnen och vardagen",
+            "en": "Look after sleep and everyday life"
+          },
+          "why": {
+            "sv": "Sök stöd om oron tar över.",
+            "en": "Seek support if worry takes over."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          },
+          "links": [
+            "1177.start"
+          ]
+        }
+      ]
+    }
+  ]
+}

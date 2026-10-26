@@ -1,0 +1,224 @@
+{
+  "id": "travel",
+  "version": 1,
+  "title": {
+    "sv": "Resa",
+    "en": "Travelling"
+  },
+  "description": {
+    "sv": "Förbered resan så att du kan vara ledig när du är framme.",
+    "en": "Prepare the trip so you can relax once you arrive."
+  },
+  "helps": {
+    "sv": "Hjälper dig med pass, försäkring, packning och hemmet.",
+    "en": "Helps with passport, insurance, packing and home."
+  },
+  "note": {
+    "sv": "Inreseregler och hälsoråd ändras. Kontrollera hos UD och 1177 före avresan.",
+    "en": "Entry rules and health advice change. Check with the Ministry for Foreign Affairs and 1177 before you travel."
+  },
+  "category": "life-events",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife",
+    "next-chapter"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Avresedag",
+        "en": "Departure day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "before",
+      "title": {
+        "sv": "Före",
+        "en": "Before"
+      },
+      "steps": [
+        {
+          "id": "passport",
+          "title": {
+            "sv": "Kolla passets giltighet",
+            "en": "Check your passport's validity"
+          },
+          "why": {
+            "sv": "Många länder kräver att det gäller en tid efter hemkomsten.",
+            "en": "Many countries require it to be valid for a period after you return."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          },
+          "links": [
+            "polisen.pass"
+          ]
+        },
+        {
+          "id": "visa",
+          "title": {
+            "sv": "Kolla visum och inreseregler",
+            "en": "Check visa and entry rules"
+          },
+          "why": {
+            "sv": "Reglerna kan ändras, även nära avresan.",
+            "en": "Rules can change, even close to departure."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          },
+          "links": [
+            "ud.start"
+          ]
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Teckna reseförsäkring",
+            "en": "Take out travel insurance"
+          },
+          "why": {
+            "sv": "Läs vad som täcks och vilka undantag som finns.",
+            "en": "Read what is covered and which exclusions apply."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "health",
+          "title": {
+            "sv": "Kolla vaccinationer",
+            "en": "Check vaccinations"
+          },
+          "why": {
+            "sv": "Fråga en vaccinationsmottagning i god tid.",
+            "en": "Ask a vaccination clinic in good time."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          },
+          "links": [
+            "1177.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pack",
+      "title": {
+        "sv": "Packa",
+        "en": "Pack"
+      },
+      "steps": [
+        {
+          "id": "booking",
+          "title": {
+            "sv": "Bekräfta boende och transport",
+            "en": "Confirm accommodation and transport"
+          },
+          "why": {
+            "sv": "Spara bokningarna både digitalt och offline.",
+            "en": "Keep the bookings both digitally and offline."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          }
+        },
+        {
+          "id": "copies",
+          "title": {
+            "sv": "Ta kopior av viktiga papper",
+            "en": "Make copies of important papers"
+          },
+          "why": {
+            "sv": "Pass, försäkring och bokningar.",
+            "en": "Passport, insurance and bookings."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "home",
+          "title": {
+            "sv": "Förbered hemmet",
+            "en": "Prepare your home"
+          },
+          "why": {
+            "sv": "Töm kylskåpet, vattna och be någon titta till det.",
+            "en": "Empty the fridge, water plants and ask someone to check on it."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -3
+          }
+        },
+        {
+          "id": "bag",
+          "title": {
+            "sv": "Pack det du faktiskt behöver",
+            "en": "Pack what you actually need"
+          },
+          "why": {
+            "sv": "Lägg mediciner och laddare i handbagaget.",
+            "en": "Put medicines and chargers in your hand luggage."
+          },
+          "photoPrompt": {
+            "sv": "Fota packningen",
+            "en": "Photograph the packing"
+          }
+        }
+      ]
+    },
+    {
+      "id": "go",
+      "title": {
+        "sv": "Åk",
+        "en": "Go"
+      },
+      "steps": [
+        {
+          "id": "documents",
+          "title": {
+            "sv": "Ha papperen nära",
+            "en": "Keep your papers close"
+          },
+          "why": {
+            "sv": "Pass, biljetter och försäkringsnummer.",
+            "en": "Passport, tickets and insurance number."
+          }
+        },
+        {
+          "id": "arrive",
+          "title": {
+            "sv": "Kom fram och landa",
+            "en": "Arrive and settle in"
+          },
+          "why": {
+            "sv": "Ta en bild innan du gör något annat.",
+            "en": "Take a photo before you do anything else."
+          },
+          "photoPrompt": {
+            "sv": "Fota framkomsten",
+            "en": "Photograph the arrival"
+          }
+        }
+      ]
+    }
+  ]
+}

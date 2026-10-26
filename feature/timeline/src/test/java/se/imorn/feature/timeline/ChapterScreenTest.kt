@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import se.imorn.designsystem.theme.ImornTheme
+import se.imorn.model.Chapter
 import se.imorn.ui.Capture
 import se.imorn.ui.PreviewData
 
@@ -28,17 +29,18 @@ class ChapterScreenTest {
         onOpenEntry: (String) -> Unit = {},
         onAddNote: (String) -> Unit = {},
         capture: Capture = Capture({}, {}, {}),
+        chapter: Chapter = PreviewData.moving,
     ) {
         compose.setContent {
             ImornTheme {
                 ChapterScreen(
                     state = ChapterUiState(
-                        PreviewData.moving,
+                        chapter,
                         PreviewData.TODAY,
                         view,
                         PreviewData.kept.map(::KeptEntry),
                     ),
-                    chapter = PreviewData.moving,
+                    chapter = chapter,
                     capture = capture,
                     onShow = onShow,
                     onOpenStep = onOpenStep,
@@ -52,6 +54,12 @@ class ChapterScreenTest {
                 )
             }
         }
+    }
+
+    @Test
+    fun aBlankChapterInvitesTheFirstStep() {
+        show(ChapterView.List, chapter = PreviewData.moving.copy(steps = emptyList(), phases = emptyList()))
+        compose.onNodeWithText("No steps yet. Add the first thing you need to do.").assertExists()
     }
 
     @Test

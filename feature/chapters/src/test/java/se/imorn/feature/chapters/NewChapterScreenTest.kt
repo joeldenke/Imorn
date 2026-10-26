@@ -2,9 +2,11 @@ package se.imorn.feature.chapters
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -18,6 +20,7 @@ import se.imorn.content.QuestionType
 import se.imorn.content.SWEDISH
 import se.imorn.content.Template
 import se.imorn.content.TemplateAnchor
+import se.imorn.content.TemplateCategory
 import se.imorn.designsystem.theme.ImornTheme
 import java.time.LocalDate
 
@@ -32,6 +35,9 @@ class NewChapterScreenTest {
         id = "move",
         version = 1,
         title = both("Moving"),
+        description = both("Plan the move."),
+        helps = both("Keep track of the paperwork."),
+        category = TemplateCategory.Home,
         anchors = listOf(TemplateAnchor("moveDay", both("Moving day"))),
         questions = listOf(
             Question("housing", both("From what?"), options = listOf(Option("rental", both("Rented flat")))),
@@ -39,13 +45,21 @@ class NewChapterScreenTest {
         ),
     )
 
-    private fun show(state: NewChapterUiState, onAnswer: (Answer?) -> Unit = {}, onTemplate: (Template) -> Unit = {}) {
+    private fun show(
+        state: NewChapterUiState,
+        onAnswer: (Answer?) -> Unit = {},
+        onTemplate: (Template) -> Unit = {},
+        onStartBlank: () -> Unit = {},
+        onCreateBlank: (String) -> Unit = {},
+    ) {
         compose.setContent {
             ImornTheme {
                 NewChapterScreen(
                     state = state,
                     language = ENGLISH,
                     onChooseTemplate = onTemplate,
+                    onStartBlank = onStartBlank,
+                    onCreateBlank = onCreateBlank,
                     onAnswer = onAnswer,
                     onBack = {},
                     onSetAnchor = { _, _ -> },
@@ -64,6 +78,37 @@ class NewChapterScreenTest {
         show(start, onTemplate = { chosen = it })
         compose.onNodeWithText("Moving").performClick()
         assertEquals("move", chosen?.id)
+    }
+
+    @Test
+    fun searchingNarrowsTheGallery() {
+        val baby = template.copy(
+            id = "baby",
+            title = both("A baby"),
+            description = both("The first year."),
+            category = TemplateCategory.Family,
+        )
+        show(start.copy(templates = listOf(template, baby), suggestedTemplateIds = emptySet()))
+        compose.onNode(hasSetTextAction()).performTextInput("baby")
+        compose.onNodeWithText("A baby").assertIsDisplayed()
+        compose.onNodeWithText("Moving").assertDoesNotExist()
+    }
+
+    @Test
+    fun aBlankProjectStartsFromTheGallery() {
+        var started = false
+        show(start, onStartBlank = { started = true })
+        compose.onNodeWithText("Start from a blank project").performClick()
+        assertEquals(true, started)
+    }
+
+    @Test
+    fun aBlankProjectAsksForAName() {
+        var created: String? = null
+        show(start.copy(blank = true), onCreateBlank = { created = it })
+        compose.onNode(hasSetTextAction()).performTextInput("My garden")
+        compose.onNodeWithText("Create project").performClick()
+        assertEquals("My garden", created)
     }
 
     @Test

@@ -1,0 +1,177 @@
+{
+  "id": "declutter",
+  "version": 1,
+  "title": {
+    "sv": "Rensa hemma",
+    "en": "Decluttering"
+  },
+  "description": {
+    "sv": "Ett rum i taget, utan att det blir ett nytt projekt som aldrig tar slut.",
+    "en": "One room at a time, without it becoming another project that never ends."
+  },
+  "helps": {
+    "sv": "Hjälper dig sortera, lämna iväg och hålla undan.",
+    "en": "Helps you sort, pass things on and keep surfaces clear."
+  },
+  "category": "home",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife",
+    "next-chapter"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Måldag",
+        "en": "Target day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "sort",
+      "title": {
+        "sv": "Sortera",
+        "en": "Sort"
+      },
+      "steps": [
+        {
+          "id": "one-room",
+          "title": {
+            "sv": "Välj ett rum",
+            "en": "Choose one room"
+          },
+          "why": {
+            "sv": "Börja där du störs mest, inte där det är mest att göra.",
+            "en": "Start where it bothers you most, not where there is most to do."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "four-boxes",
+          "title": {
+            "sv": "Ställ fram fyra lådor",
+            "en": "Set out four boxes"
+          },
+          "why": {
+            "sv": "Behåll, skänk, sälj och släng. Allt ska få en plats.",
+            "en": "Keep, donate, sell and throw away. Everything gets a place."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "sentimental",
+          "title": {
+            "sv": "Ta hand om det som betyder något",
+            "en": "Deal with the sentimental things"
+          },
+          "why": {
+            "sv": "Fota det du vill minnas men inte behöver spara.",
+            "en": "Photograph what you want to remember but do not need to keep."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -5
+          },
+          "photoPrompt": {
+            "sv": "Fota det du lämnar vidare",
+            "en": "Photograph what you pass on"
+          }
+        }
+      ]
+    },
+    {
+      "id": "decide",
+      "title": {
+        "sv": "Bestäm",
+        "en": "Decide"
+      },
+      "steps": [
+        {
+          "id": "donate",
+          "title": {
+            "sv": "Boka tid för återvinning eller donation",
+            "en": "Book recycling or a donation drop-off"
+          },
+          "why": {
+            "sv": "Kolla kommunens regler för det som inte går i hushållssoporna.",
+            "en": "Check the municipality's rules for what does not go in household waste."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -3
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "sell",
+          "title": {
+            "sv": "Lägg ut det du säljer",
+            "en": "List what you are selling"
+          },
+          "why": {
+            "sv": "Sätt ett lågt pris om det viktigaste är att det försvinner.",
+            "en": "Price it low if the main goal is for it to go."
+          }
+        }
+      ]
+    },
+    {
+      "id": "out",
+      "title": {
+        "sv": "Ut",
+        "en": "Out"
+      },
+      "steps": [
+        {
+          "id": "last-trip",
+          "title": {
+            "sv": "Gör sista turen",
+            "en": "Make the last trip"
+          },
+          "why": {
+            "sv": "Lämna donationer och återvinning samma dag.",
+            "en": "Drop off donations and recycling the same day."
+          }
+        },
+        {
+          "id": "clean",
+          "title": {
+            "sv": "Torka av och ställ tillbaka",
+            "en": "Wipe down and put things back"
+          },
+          "why": {
+            "sv": "Det tomma utrymmet är belöningen.",
+            "en": "The empty space is the reward."
+          }
+        },
+        {
+          "id": "after",
+          "title": {
+            "sv": "Fota rummet",
+            "en": "Photograph the room"
+          },
+          "why": {
+            "sv": "Jämför med hur det såg ut innan.",
+            "en": "Compare it with how it looked before."
+          },
+          "photoPrompt": {
+            "sv": "Fota det rensade rummet",
+            "en": "Photograph the decluttered room"
+          }
+        }
+      ]
+    }
+  ]
+}

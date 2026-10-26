@@ -1,0 +1,208 @@
+{
+  "id": "wedding",
+  "version": 1,
+  "title": {
+    "sv": "Gifta sig",
+    "en": "Getting married"
+  },
+  "description": {
+    "sv": "Planera vigseln och ta hand om papperen runt omkring.",
+    "en": "Plan the ceremony and take care of the paperwork around it."
+  },
+  "helps": {
+    "sv": "Håll koll på hindersprövning, platser, gäster och namnbyte.",
+    "en": "Keep track of the marriage check, venues, guests and name change."
+  },
+  "note": {
+    "sv": "Reglerna för vigsel och namnförändring kan ändras. Kontrollera hos Skatteverket.",
+    "en": "The rules for marriage and name changes can change. Check with Skatteverket."
+  },
+  "category": "family",
+  "lifestages": [
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Bröllopsdag",
+        "en": "Wedding day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "plan",
+      "title": {
+        "sv": "Planera",
+        "en": "Plan"
+      },
+      "steps": [
+        {
+          "id": "guest-list",
+          "title": {
+            "sv": "Skriv gästlista och budget",
+            "en": "Write a guest list and budget"
+          },
+          "why": {
+            "sv": "Börja med det som är viktigast för er, inte med allt som går att köpa.",
+            "en": "Start with what matters most to you, not with everything that can be bought."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -9
+          }
+        },
+        {
+          "id": "hinders",
+          "title": {
+            "sv": "Gör hindersprövning",
+            "en": "Apply for the marriage check"
+          },
+          "why": {
+            "sv": "Den görs hos Skatteverket och gäller under en begränsad tid.",
+            "en": "It is done at Skatteverket and is valid for a limited time."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          },
+          "links": [
+            "skatteverket.hindersprovning"
+          ]
+        },
+        {
+          "id": "officiant",
+          "title": {
+            "sv": "Boka vigselförrättare",
+            "en": "Book the officiant"
+          },
+          "why": {
+            "sv": "Kolla vilka som får viga er och vad de behöver.",
+            "en": "Check who may conduct the ceremony and what they need."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -4
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "book",
+      "title": {
+        "sv": "Boka",
+        "en": "Book"
+      },
+      "steps": [
+        {
+          "id": "venue",
+          "title": {
+            "sv": "Boka lokal och mat",
+            "en": "Book the venue and food"
+          },
+          "why": {
+            "sv": "Fråga om allergier, tider och vad som ingår.",
+            "en": "Ask about allergies, timings and what is included."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -6
+          }
+        },
+        {
+          "id": "clothes",
+          "title": {
+            "sv": "Ordna kläder och ringar",
+            "en": "Arrange clothes and rings"
+          },
+          "why": {
+            "sv": "Ge er tid att prova och ändra.",
+            "en": "Give yourselves time to try things on and make changes."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          }
+        },
+        {
+          "id": "ceremony",
+          "title": {
+            "sv": "Planera ceremonin",
+            "en": "Plan the ceremony"
+          },
+          "why": {
+            "sv": "Musik, texter och löften. Korta ord kan bära mycket.",
+            "en": "Music, readings and vows. A few words can carry a lot."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          }
+        }
+      ]
+    },
+    {
+      "id": "closer",
+      "title": {
+        "sv": "Nära",
+        "en": "Closer"
+      },
+      "steps": [
+        {
+          "id": "confirm",
+          "title": {
+            "sv": "Bekräfta med alla inblandade",
+            "en": "Confirm with everyone involved"
+          },
+          "why": {
+            "sv": "Lokal, mat, fotograf och vigselförrättare.",
+            "en": "Venue, food, photographer and officiant."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          }
+        },
+        {
+          "id": "day",
+          "title": {
+            "sv": "Giftermålet",
+            "en": "The wedding day"
+          },
+          "why": {
+            "sv": "Låt någon annan hålla i tiderna så att ni kan vara närvarande.",
+            "en": "Let someone else keep the schedule so you can be present."
+          },
+          "photoPrompt": {
+            "sv": "Fota dagen, även det små",
+            "en": "Photograph the day, including the small things"
+          }
+        },
+        {
+          "id": "name",
+          "title": {
+            "sv": "Byt namn om ni vill",
+            "en": "Change names if you want to"
+          },
+          "why": {
+            "sv": "Görs hos Skatteverket efter vigseln.",
+            "en": "Done at Skatteverket after the ceremony."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,202 @@
+{
+  "id": "will",
+  "version": 1,
+  "title": {
+    "sv": "Testamente",
+    "en": "A will"
+  },
+  "description": {
+    "sv": "Bestäm vad som ska hända och skriv det så att det håller.",
+    "en": "Decide what should happen and write it so that it holds."
+  },
+  "helps": {
+    "sv": "Hjälper dig tänka igenom, skriva och förvara.",
+    "en": "Helps you think it through, write it and store it."
+  },
+  "note": {
+    "sv": "Ett testamente måste uppfylla formkraven i ärvdabalken. Kontrollera med jurist eller Sveriges Domstolar.",
+    "en": "A will must meet the formal requirements in the Inheritance Code. Check with a lawyer or the Swedish Courts."
+  },
+  "category": "finance-admin",
+  "lifestages": [
+    "midlife",
+    "next-chapter"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Signeringsdag",
+        "en": "Signing day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "think",
+      "title": {
+        "sv": "Tänk",
+        "en": "Think"
+      },
+      "steps": [
+        {
+          "id": "inventory",
+          "title": {
+            "sv": "Gör en lista över det du äger",
+            "en": "List what you own"
+          },
+          "why": {
+            "sv": "Bostad, konton, försäkringar och saker som betyder något.",
+            "en": "Home, accounts, insurance and things that matter."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -30
+          }
+        },
+        {
+          "id": "people",
+          "title": {
+            "sv": "Bestäm vem som ska få vad",
+            "en": "Decide who gets what"
+          },
+          "why": {
+            "sv": "Prata med dem det gäller om det är möjligt.",
+            "en": "Talk to the people involved if possible."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -21
+          }
+        },
+        {
+          "id": "guardian",
+          "title": {
+            "sv": "Utse vårdnadshavare om du har barn",
+            "en": "Appoint a guardian if you have children"
+          },
+          "why": {
+            "sv": "Det är särskilt viktigt om barnen är minderåriga.",
+            "en": "This is especially important if your children are minors."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -21
+          }
+        }
+      ]
+    },
+    {
+      "id": "write",
+      "title": {
+        "sv": "Skriv",
+        "en": "Write"
+      },
+      "steps": [
+        {
+          "id": "draft",
+          "title": {
+            "sv": "Skriv eller ta hjälp av ett testamente",
+            "en": "Write a will or get help"
+          },
+          "why": {
+            "sv": "Var tydlig med vem som får vad.",
+            "en": "Be clear about who gets what."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          }
+        },
+        {
+          "id": "witnesses",
+          "title": {
+            "sv": "Ordna två vittnen",
+            "en": "Arrange two witnesses"
+          },
+          "why": {
+            "sv": "De ska vara närvarande när du skriver under.",
+            "en": "They must be present when you sign."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          },
+          "links": [
+            "domstol.start"
+          ]
+        },
+        {
+          "id": "sign",
+          "title": {
+            "sv": "Skriv under och bevittna",
+            "en": "Sign and witness"
+          },
+          "why": {
+            "sv": "Alla skriver under på samma dokument.",
+            "en": "Everyone signs the same document."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "store",
+      "title": {
+        "sv": "Förvara",
+        "en": "Store"
+      },
+      "steps": [
+        {
+          "id": "store",
+          "title": {
+            "sv": "Förvara testamentet säkert",
+            "en": "Store the will safely"
+          },
+          "why": {
+            "sv": "Berätta var det finns för en person du litar på.",
+            "en": "Tell someone you trust where it is."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 1
+          }
+        },
+        {
+          "id": "copy",
+          "title": {
+            "sv": "Ge en kopia till rätt person",
+            "en": "Give a copy to the right person"
+          },
+          "why": {
+            "sv": "Inte nödvändigtvis till den som ärver.",
+            "en": "Not necessarily to a beneficiary."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          }
+        },
+        {
+          "id": "review",
+          "title": {
+            "sv": "Se över vid stora förändringar",
+            "en": "Review after big changes"
+          },
+          "why": {
+            "sv": "Barn, separation, flytt eller nya tillgångar.",
+            "en": "Children, separation, moving or new assets."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "id": "drivers-license",
+  "version": 1,
+  "title": {
+    "sv": "Ta körkort",
+    "en": "Getting a driving licence"
+  },
+  "description": {
+    "sv": "Från körkortstillstånd och övning till uppkörning.",
+    "en": "From learner permit and practice to the driving test."
+  },
+  "helps": {
+    "sv": "Samlar kraven, övningen och dagarna som gäller.",
+    "en": "Gathers the requirements, practice and the days that count."
+  },
+  "note": {
+    "sv": "Kraven och provens innehåll kan ändras. Kontrollera hos Transportstyrelsen.",
+    "en": "The requirements and test content can change. Check with Transportstyrelsen."
+  },
+  "category": "work-study",
+  "lifestages": [
+    "first-home",
+    "building"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Uppkörning",
+        "en": "Driving test"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "start",
+      "title": {
+        "sv": "Starta",
+        "en": "Start"
+      },
+      "steps": [
+        {
+          "id": "requirements",
+          "title": {
+            "sv": "Kolla kraven",
+            "en": "Check the requirements"
+          },
+          "why": {
+            "sv": "Ålder, syn och hälsa. Reglerna finns hos Transportstyrelsen.",
+            "en": "Age, vision and health. The rules are at Transportstyrelsen."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -6
+          },
+          "links": [
+            "transportstyrelsen.start"
+          ]
+        },
+        {
+          "id": "permit",
+          "title": {
+            "sv": "Ansök om körkortstillstånd",
+            "en": "Apply for a learner permit"
+          },
+          "why": {
+            "sv": "Du behöver det innan du börjar övningsköra.",
+            "en": "You need it before you start practising."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -6
+          },
+          "links": [
+            "transportstyrelsen.start"
+          ]
+        },
+        {
+          "id": "school",
+          "title": {
+            "sv": "Jämför körskolor",
+            "en": "Compare driving schools"
+          },
+          "why": {
+            "sv": "Fråga om pris, upplägg och hur många lektioner som ingår.",
+            "en": "Ask about price, structure and how many lessons are included."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -5
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "title": {
+        "sv": "Öva",
+        "en": "Practise"
+      },
+      "steps": [
+        {
+          "id": "risk",
+          "title": {
+            "sv": "Gå riskutbildningen",
+            "en": "Take the risk training"
+          },
+          "why": {
+            "sv": "Den ingår i kraven och bokas separat.",
+            "en": "It is part of the requirements and booked separately."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -4
+          },
+          "links": [
+            "transportstyrelsen.start"
+          ]
+        },
+        {
+          "id": "theory",
+          "title": {
+            "sv": "Plugga teori",
+            "en": "Study the theory"
+          },
+          "why": {
+            "sv": "Boka teoriprovet när du känner dig redo.",
+            "en": "Book the theory test when you feel ready."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          }
+        },
+        {
+          "id": "drive",
+          "title": {
+            "sv": "Övningskör regelbundet",
+            "en": "Practise driving regularly"
+          },
+          "why": {
+            "sv": "Hellre korta pass ofta än en lång dag.",
+            "en": "Short sessions often are better than one long day."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          }
+        },
+        {
+          "id": "book-test",
+          "title": {
+            "sv": "Boka uppkörning",
+            "en": "Book the driving test"
+          },
+          "why": {
+            "sv": "Boka i tid, tiderna kan ta slut.",
+            "en": "Book early; slots can run out."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -2
+          },
+          "links": [
+            "transportstyrelsen.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "test",
+      "title": {
+        "sv": "Prov",
+        "en": "Test"
+      },
+      "steps": [
+        {
+          "id": "theory-test",
+          "title": {
+            "sv": "Gör teoriprovet",
+            "en": "Take the theory test"
+          },
+          "why": {
+            "sv": "Ta med giltig legitimation.",
+            "en": "Bring valid ID."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          }
+        },
+        {
+          "id": "practical",
+          "title": {
+            "sv": "Gör uppkörningen",
+            "en": "Take the driving test"
+          },
+          "why": {
+            "sv": "Läs på vad som bedöms och kör som du lärt dig.",
+            "en": "Read what is assessed and drive as you have learned."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "licence",
+          "title": {
+            "sv": "Ta emot körkortet",
+            "en": "Collect your licence"
+          },
+          "why": {
+            "sv": "Fota dagen om du vill minnas den.",
+            "en": "Photograph the day if you want to remember it."
+          },
+          "photoPrompt": {
+            "sv": "Fota körkortsdagen",
+            "en": "Photograph the licence day"
+          }
+        }
+      ]
+    }
+  ]
+}

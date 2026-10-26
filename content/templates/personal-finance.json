@@ -1,0 +1,191 @@
+{
+  "id": "personal-finance",
+  "version": 1,
+  "title": {
+    "sv": "Privatekonomi",
+    "en": "Personal finances"
+  },
+  "description": {
+    "sv": "Få en tydlig bild av inkomster, utgifter och nästa steg.",
+    "en": "Get a clear picture of income, expenses and the next step."
+  },
+  "helps": {
+    "sv": "Hjälper dig göra en budget och hitta det som kan vänta.",
+    "en": "Helps you make a budget and spot what can wait."
+  },
+  "category": "finance-admin",
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife",
+    "next-chapter"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Genomgångsdag",
+        "en": "Review day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "look",
+      "title": {
+        "sv": "Titta",
+        "en": "Look"
+      },
+      "steps": [
+        {
+          "id": "income",
+          "title": {
+            "sv": "Lista inkomster",
+            "en": "List your income"
+          },
+          "why": {
+            "sv": "Lön, bidrag och annat som kommer in varje månad.",
+            "en": "Salary, benefits and anything else that comes in each month."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "expenses",
+          "title": {
+            "sv": "Lista utgifter",
+            "en": "List your expenses"
+          },
+          "why": {
+            "sv": "Gå igenom kontoutdrag och abonnemang.",
+            "en": "Go through bank statements and subscriptions."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "debts",
+          "title": {
+            "sv": "Lista lån och räntor",
+            "en": "List loans and interest"
+          },
+          "why": {
+            "sv": "Skriv ränta, avgift och när lånet går ut.",
+            "en": "Note the interest, fee and when the loan ends."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plan",
+      "title": {
+        "sv": "Planera",
+        "en": "Plan"
+      },
+      "steps": [
+        {
+          "id": "pension",
+          "title": {
+            "sv": "Kolla pensionen",
+            "en": "Check your pension"
+          },
+          "why": {
+            "sv": "En översikt kan göra det lättare att planera.",
+            "en": "An overview can make planning easier."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "minpension.start"
+          ]
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Se över försäkringar",
+            "en": "Review insurance"
+          },
+          "why": {
+            "sv": "Jämför skydd och pris, inte bara pris.",
+            "en": "Compare cover and price, not just price."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Gör en budget du kan följa",
+            "en": "Make a budget you can follow"
+          },
+          "why": {
+            "sv": "Lägg in en buffert för oväntade utgifter.",
+            "en": "Include a buffer for unexpected costs."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          }
+        },
+        {
+          "id": "goal",
+          "title": {
+            "sv": "Välj ett mål",
+            "en": "Choose one goal"
+          },
+          "why": {
+            "sv": "Betala av, spara eller skapa utrymme.",
+            "en": "Pay down, save or make room."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          }
+        }
+      ]
+    },
+    {
+      "id": "follow",
+      "title": {
+        "sv": "Följ upp",
+        "en": "Follow up"
+      },
+      "steps": [
+        {
+          "id": "review",
+          "title": {
+            "sv": "Följ upp om en månad",
+            "en": "Review in a month"
+          },
+          "why": {
+            "sv": "Justera det som inte fungerade.",
+            "en": "Adjust what did not work."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 45
+          }
+        }
+      ]
+    }
+  ]
+}

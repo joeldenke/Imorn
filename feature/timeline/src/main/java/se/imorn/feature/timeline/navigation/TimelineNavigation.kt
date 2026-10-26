@@ -2,6 +2,8 @@ package se.imorn.feature.timeline.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -70,7 +72,16 @@ fun EntryProviderScope<NavKey>.timelineEntries(
             viewModel.refresh()
             onPauseOrDispose { }
         }
-        val state = viewModel.state.collectAsStateWithLifecycle().value ?: return@entry
+        val state = viewModel.state.collectAsStateWithLifecycle().value
+        // The state starts as null while the step is read; only a step that disappears after being shown closes.
+        val wasLoaded = remember { mutableStateOf(false) }
+        LaunchedEffect(state) {
+            if (state != null) wasLoaded.value = true
+        }
+        LaunchedEffect(state == null) {
+            if (wasLoaded.value && state == null) onBack()
+        }
+        if (state == null) return@entry
         val capture = rememberCapture(onPhoto = viewModel::keepPhoto, onPaper = viewModel::keepPhoto)
         StepScreen(
             state = state,
@@ -81,6 +92,10 @@ fun EntryProviderScope<NavKey>.timelineEntries(
             onSetDate = viewModel::setDate,
             onNotApplicable = viewModel::notApplicable,
             onSaveNote = viewModel::saveNote,
+            onRename = viewModel::rename,
+            onMoveEarlier = viewModel::moveEarlier,
+            onMoveLater = viewModel::moveLater,
+            onRemove = viewModel::remove,
             onTakePhoto = capture.takePhoto,
             onOpenEntry = { onOpenEntry(route.chapterId, it) },
             contentPadding = contentPadding,

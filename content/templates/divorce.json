@@ -1,0 +1,217 @@
+{
+  "id": "divorce",
+  "version": 1,
+  "title": {
+    "sv": "Skilja sig",
+    "en": "Divorcing"
+  },
+  "description": {
+    "sv": "Ta hand om beslut, papper och den nya vardagen, ett steg i taget.",
+    "en": "Take care of decisions, paperwork and the new everyday life, one step at a time."
+  },
+  "helps": {
+    "sv": "En lugn översikt över det praktiska och känslomässiga.",
+    "en": "A calm overview of the practical and emotional sides."
+  },
+  "note": {
+    "sv": "Imorn ger inte juridisk rådgivning. Frågor om bodelning, barn och äktenskapsskillnad bör stämmas av med jurist eller domstol.",
+    "en": "Imorn does not provide legal advice. Questions about division of property, children and divorce should be checked with a lawyer or the court."
+  },
+  "category": "life-events",
+  "lifestages": [
+    "building",
+    "midlife",
+    "hard-times"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Beslutsdag",
+        "en": "Decision day"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "children",
+      "text": {
+        "sv": "Har ni gemensamma barn?",
+        "en": "Do you have children together?"
+      },
+      "type": "bool"
+    }
+  ],
+  "phases": [
+    {
+      "id": "decide",
+      "title": {
+        "sv": "Bestäm",
+        "en": "Decide"
+      },
+      "steps": [
+        {
+          "id": "talk",
+          "title": {
+            "sv": "Prata med någon du litar på",
+            "en": "Talk to someone you trust"
+          },
+          "why": {
+            "sv": "Du behöver inte bära allt själv.",
+            "en": "You do not have to carry everything alone."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 1
+          }
+        },
+        {
+          "id": "lawyer",
+          "title": {
+            "sv": "Kolla om du behöver juridisk hjälp",
+            "en": "Check whether you need legal help"
+          },
+          "why": {
+            "sv": "Särskilt om ni har barn, bostad eller företag.",
+            "en": "Especially if you have children, a home or a business."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "domstol.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "legal",
+      "title": {
+        "sv": "Juridik",
+        "en": "Legal"
+      },
+      "steps": [
+        {
+          "id": "application",
+          "title": {
+            "sv": "Ansök om äktenskapsskillnad",
+            "en": "Apply for divorce"
+          },
+          "why": {
+            "sv": "Ansökan görs till tingsrätten. Läs vad som gäller för er.",
+            "en": "The application goes to the district court. Read what applies to you."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          },
+          "links": [
+            "domstol.start"
+          ]
+        },
+        {
+          "id": "property",
+          "title": {
+            "sv": "Bodelning",
+            "en": "Division of property"
+          },
+          "why": {
+            "sv": "Gå igenom tillgångar och skulder tillsammans eller med hjälp.",
+            "en": "Go through assets and debts together or with help."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          },
+          "links": [
+            "domstol.start"
+          ]
+        },
+        {
+          "id": "children",
+          "title": {
+            "sv": "Kom överens om barnen",
+            "en": "Agree about the children"
+          },
+          "why": {
+            "sv": "Boende, umgänge och ekonomi. Barnets bästa först.",
+            "en": "Living arrangements, contact and finances. The child's best interests first."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          },
+          "when": {
+            "question": "children",
+            "isTrue": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "everyday",
+      "title": {
+        "sv": "Ny vardag",
+        "en": "New everyday"
+      },
+      "steps": [
+        {
+          "id": "housing",
+          "title": {
+            "sv": "Bestäm var ni ska bo",
+            "en": "Decide where you will live"
+          },
+          "why": {
+            "sv": "Kolla uppsägningstider och vad som gäller för bostaden.",
+            "en": "Check notice periods and what applies to the home."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          }
+        },
+        {
+          "id": "address",
+          "title": {
+            "sv": "Ändra adress och kontaktuppgifter",
+            "en": "Change address and contact details"
+          },
+          "why": {
+            "sv": "Gör det när det nya boendet är klart.",
+            "en": "Do it once the new home is settled."
+          },
+          "links": [
+            "skatteverket.flytt"
+          ]
+        },
+        {
+          "id": "accounts",
+          "title": {
+            "sv": "Dela upp konton och abonnemang",
+            "en": "Separate accounts and subscriptions"
+          },
+          "why": {
+            "sv": "Gör en lista så att inget glöms.",
+            "en": "Make a list so nothing is forgotten."
+          }
+        },
+        {
+          "id": "support",
+          "title": {
+            "sv": "Ta hand om dig",
+            "en": "Look after yourself"
+          },
+          "why": {
+            "sv": "Sorg och lättnad kan komma samtidigt.",
+            "en": "Grief and relief can come at the same time."
+          },
+          "links": [
+            "1177.start"
+          ]
+        }
+      ]
+    }
+  ]
+}

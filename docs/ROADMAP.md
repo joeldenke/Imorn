@@ -239,7 +239,7 @@ sätt att leverera samma data.
 - [ ] Veckovis länkkontroll som öppnar issue
 - [ ] Appen: hämtning i bakgrunden (WorkManager, ETag, signaturkontroll, reserv till inbakat paket)
 - [ ] **Beslut:** `INTERNET`-behörigheten tillbaka, bara för innehållet (ägarens ok, badging, integritetspolicy)
-- [ ] Mallbibliotek med sök, kategorier och livsfaser
+- [x] Mallbibliotek med sök, kategorier och livsfaser
 - [ ] Mall-uppdateringar: länkar automatiskt, nya steg som förslag
 - [ ] Säsongstips
 - [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna

@@ -1,0 +1,228 @@
+{
+  "id": "start-business",
+  "version": 1,
+  "title": {
+    "sv": "Starta företag",
+    "en": "Starting a business"
+  },
+  "description": {
+    "sv": "Från idé och kunder till registrering och första fakturan.",
+    "en": "From idea and customers to registration and the first invoice."
+  },
+  "helps": {
+    "sv": "Håller ordning på bolagsform, skatt, bank och bokföring.",
+    "en": "Keeps track of company form, tax, bank and bookkeeping."
+  },
+  "note": {
+    "sv": "Skatteregler och bolagsformer ändras. Kontrollera hos Skatteverket, Bolagsverket och verksamt.se. Imorn ger inte skatterådgivning.",
+    "en": "Tax rules and company forms change. Check with Skatteverket, Bolagsverket and verksamt.se. Imorn does not provide tax advice."
+  },
+  "category": "work-study",
+  "lifestages": [
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Startdag",
+        "en": "Launch day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "plan",
+      "title": {
+        "sv": "Planera",
+        "en": "Plan"
+      },
+      "steps": [
+        {
+          "id": "customers",
+          "title": {
+            "sv": "Prata med möjliga kunder",
+            "en": "Talk to potential customers"
+          },
+          "why": {
+            "sv": "Innan du bygger något, fråga vad de faktiskt behöver.",
+            "en": "Before you build anything, ask what they actually need."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -4
+          },
+          "links": [
+            "verksamt.start"
+          ]
+        },
+        {
+          "id": "plan",
+          "title": {
+            "sv": "Skriv en enkel affärsplan",
+            "en": "Write a simple business plan"
+          },
+          "why": {
+            "sv": "Vad du säljer, till vem och vad det kostar.",
+            "en": "What you sell, to whom and what it costs."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          },
+          "links": [
+            "verksamt.start"
+          ]
+        },
+        {
+          "id": "form",
+          "title": {
+            "sv": "Välj bolagsform",
+            "en": "Choose a company form"
+          },
+          "why": {
+            "sv": "Jämför ansvar, skatt och hur mycket administration du vill ha.",
+            "en": "Compare liability, tax and how much admin you want."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -3
+          },
+          "links": [
+            "verksamt.start",
+            "bolagsverket.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "register",
+      "title": {
+        "sv": "Registrera",
+        "en": "Register"
+      },
+      "steps": [
+        {
+          "id": "register",
+          "title": {
+            "sv": "Registrera företaget",
+            "en": "Register the company"
+          },
+          "why": {
+            "sv": "Görs hos Bolagsverket för de flesta bolagsformer.",
+            "en": "Done at Bolagsverket for most company forms."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "bolagsverket.start"
+          ]
+        },
+        {
+          "id": "tax",
+          "title": {
+            "sv": "Registrera dig för skatt",
+            "en": "Register for tax"
+          },
+          "why": {
+            "sv": "F-skatt och eventuell moms. Läs vad som gäller för dig.",
+            "en": "F-tax and any VAT. Read what applies to you."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        },
+        {
+          "id": "bank",
+          "title": {
+            "sv": "Öppna företagskonto",
+            "en": "Open a business account"
+          },
+          "why": {
+            "sv": "Håll företagets pengar åtskilda från dina egna.",
+            "en": "Keep the company's money separate from your own."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetMonths": -1
+          }
+        },
+        {
+          "id": "bookkeeping",
+          "title": {
+            "sv": "Ordna bokföring",
+            "en": "Set up bookkeeping"
+          },
+          "why": {
+            "sv": "Välj verktyg eller hjälp innan första fakturan.",
+            "en": "Choose a tool or help before the first invoice."
+          }
+        }
+      ]
+    },
+    {
+      "id": "launch",
+      "title": {
+        "sv": "Starta",
+        "en": "Launch"
+      },
+      "steps": [
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Kolla försäkringar",
+            "en": "Check insurance"
+          },
+          "why": {
+            "sv": "Ansvarsförsäkring och trygghet för dig som arbetar.",
+            "en": "Liability cover and protection for you while you work."
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "launch",
+          "title": {
+            "sv": "Berätta att du har startat",
+            "en": "Tell people you have started"
+          },
+          "why": {
+            "sv": "En enkel sida och ett tydligt erbjudande räcker långt.",
+            "en": "A simple page and a clear offer go a long way."
+          },
+          "photoPrompt": {
+            "sv": "Fota starten",
+            "en": "Photograph the launch"
+          }
+        },
+        {
+          "id": "invoice",
+          "title": {
+            "sv": "Skicka första fakturan",
+            "en": "Send the first invoice"
+          },
+          "why": {
+            "sv": "Kolla att den innehåller det som krävs.",
+            "en": "Check that it includes what is required."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        }
+      ]
+    }
+  ]
+}

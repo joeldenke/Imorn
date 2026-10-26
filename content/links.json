@@ -475,6 +475,91 @@
         "sv": "digital brevlåda",
         "en": "digital mailbox"
       }
+    },
+    {
+      "id": "migrationsverket.start",
+      "org": "Migrationsverket",
+      "kind": "authority",
+      "url": "https://www.migrationsverket.se/",
+      "title": {
+        "sv": "Migrationsverket",
+        "en": "Swedish Migration Agency"
+      },
+      "searchHint": {
+        "sv": "uppehållstillstånd, medborgarskap",
+        "en": "residence permits, citizenship"
+      }
+    },
+    {
+      "id": "bolagsverket.start",
+      "org": "Bolagsverket",
+      "kind": "authority",
+      "url": "https://www.bolagsverket.se/",
+      "title": {
+        "sv": "Bolagsverket",
+        "en": "Swedish Companies Registration Office"
+      },
+      "searchHint": {
+        "sv": "registrera företag, årsredovisning",
+        "en": "register a company, annual report"
+      }
+    },
+    {
+      "id": "trafikverket.start",
+      "org": "Trafikverket",
+      "kind": "authority",
+      "url": "https://www.trafikverket.se/",
+      "title": {
+        "sv": "Trafikverket",
+        "en": "Swedish Transport Administration"
+      },
+      "searchHint": {
+        "sv": "vägar, tåg, trafik",
+        "en": "roads, trains, traffic"
+      }
+    },
+    {
+      "id": "socialstyrelsen.start",
+      "org": "Socialstyrelsen",
+      "kind": "authority",
+      "url": "https://www.socialstyrelsen.se/",
+      "title": {
+        "sv": "Socialstyrelsen",
+        "en": "National Board of Health and Welfare"
+      },
+      "searchHint": {
+        "sv": "adoption, vård, socialtjänst",
+        "en": "adoption, healthcare, social services"
+      }
+    },
+    {
+      "id": "jordbruksverket.start",
+      "org": "Jordbruksverket",
+      "kind": "authority",
+      "url": "https://www.jordbruksverket.se/",
+      "title": {
+        "sv": "Jordbruksverket",
+        "en": "Swedish Board of Agriculture"
+      },
+      "searchHint": {
+        "sv": "djurhållning, märkning av djur",
+        "en": "animal keeping, animal identification"
+      }
+    },
+    {
+      "id": "ud.start",
+      "org": "Utrikesdepartementet",
+      "kind": "authority",
+      "url": "https://www.regeringen.se/",
+      "fallbackUrl": "https://www.swedenabroad.se/",
+      "title": {
+        "sv": "Utrikesdepartementet",
+        "en": "Ministry for Foreign Affairs"
+      },
+      "searchHint": {
+        "sv": "reseråd, utlandsmyndigheter",
+        "en": "travel advice, embassies"
+      }
     }
   ]
 }

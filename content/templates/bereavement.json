@@ -1,0 +1,197 @@
+{
+  "id": "bereavement",
+  "version": 1,
+  "title": {
+    "sv": "Någon har dött",
+    "en": "Someone has died"
+  },
+  "description": {
+    "sv": "Ta det första lugnt. Sedan finns det papper som behöver göras.",
+    "en": "Take the first part slowly. Then there is paperwork that needs doing."
+  },
+  "helps": {
+    "sv": "En mjuk översikt över de första dagarna och tiden efter.",
+    "en": "A gentle overview of the first days and the time after."
+  },
+  "note": {
+    "sv": "Det här är vanliga steg, inte juridisk rådgivning. Vid frågor om dödsbo och arv, kontakta Skatteverket eller en jurist.",
+    "en": "These are usual steps, not legal advice. For questions about the estate and inheritance, contact Skatteverket or a lawyer."
+  },
+  "category": "life-events",
+  "lifestages": [
+    "midlife",
+    "next-chapter",
+    "hard-times"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Dödsdagen",
+        "en": "Date of death"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "first",
+      "title": {
+        "sv": "Första dagarna",
+        "en": "First days"
+      },
+      "steps": [
+        {
+          "id": "close-ones",
+          "title": {
+            "sv": "Berätta för dem som behöver veta",
+            "en": "Tell the people who need to know"
+          },
+          "why": {
+            "sv": "Ta en person i taget. Du behöver inte göra allt samma dag.",
+            "en": "One person at a time. You do not have to do everything the same day."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 1
+          }
+        },
+        {
+          "id": "certificate",
+          "title": {
+            "sv": "Ta hand om dödsbeviset",
+            "en": "Take care of the medical certificate"
+          },
+          "why": {
+            "sv": "Läkaren utfärdar det. Fråga vad som händer sedan.",
+            "en": "The doctor issues it. Ask what happens next."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 2
+          },
+          "links": [
+            "1177.start"
+          ]
+        },
+        {
+          "id": "funeral-home",
+          "title": {
+            "sv": "Kontakta en begravningsbyrå",
+            "en": "Contact a funeral home"
+          },
+          "why": {
+            "sv": "De kan hjälpa till med det praktiska och förklara alternativen.",
+            "en": "They can help with the practicalities and explain the options."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "paperwork",
+      "title": {
+        "sv": "Papper",
+        "en": "Paperwork"
+      },
+      "steps": [
+        {
+          "id": "tax",
+          "title": {
+            "sv": "Anmäl dödsfallet till Skatteverket",
+            "en": "Notify Skatteverket"
+          },
+          "why": {
+            "sv": "De kan hjälpa till med vad som behöver göras.",
+            "en": "They can help with what needs doing."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 7
+          },
+          "links": [
+            "skatteverket.dodsfall"
+          ]
+        },
+        {
+          "id": "estate",
+          "title": {
+            "sv": "Ta reda på vem som sköter dödsboet",
+            "en": "Find out who handles the estate"
+          },
+          "why": {
+            "sv": "Det beror på om det finns testamente och vem som är närstående.",
+            "en": "It depends on whether there is a will and who the next of kin are."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 14
+          },
+          "links": [
+            "skatteverket.dodsfall",
+            "domstol.start"
+          ]
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Kolla försäkringar och pension",
+            "en": "Check insurance and pensions"
+          },
+          "why": {
+            "sv": "Försäkringsbolag och pensionsmyndigheter kan behöva kontaktas.",
+            "en": "Insurers and pension providers may need to be contacted."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 21
+          },
+          "links": [
+            "pensionsmyndigheten.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "title": {
+        "sv": "Efter",
+        "en": "After"
+      },
+      "steps": [
+        {
+          "id": "memorial",
+          "title": {
+            "sv": "Planera minnesstunden",
+            "en": "Plan the memorial"
+          },
+          "why": {
+            "sv": "Gör det tillsammans med någon, inte ensam.",
+            "en": "Do it with someone, not alone."
+          }
+        },
+        {
+          "id": "support",
+          "title": {
+            "sv": "Sök stöd om du vill prata",
+            "en": "Seek support if you want to talk"
+          },
+          "why": {
+            "sv": "Det finns hjälp både hos vården och ideella organisationer.",
+            "en": "Help is available from care providers and charities."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          },
+          "links": [
+            "1177.start"
+          ]
+        }
+      ]
+    }
+  ]
+}

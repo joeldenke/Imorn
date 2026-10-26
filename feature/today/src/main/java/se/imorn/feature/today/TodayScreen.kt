@@ -165,6 +165,7 @@ private fun ChapterRow(chapter: Chapter, onOpenChapter: (String) -> Unit) {
             text = when {
                 chapter.state == ChapterState.Resting -> stringResource(R.string.today_chapter_resting)
                 chapter.state == ChapterState.Closed -> stringResource(R.string.today_chapter_closed)
+                chapter.steps.isEmpty() -> stringResource(R.string.today_chapter_no_steps)
                 next != null -> stringResource(R.string.today_chapter_next, next.step.title)
                 else -> stringResource(R.string.today_chapter_nothing_left)
             },
