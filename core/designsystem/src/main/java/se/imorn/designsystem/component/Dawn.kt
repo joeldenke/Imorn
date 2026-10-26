@@ -157,17 +157,22 @@ private fun DrawScope.drawDawn() {
     }
 }
 
-/** Light status and navigation bar icons while the scene shows, back to what they were when it leaves. */
+/**
+ * Light status bar icons while a dark scene shows behind them ([enabled]), back to what they were when it leaves or
+ * scrolls away. The navigation bar's icons follow too when the scene reaches the bottom of the screen
+ * ([navigationBar]).
+ */
 @Composable
-private fun LightSystemBars() {
+internal fun LightSystemBars(enabled: Boolean = true, navigationBar: Boolean = true) {
     val view = LocalView.current
-    DisposableEffect(view) {
+    DisposableEffect(view, enabled, navigationBar) {
+        if (!enabled) return@DisposableEffect onDispose { }
         val window = (view.context as? Activity)?.window
         val controller = window?.let { WindowCompat.getInsetsController(it, view) }
         val status = controller?.isAppearanceLightStatusBars
-        val navigation = controller?.isAppearanceLightNavigationBars
+        val navigation = controller?.isAppearanceLightNavigationBars?.takeIf { navigationBar }
         controller?.isAppearanceLightStatusBars = false
-        controller?.isAppearanceLightNavigationBars = false
+        if (navigationBar) controller?.isAppearanceLightNavigationBars = false
         onDispose {
             if (status != null) controller?.isAppearanceLightStatusBars = status
             if (navigation != null) controller?.isAppearanceLightNavigationBars = navigation

@@ -1,14 +1,17 @@
 {
   "id": "major-purchase",
   "version": 1,
+  "order": 24,
   "title": {
     "sv": "Större köp",
     "en": "A major purchase"
   },
-  "description": {
+  "summary": {
     "sv": "Tänk igenom behov, pris och villkor innan du köper.",
     "en": "Think through the need, price and terms before you buy."
   },
+  "category": "finance-admin",
+  "icon": "key",
   "helps": {
     "sv": "Hjälper dig jämföra och spara papperen.",
     "en": "Helps you compare and keep the paperwork."
@@ -17,7 +20,6 @@
     "sv": "Dina rättigheter beror på vad du köper och var. Kontrollera hos Hallå konsument.",
     "en": "Your rights depend on what you buy and where. Check with Hallå konsument."
   },
-  "category": "finance-admin",
   "lifestages": [
     "first-home",
     "building",

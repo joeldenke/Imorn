@@ -1,29 +1,39 @@
 {
   "id": "renovate",
   "version": 1,
+  "order": 4,
   "title": {
     "sv": "Renovera",
     "en": "Renovating"
   },
-  "description": {
-    "sv": "Planera, bygga och avsluta ett kök, badrum eller annat rum.",
-    "en": "Plan, build and finish a kitchen, bathroom or another room."
+  "summary": {
+    "sv": "Före-foton, offerter, intyg och garantin",
+    "en": "Before photos, quotes, certificates and the warranty"
   },
+  "category": "home",
+  "icon": "hammer",
   "helps": {
     "sv": "Håll koll på tillstånd, hantverkare, foton och kvitton.",
     "en": "Keep track of permits, tradespeople, photos and receipts."
   },
-  "category": "home",
   "lifestages": [
     "building",
     "midlife"
   ],
   "anchors": [
     {
-      "id": "anchor",
+      "id": "start",
       "label": {
-        "sv": "Startdag",
-        "en": "Start day"
+        "sv": "Start",
+        "en": "Start"
+      },
+      "required": false
+    },
+    {
+      "id": "done",
+      "label": {
+        "sv": "Klart",
+        "en": "Finished"
       },
       "required": false
     }
@@ -37,35 +47,65 @@
       },
       "options": [
         {
-          "id": "kitchen",
-          "label": {
-            "sv": "Kök",
-            "en": "Kitchen"
-          }
-        },
-        {
           "id": "bathroom",
           "label": {
             "sv": "Badrum",
-            "en": "Bathroom"
+            "en": "A bathroom"
+          }
+        },
+        {
+          "id": "kitchen",
+          "label": {
+            "sv": "Kök",
+            "en": "A kitchen"
           }
         },
         {
           "id": "other",
           "label": {
-            "sv": "Annat rum",
-            "en": "Another room"
+            "sv": "Något annat",
+            "en": "Something else"
           }
         }
       ]
     },
     {
-      "id": "housing",
+      "id": "who",
       "text": {
-        "sv": "Bor du i bostadsrätt?",
-        "en": "Do you live in an owned flat?"
+        "sv": "Vem gör jobbet?",
+        "en": "Who does the work?"
       },
-      "type": "bool"
+      "options": [
+        {
+          "id": "craftsmen",
+          "label": {
+            "sv": "Hantverkare",
+            "en": "Tradespeople"
+          }
+        },
+        {
+          "id": "myself",
+          "label": {
+            "sv": "Jag själv",
+            "en": "I do"
+          }
+        },
+        {
+          "id": "both",
+          "label": {
+            "sv": "Lite av båda",
+            "en": "A bit of both"
+          }
+        }
+      ]
+    },
+    {
+      "id": "condo",
+      "type": "bool",
+      "text": {
+        "sv": "Bor du i en bostadsrätt?",
+        "en": "Do you live in an owned flat?"
+      }
     }
   ],
   "phases": [
@@ -77,47 +117,56 @@
       },
       "steps": [
         {
-          "id": "before",
+          "id": "before-photos",
           "title": {
-            "sv": "Fota rummet före",
-            "en": "Photograph the room before"
+            "sv": "Ta före-foton från varje vinkel",
+            "en": "Take before photos from every angle"
           },
           "why": {
-            "sv": "Före-fotona blir både minne och bevis om något går fel.",
-            "en": "The before photos become both a memory and evidence if something goes wrong."
+            "sv": "Om några månader vill du se hur det var. Ta samma vinklar efteråt.",
+            "en": "In a few months you'll want to see how it was. Take the same angles afterwards."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -60
           },
           "photoPrompt": {
-            "sv": "Fota varje vägg och vinkel",
-            "en": "Photograph every wall and corner"
+            "sv": "Fota rummet som det ser ut nu",
+            "en": "Take a photo of the room as it looks now"
           }
         },
         {
-          "id": "permission",
+          "id": "association",
           "title": {
             "sv": "Fråga föreningen om lov",
             "en": "Ask the association for permission"
           },
           "why": {
-            "sv": "Gäller särskilt badrum, bärande väggar och ändrad planlösning.",
-            "en": "Especially for bathrooms, load-bearing walls and changed layouts."
+            "sv": "Ändringar i badrum, kök, el och vatten kräver ofta styrelsens tillstånd.",
+            "en": "Changes to bathrooms, kitchens, wiring and plumbing often need the board's permission."
           },
-          "links": [
-            "boverket.start"
-          ],
+          "at": {
+            "anchor": "start",
+            "offsetDays": -60
+          },
           "when": {
-            "question": "housing",
+            "question": "condo",
             "isTrue": true
           }
         },
         {
           "id": "permit",
           "title": {
-            "sv": "Kolla om du behöver bygglov eller anmälan",
-            "en": "Check whether you need a permit"
+            "sv": "Kolla om det behövs bygglov eller anmälan",
+            "en": "Check whether you need a permit or a notification"
           },
           "why": {
-            "sv": "Reglerna skiljer sig mellan kommuner och åtgärder.",
-            "en": "The rules differ between municipalities and projects."
+            "sv": "Det beror på vad du ändrar. Kommunen svarar.",
+            "en": "It depends on what you change. The municipality can tell you."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -60
           },
           "links": [
             "boverket.start",
@@ -127,46 +176,90 @@
         {
           "id": "budget",
           "title": {
-            "sv": "Sätt budget och tidsplan",
-            "en": "Set a budget and timeline"
+            "sv": "Gör en budget med marginal",
+            "en": "Make a budget with some margin"
           },
           "why": {
-            "sv": "Lägg till en buffert för det som upptäcks under arbetet.",
-            "en": "Add a buffer for what is discovered during the work."
+            "sv": "Det dyker nästan alltid upp något när väggarna öppnas.",
+            "en": "Something almost always turns up once the walls are opened."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -50
           }
         }
       ]
     },
     {
-      "id": "build",
+      "id": "craftsmen",
       "title": {
-        "sv": "Bygga",
-        "en": "Build"
+        "sv": "Hantverkarna",
+        "en": "The tradespeople"
       },
       "steps": [
         {
           "id": "quotes",
           "title": {
-            "sv": "Be om offerter",
-            "en": "Ask for quotes"
+            "sv": "Be om två eller tre offerter",
+            "en": "Ask for two or three quotes"
           },
           "why": {
-            "sv": "Be om minst två skriftliga offerter och jämför vad som ingår.",
-            "en": "Ask for at least two written quotes and compare what is included."
+            "sv": "Kolla F-skatt och omdömen, och jämför vad som faktiskt ingår.",
+            "en": "Check that they're registered for tax and read reviews, and compare what is actually included."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -45
           },
           "links": [
             "konsumentverket.hallakonsument"
-          ]
+          ],
+          "when": {
+            "question": "who",
+            "in": [
+              "craftsmen",
+              "both"
+            ]
+          }
         },
         {
-          "id": "electric",
+          "id": "contract",
           "title": {
-            "sv": "Anlita behörig elinstallatör",
-            "en": "Use a qualified electrician"
+            "sv": "Skriv ett skriftligt avtal",
+            "en": "Sign a written contract"
           },
           "why": {
-            "sv": "Elarbete ska göras av någon med rätt behörighet.",
-            "en": "Electrical work must be done by someone with the right qualification."
+            "sv": "Pris, tider, vad som ingår och hur ändringar hanteras. Hallå konsument har mallar.",
+            "en": "Price, dates, what's included and how changes are handled. Hallå konsument has templates."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -30
+          },
+          "links": [
+            "konsumentverket.hallakonsument"
+          ],
+          "when": {
+            "question": "who",
+            "in": [
+              "craftsmen",
+              "both"
+            ]
+          }
+        },
+        {
+          "id": "electrician",
+          "title": {
+            "sv": "Anlita en behörig elinstallatör för elen",
+            "en": "Hire a qualified electrician for the wiring"
+          },
+          "why": {
+            "sv": "Elarbeten får bara göras av den som har behörighet. Du kan kolla behörigheten själv.",
+            "en": "Electrical work may only be done by someone qualified. You can check it yourself."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -30
           },
           "links": [
             "elsakerhetsverket.start"
@@ -175,12 +268,16 @@
         {
           "id": "wet-room",
           "title": {
-            "sv": "Använd ett auktoriserat våtrumsföretag",
-            "en": "Use an approved wet-room company"
+            "sv": "Välj ett auktoriserat företag för våtrummet",
+            "en": "Choose a certified company for the wet room"
           },
           "why": {
-            "sv": "Spara intyget på tätskiktet, det behövs vid framtida frågor.",
-            "en": "Keep the waterproofing certificate; it is needed for future questions."
+            "sv": "Tätskiktet är det viktigaste i ett badrum. Spara intyget, försäkringsbolaget kan fråga efter det.",
+            "en": "The waterproofing is the most important part of a bathroom. Keep the certificate; the insurer may ask for it."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -30
           },
           "links": [
             "sakervatten.start"
@@ -193,41 +290,87 @@
         {
           "id": "rot",
           "title": {
-            "sv": "Kolla ROT-avdraget",
-            "en": "Check the ROT deduction"
+            "sv": "Kolla villkoren för rotavdrag",
+            "en": "Check the rules for the ROT deduction"
           },
           "why": {
-            "sv": "Villkoren och taket ändras; länken gäller.",
-            "en": "The rules and cap change; the link is the source."
+            "sv": "Avdraget görs oftast direkt på fakturan. Arbetet och materialet ska stå för sig.",
+            "en": "The deduction is usually taken straight off the invoice. Labour and materials should be listed separately."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -21
           },
           "links": [
             "skatteverket.rot"
-          ]
+          ],
+          "when": {
+            "question": "who",
+            "in": [
+              "craftsmen",
+              "both"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "during",
+      "title": {
+        "sv": "Under arbetet",
+        "en": "During the work"
+      },
+      "steps": [
+        {
+          "id": "tell-neighbours",
+          "title": {
+            "sv": "Säg till grannarna",
+            "en": "Tell the neighbours"
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -7
+          }
         },
         {
-          "id": "daily-photos",
+          "id": "hidden-photos",
           "title": {
-            "sv": "Fota arbetet vartefter",
-            "en": "Photograph the work as it progresses"
+            "sv": "Fota det som byggs in",
+            "en": "Take photos of what gets built in"
           },
           "why": {
-            "sv": "Särskilt rör, el och tätskikt som byggs in.",
-            "en": "Especially pipes, wiring and waterproofing that get hidden."
+            "sv": "Rör, tätskikt och el. Bilderna är guld värda om något behöver lagas sen.",
+            "en": "Pipes, waterproofing and wiring. The pictures are worth their weight in gold if something needs fixing later."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": 7
           },
           "photoPrompt": {
-            "sv": "Fota det som byggs in",
-            "en": "Photograph what gets hidden"
+            "sv": "Fota rören, tätskiktet och elen innan de byggs in",
+            "en": "Photograph the pipes, waterproofing and wiring before they're covered"
           }
         },
         {
           "id": "changes",
           "title": {
-            "sv": "Skriv ändringar skriftligt",
-            "en": "Put changes in writing"
+            "sv": "Skriv ner varje ändring",
+            "en": "Write down every change"
           },
           "why": {
-            "sv": "ÄTA-arbeten ska godkännas innan de görs, med pris.",
-            "en": "Extra work should be approved before it is done, with a price."
+            "sv": "Ändringar och tilläggsarbeten blir lätt dyrare än man tror. Ett mejl räcker.",
+            "en": "Changes and extra work easily cost more than you expect. An email is enough."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": 7
+          },
+          "when": {
+            "question": "who",
+            "in": [
+              "craftsmen",
+              "both"
+            ]
           }
         }
       ]
@@ -235,48 +378,103 @@
     {
       "id": "finish",
       "title": {
-        "sv": "Avsluta",
-        "en": "Finish"
+        "sv": "Klart",
+        "en": "Finished"
       },
       "steps": [
         {
-          "id": "inspection",
+          "id": "final-walkthrough",
           "title": {
-            "sv": "Gå igenom arbetet och lista anmärkningar",
-            "en": "Walk through the work and list issues"
+            "sv": "Gå igenom allt och skriv ner det som inte är klart",
+            "en": "Go through everything and list what isn't finished"
           },
-          "why": {
-            "sv": "Ta det innan slutbetalningen och skriftligt.",
-            "en": "Do it before the final payment and in writing."
+          "at": {
+            "anchor": "done",
+            "offsetDays": 0
           }
         },
         {
-          "id": "after",
+          "id": "after-photos",
           "title": {
-            "sv": "Fota rummet efter",
-            "en": "Photograph the room after"
+            "sv": "Ta efter-foton från samma vinklar",
+            "en": "Take after photos from the same angles"
           },
-          "why": {
-            "sv": "Samma vinklar som före-fotona gör skillnaden tydlig.",
-            "en": "The same angles as the before photos make the change clear."
+          "at": {
+            "anchor": "done",
+            "offsetDays": 0
           },
           "photoPrompt": {
-            "sv": "Fota efterbilderna",
-            "en": "Take the after photos"
+            "sv": "Fota rummet från samma vinkel som före-fotot",
+            "en": "Photograph the room from the same angle as before"
           }
         },
         {
-          "id": "receipts",
+          "id": "keep-papers",
           "title": {
-            "sv": "Spara avtal, fakturor och intyg",
-            "en": "Keep contracts, invoices and certificates"
+            "sv": "Spara avtalet, fakturorna och intygen",
+            "en": "Keep the contract, the invoices and the certificates"
           },
           "why": {
-            "sv": "Bra vid garanti, reklamation och om du säljer bostaden.",
-            "en": "Useful for warranties, complaints and if you sell the home."
+            "sv": "Lägg dem under Papper, så hittar du dem när garantin eller en försäljning kräver dem.",
+            "en": "Put them under Papers, so you find them when the warranty or a sale needs them."
+          },
+          "at": {
+            "anchor": "done",
+            "offsetDays": 1
           }
         }
       ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "rot-tax-return",
+      "title": {
+        "sv": "Kolla att rotavdraget syns i deklarationen",
+        "en": "Check that the ROT deduction is in your tax return"
+      },
+      "at": {
+        "anchor": "done",
+        "nextYear": {
+          "month": 3
+        }
+      },
+      "links": [
+        "skatteverket.rot"
+      ],
+      "when": {
+        "question": "who",
+        "in": [
+          "craftsmen",
+          "both"
+        ]
+      }
+    },
+    {
+      "id": "warranty",
+      "title": {
+        "sv": "Gå igenom renoveringen efter ett år",
+        "en": "Go over the renovation after a year"
+      },
+      "why": {
+        "sv": "Hur länge garantin gäller står i avtalet. Upptäcker du fel, hör av dig till hantverkaren först.",
+        "en": "The contract says how long the warranty lasts. If you find faults, contact the tradesperson first."
+      },
+      "at": {
+        "anchor": "done",
+        "offsetMonths": 12
+      },
+      "links": [
+        "arn.start",
+        "konsumentverket.hallakonsument"
+      ],
+      "when": {
+        "question": "who",
+        "in": [
+          "craftsmen",
+          "both"
+        ]
+      }
     }
   ]
 }

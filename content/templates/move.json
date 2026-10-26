@@ -1,19 +1,21 @@
 {
   "id": "move",
-  "version": 3,
+  "version": 2,
+  "order": 1,
   "title": {
     "sv": "Flytta",
     "en": "Moving"
   },
-  "description": {
-    "sv": "Flytta hem, byta stad eller börja om på en ny adress.",
-    "en": "Move home, change city or start again at a new address."
+  "summary": {
+    "sv": "Från uppsägningen till första frukosten",
+    "en": "From giving notice to the first breakfast"
   },
+  "category": "home",
+  "icon": "home",
   "helps": {
     "sv": "Håller koll på uppsägning, flyttfirma, adressändring och första natten.",
     "en": "Keeps track of notice, movers, address changes and the first night."
   },
-  "category": "home",
   "lifestages": [
     "first-home",
     "building",

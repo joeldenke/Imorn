@@ -23,10 +23,12 @@ import se.imorn.database.ChapterRepository
 import se.imorn.model.Chapter
 import se.imorn.model.Entry
 import se.imorn.model.EntryKind
+import se.imorn.model.Milestone
 import se.imorn.model.PlannedStep
 import se.imorn.model.Today
 import se.imorn.model.TomorrowPlan
 import se.imorn.model.complete
+import se.imorn.model.nextMilestone
 import se.imorn.model.tomorrowPlan
 import se.imorn.model.withStepDate
 import java.time.LocalDate
@@ -40,15 +42,23 @@ data class AssistantUiState(
     val failed: Boolean = false,
 )
 
-/** What *Imorgon* shows: at most three things to do, what is getting close later, and the assistant. */
+/**
+ * What *Imorgon* shows: a greeting for this [hour] with the anchor coming up, at most three things to do, what is
+ * getting close later, the chapters and the assistant.
+ */
 data class TodayUiState(
     val today: LocalDate,
     val plan: TomorrowPlan,
     /** Every chapter, for the quiet list under the plan. */
     val chapters: List<Chapter>,
     val assistant: AssistantUiState = AssistantUiState(),
+    /** The hour on the phone, for the greeting only. */
+    val hour: Int = Today.NOON,
 ) {
     val hasChapters: Boolean get() = chapters.isNotEmpty()
+
+    /** The anchor the sky counts down to, such as the moving day. */
+    val milestone: Milestone? get() = nextMilestone(chapters, today)
 }
 
 /**
@@ -67,25 +77,29 @@ class TodayViewModel(
     private val today: Today,
 ) : ViewModel() {
     private val currentDay = MutableStateFlow(today.now())
+    private val currentHour = MutableStateFlow(today.hour())
     private val assistant = MutableStateFlow(AssistantUiState())
 
     /** Null until the chapters are read, so the screen never flashes an empty state. */
     val state: StateFlow<TodayUiState?> = combine(
         chapters.chapters,
         currentDay,
+        currentHour,
         assistant,
-    ) { all, day, assistant ->
+    ) { all, day, hour, assistant ->
         TodayUiState(
             today = day,
             plan = tomorrowPlan(all, day),
             chapters = all,
             assistant = assistant,
+            hour = hour,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS), null)
 
     /** Reads "today" again and asks whether the assistant is there. Called when the screen is shown. */
     fun refresh() {
         currentDay.value = today.now()
+        currentHour.value = today.hour()
         viewModelScope.launch {
             val availability = languageModel.availability()
             assistant.update { it.copy(availability = availability) }

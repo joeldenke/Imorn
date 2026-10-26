@@ -1,19 +1,21 @@
 {
   "id": "graduation",
   "version": 1,
+  "order": 21,
   "title": {
     "sv": "Ta examen",
     "en": "Graduating"
   },
-  "description": {
+  "summary": {
     "sv": "Få papperen klara och fira det som du har gjort.",
     "en": "Get the paperwork done and celebrate what you have achieved."
   },
+  "category": "work-study",
+  "icon": "book",
   "helps": {
     "sv": "Små steg för examen, diplom och nästa steg.",
     "en": "Small steps for the degree, diploma and what comes next."
   },
-  "category": "work-study",
   "lifestages": [
     "first-home",
     "building"

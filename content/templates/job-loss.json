@@ -1,14 +1,17 @@
 {
   "id": "job-loss",
   "version": 1,
+  "order": 23,
   "title": {
     "sv": "Förlora jobbet",
     "en": "Losing your job"
   },
-  "description": {
+  "summary": {
     "sv": "Ta hand om det akuta först, sedan nästa steg.",
     "en": "Take care of the urgent things first, then the next step."
   },
+  "category": "work-study",
+  "icon": "briefcase",
   "helps": {
     "sv": "Ett lugnt stöd för papper, pengar och att hitta vidare.",
     "en": "Calm support for paperwork, money and finding your way forward."
@@ -17,7 +20,6 @@
     "sv": "Reglerna för a-kassa och ersättning kan ändras. Kontrollera hos din a-kassa och Arbetsförmedlingen.",
     "en": "The rules for unemployment benefits can change. Check with your unemployment fund and the Employment Service."
   },
-  "category": "work-study",
   "lifestages": [
     "building",
     "midlife",

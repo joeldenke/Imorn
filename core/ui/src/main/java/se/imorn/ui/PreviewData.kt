@@ -23,6 +23,9 @@ object PreviewData {
     /** The day every preview is drawn on. */
     val TODAY: LocalDate = LocalDate.of(2027, 2, 10)
 
+    /** The hour every preview is drawn at: the morning. */
+    const val HOUR = 8
+
     /** Moving on 1 March: some steps done, one late, the rest ahead. */
     val moving: Chapter = Chapter(
         id = "preview-move",

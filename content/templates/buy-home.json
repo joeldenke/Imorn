@@ -1,83 +1,119 @@
 {
   "id": "buy-home",
   "version": 1,
+  "order": 2,
   "title": {
     "sv": "Köpa bostad",
     "en": "Buying a home"
   },
-  "description": {
-    "sv": "Från lånelöfte och visningar till nycklarna i handen.",
-    "en": "From mortgage pre-approval and viewings to the keys in your hand."
+  "summary": {
+    "sv": "Lånelöftet, visningarna och nycklarna",
+    "en": "The pre-approval, the viewings and the keys"
   },
+  "category": "home",
+  "icon": "key",
   "helps": {
     "sv": "Håll ordning på lån, budgivning, besiktning och papper.",
     "en": "Keep track of the loan, bidding, inspection and paperwork."
   },
-  "category": "home",
   "lifestages": [
-    "first-home",
     "building",
-    "midlife"
+    "midlife",
+    "first-home"
   ],
   "anchors": [
     {
-      "id": "anchor",
+      "id": "contract",
       "label": {
-        "sv": "Tillträdesdag",
-        "en": "Completion day"
+        "sv": "Kontraktsdag",
+        "en": "Contract day"
+      },
+      "required": false
+    },
+    {
+      "id": "access",
+      "label": {
+        "sv": "Tillträde",
+        "en": "Handover day"
       },
       "required": false
     }
   ],
   "questions": [
     {
-      "id": "housing",
+      "id": "kind",
       "text": {
-        "sv": "Vad köper du?",
-        "en": "What are you buying?"
+        "sv": "Vad vill du köpa?",
+        "en": "What do you want to buy?"
       },
       "options": [
         {
           "id": "condo",
           "label": {
             "sv": "Bostadsrätt",
-            "en": "Owned flat"
+            "en": "An owned flat"
           }
         },
         {
           "id": "house",
           "label": {
             "sv": "Hus",
-            "en": "House"
+            "en": "A house"
           }
         }
       ]
+    },
+    {
+      "id": "first",
+      "type": "bool",
+      "text": {
+        "sv": "Är det din första bostad?",
+        "en": "Is it your first home?"
+      }
     }
   ],
   "phases": [
     {
-      "id": "plan",
+      "id": "money",
       "title": {
-        "sv": "Planera",
-        "en": "Plan"
+        "sv": "Pengarna",
+        "en": "The money"
       },
       "steps": [
         {
           "id": "budget",
           "title": {
-            "sv": "Räkna på vad du kan köpa",
-            "en": "Work out what you can afford"
+            "sv": "Räkna på kontantinsatsen och vad boendet kostar i månaden",
+            "en": "Work out the down payment and the monthly cost"
           },
           "why": {
-            "sv": "Ta med kontantinsats, ränta, drift och amortering. Länkarna visar reglerna som gäller.",
-            "en": "Include the deposit, interest, running costs and repayment. The links show the rules that apply."
+            "sv": "Banken kräver en egen kontantinsats och räknar på vad du har kvar varje månad. Hur mycket som gäller i dag står hos källan.",
+            "en": "The bank asks for a down payment of your own and checks what you have left each month. How much applies today is at the source."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -5
+            "anchor": "contract",
+            "offsetDays": -90
           },
           "links": [
             "fi.bolan",
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "compare-banks",
+          "title": {
+            "sv": "Jämför bolån hos flera banker",
+            "en": "Compare mortgages at several banks"
+          },
+          "why": {
+            "sv": "Fråga om ränta, rabatter och vad som krävs. Det är vanligt att förhandla.",
+            "en": "Ask about interest, discounts and requirements. Negotiating is normal."
+          },
+          "at": {
+            "anchor": "contract",
+            "offsetDays": -80
+          },
+          "links": [
             "konsumenternas.start"
           ]
         },
@@ -88,39 +124,24 @@
             "en": "Get a mortgage pre-approval"
           },
           "why": {
-            "sv": "Jämför flera banker och läs vad lånelöftet inte täcker.",
-            "en": "Compare several banks and read what the pre-approval does not cover."
+            "sv": "Med lånelöftet vet du hur högt du kan bjuda. Det gäller oftast bara några månader.",
+            "en": "With the pre-approval you know how high you can bid. It usually lasts only a few months."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -4
+            "anchor": "contract",
+            "offsetDays": -70
           },
           "links": [
             "konsumenternas.start"
           ]
-        },
-        {
-          "id": "search",
-          "title": {
-            "sv": "Bestäm område och leta bostad",
-            "en": "Choose an area and start looking"
-          },
-          "why": {
-            "sv": "Skriv en kort lista över det du inte kan kompromissa med.",
-            "en": "Write a short list of what you cannot compromise on."
-          },
-          "at": {
-            "anchor": "anchor",
-            "offsetMonths": -3
-          }
         }
       ]
     },
     {
-      "id": "buy",
+      "id": "search",
       "title": {
-        "sv": "Köpa",
-        "en": "Buy"
+        "sv": "Leta",
+        "en": "Looking"
       },
       "steps": [
         {
@@ -130,178 +151,255 @@
             "en": "Go to viewings"
           },
           "why": {
-            "sv": "Ta foton och anteckningar direkt, så du minns skillnaderna.",
-            "en": "Take photos and notes straight away so you remember the differences."
+            "sv": "Skriv ner vad du tyckte direkt efteråt. Efter fem visningar flyter de ihop.",
+            "en": "Write down what you thought right afterwards. After five viewings they blur together."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -2
+            "anchor": "contract",
+            "offsetDays": -60
           },
           "photoPrompt": {
-            "sv": "Fota bostaden på visningen",
-            "en": "Photograph the home at the viewing"
+            "sv": "Spara ett foto från visningen, med en anteckning",
+            "en": "Keep a photo from the viewing, with a note"
           }
         },
         {
-          "id": "association",
+          "id": "annual-report",
           "title": {
-            "sv": "Läs föreningens papper",
-            "en": "Read the association's documents"
+            "sv": "Läs föreningens årsredovisning",
+            "en": "Read the association's annual report"
           },
           "why": {
-            "sv": "Titta på årsredovisning, stadgar och planerat underhåll.",
-            "en": "Look at the annual report, rules and planned maintenance."
+            "sv": "Den visar föreningens ekonomi, lån och planerade renoveringar, som kan höja avgiften.",
+            "en": "It shows the association's finances, loans and planned renovations, which can raise the fee."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -2
+            "anchor": "contract",
+            "offsetDays": -21
           },
-          "links": [
-            "boverket.start"
-          ],
           "when": {
-            "question": "housing",
+            "question": "kind",
             "equals": "condo"
           }
         },
         {
           "id": "inspection",
           "title": {
-            "sv": "Boka överlåtelsebesiktning",
-            "en": "Book a pre-purchase survey"
+            "sv": "Gör en överlåtelsebesiktning",
+            "en": "Have the house inspected"
           },
           "why": {
-            "sv": "Särskilt viktigt i hus. Läs protokollet innan du budar.",
-            "en": "Especially important for a house. Read the report before you bid."
+            "sv": "Som köpare har du en undersökningsplikt. En besiktning visar det du själv inte ser.",
+            "en": "As a buyer you have a duty to inspect. An inspection shows what you can't see yourself."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -2
+            "anchor": "contract",
+            "offsetDays": -14
           },
           "links": [
             "konsumentverket.hallakonsument"
           ],
           "when": {
-            "question": "housing",
+            "question": "kind",
             "equals": "house"
           }
         },
         {
-          "id": "bid",
+          "id": "bidding",
           "title": {
-            "sv": "Lägg bud och kom överens",
-            "en": "Bid and agree a price"
+            "sv": "Budgivningen",
+            "en": "The bidding"
           },
           "why": {
-            "sv": "Ett bud är inte bindande förrän kontraktet är skrivet, men ta det lugnt.",
-            "en": "A bid is not binding until the contract is signed, but take your time."
+            "sv": "Ett bud är inte bindande förrän kontraktet är skrivet. Bestäm ditt tak innan.",
+            "en": "A bid isn't binding until the contract is signed. Decide your limit beforehand."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -1
+            "anchor": "contract",
+            "offsetDays": -7
           }
-        },
+        }
+      ]
+    },
+    {
+      "id": "contract",
+      "title": {
+        "sv": "Kontraktet",
+        "en": "The contract"
+      },
+      "steps": [
         {
-          "id": "contract",
+          "id": "sign-contract",
           "title": {
-            "sv": "Skriv köpekontrakt och betala handpenning",
+            "sv": "Skriv köpekontrakt och betala handpenningen",
             "en": "Sign the contract and pay the deposit"
           },
           "why": {
-            "sv": "Läs igenom vilka datum och villkor som gäller.",
-            "en": "Read the dates and conditions carefully."
+            "sv": "När och hur mycket står i kontraktet. Pengarna behöver finnas på kontot den dagen.",
+            "en": "When and how much is in the contract. The money needs to be in the account that day."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -1
+            "anchor": "contract",
+            "offsetDays": 0
           },
-          "links": [
-            "konsumentverket.hallakonsument"
-          ]
+          "photoPrompt": {
+            "sv": "Fota dagen ni skrev på",
+            "en": "Take a photo of the day you signed"
+          }
         },
         {
-          "id": "loan",
+          "id": "loan-application",
           "title": {
-            "sv": "Sök bolånet och ordna försäkring",
-            "en": "Apply for the mortgage and arrange insurance"
-          },
-          "why": {
-            "sv": "Skicka kontraktet till banken och teckna hem- eller villaförsäkring från tillträdet.",
-            "en": "Send the contract to the bank and take out home insurance from completion."
+            "sv": "Skicka kontraktet till banken och ansök om lånet",
+            "en": "Send the contract to the bank and apply for the loan"
           },
           "at": {
-            "anchor": "anchor",
+            "anchor": "contract",
+            "offsetDays": 3
+          }
+        },
+        {
+          "id": "membership",
+          "title": {
+            "sv": "Få medlemskap i bostadsrättsföreningen",
+            "en": "Become a member of the association"
+          },
+          "why": {
+            "sv": "Föreningen ska godkänna dig före tillträdet. Mäklaren skickar oftast ansökan.",
+            "en": "The association has to approve you before the handover. The agent usually sends the application."
+          },
+          "at": {
+            "anchor": "access",
+            "offsetDays": -30
+          },
+          "when": {
+            "question": "kind",
+            "equals": "condo"
+          }
+        }
+      ]
+    },
+    {
+      "id": "access",
+      "title": {
+        "sv": "Tillträdet",
+        "en": "The handover"
+      },
+      "steps": [
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Teckna försäkring från tillträdesdagen",
+            "en": "Get insurance from the handover day"
+          },
+          "why": {
+            "sv": "Ett hus behöver en villaförsäkring; i en bostadsrätt behöver du ofta ett tillägg för lägenheten.",
+            "en": "A house needs home and building insurance; for a flat you often need an extra cover for the flat itself."
+          },
+          "at": {
+            "anchor": "access",
             "offsetDays": -21
           },
           "links": [
             "konsumenternas.start"
           ]
-        }
-      ]
-    },
-    {
-      "id": "move-in",
-      "title": {
-        "sv": "Flytta in",
-        "en": "Move in"
-      },
-      "steps": [
+        },
         {
-          "id": "final-check",
+          "id": "loan-documents",
           "title": {
-            "sv": "Gå igenom bostaden på tillträdesdagen",
-            "en": "Walk through the home on completion day"
+            "sv": "Signera lånehandlingarna",
+            "en": "Sign the loan documents"
           },
           "why": {
-            "sv": "Läs av mätare och fota eventuella fel innan du börjar flytta in.",
-            "en": "Read the meters and photograph any issues before you start moving in."
+            "sv": "Banken behöver dem klara några dagar före tillträdet.",
+            "en": "The bank needs them a few days before the handover."
           },
-          "photoPrompt": {
-            "sv": "Fota mätare och rummen",
-            "en": "Photograph the meters and rooms"
+          "at": {
+            "anchor": "access",
+            "offsetDays": -14
           }
         },
         {
-          "id": "title",
+          "id": "move-template",
           "title": {
-            "sv": "Ansök om lagfart",
-            "en": "Apply for the title deed"
+            "sv": "Planera flytten",
+            "en": "Plan the move"
           },
           "why": {
-            "sv": "Ofta hjälper banken till. Gör det inom tiden som står i dina papper.",
-            "en": "The bank often helps. Do it within the time stated in your papers."
+            "sv": "Börja ett kapitel med mallen Flytta, så kommer flyttanmälan och packningen med.",
+            "en": "Start a chapter with the Moving template, and the change of address and packing come with it."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetDays": 7
+            "anchor": "access",
+            "offsetDays": -60
           },
           "links": [
-            "lantmateriet.lagfart"
-          ],
-          "when": {
-            "question": "housing",
-            "equals": "house"
-          }
+            "skatteverket.flytt"
+          ]
         },
         {
-          "id": "first-night",
+          "id": "keys",
           "title": {
-            "sv": "Första natten i nya hemmet",
-            "en": "The first night in your new home"
+            "sv": "Tillträdet: nycklarna",
+            "en": "Handover day: the keys"
           },
           "why": {
-            "sv": "Ett litet minne av dagen då det blev ditt.",
-            "en": "A small memory of the day it became yours."
+            "sv": "Gå igenom bostaden med säljaren och läs av mätarna innan ni skiljs åt.",
+            "en": "Walk through the home with the seller and read the meters before you part."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetDays": 1
+            "anchor": "access",
+            "offsetDays": 0
           },
           "photoPrompt": {
-            "sv": "Fota första natten",
-            "en": "Photograph the first night"
+            "sv": "Fota nycklarna till nya hemmet",
+            "en": "Take a photo of the keys to your new home"
           }
         }
+      ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "title-deed",
+      "title": {
+        "sv": "Kolla att lagfarten är beviljad",
+        "en": "Check that the title is registered"
+      },
+      "why": {
+        "sv": "Lagfarten söks inom tre månader från köpet, ofta av banken. Lantmäteriet skickar ett besked.",
+        "en": "The title is applied for within three months of the purchase, often by the bank. Lantmäteriet sends a decision."
+      },
+      "at": {
+        "anchor": "contract",
+        "offsetMonths": 3
+      },
+      "links": [
+        "lantmateriet.lagfart"
+      ],
+      "when": {
+        "question": "kind",
+        "equals": "house"
+      }
+    },
+    {
+      "id": "first-tax-return",
+      "title": {
+        "sv": "Kolla ränteavdraget i deklarationen",
+        "en": "Check the interest deduction in your tax return"
+      },
+      "why": {
+        "sv": "Bankens uppgifter brukar finnas med, men kolla att de stämmer.",
+        "en": "The bank's figures are usually filled in, but check that they are right."
+      },
+      "at": {
+        "anchor": "access",
+        "nextYear": {
+          "month": 3
+        }
+      },
+      "links": [
+        "skatteverket.start"
       ]
     }
   ]

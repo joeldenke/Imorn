@@ -1,14 +1,17 @@
 {
   "id": "divorce",
   "version": 1,
+  "order": 19,
   "title": {
     "sv": "Skilja sig",
     "en": "Divorcing"
   },
-  "description": {
+  "summary": {
     "sv": "Ta hand om beslut, papper och den nya vardagen, ett steg i taget.",
     "en": "Take care of decisions, paperwork and the new everyday life, one step at a time."
   },
+  "category": "life-events",
+  "icon": "sign",
   "helps": {
     "sv": "En lugn översikt över det praktiska och känslomässiga.",
     "en": "A calm overview of the practical and emotional sides."
@@ -17,7 +20,6 @@
     "sv": "Imorn ger inte juridisk rådgivning. Frågor om bodelning, barn och äktenskapsskillnad bör stämmas av med jurist eller domstol.",
     "en": "Imorn does not provide legal advice. Questions about division of property, children and divorce should be checked with a lawyer or the court."
   },
-  "category": "life-events",
   "lifestages": [
     "building",
     "midlife",

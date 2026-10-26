@@ -1,14 +1,17 @@
 {
   "id": "travel",
   "version": 1,
+  "order": 30,
   "title": {
     "sv": "Resa",
     "en": "Travelling"
   },
-  "description": {
+  "summary": {
     "sv": "Förbered resan så att du kan vara ledig när du är framme.",
     "en": "Prepare the trip so you can relax once you arrive."
   },
+  "category": "life-events",
+  "icon": "globe",
   "helps": {
     "sv": "Hjälper dig med pass, försäkring, packning och hemmet.",
     "en": "Helps with passport, insurance, packing and home."
@@ -17,7 +20,6 @@
     "sv": "Inreseregler och hälsoråd ändras. Kontrollera hos UD och 1177 före avresan.",
     "en": "Entry rules and health advice change. Check with the Ministry for Foreign Affairs and 1177 before you travel."
   },
-  "category": "life-events",
   "lifestages": [
     "first-home",
     "building",

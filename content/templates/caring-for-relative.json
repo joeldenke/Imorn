@@ -1,14 +1,17 @@
 {
   "id": "caring-for-relative",
   "version": 1,
+  "order": 16,
   "title": {
     "sv": "Hjälpa en närstående",
     "en": "Caring for a relative"
   },
-  "description": {
+  "summary": {
     "sv": "Stöd någon du tycker om, utan att glömma bort dig själv.",
     "en": "Support someone you love without forgetting yourself."
   },
+  "category": "health",
+  "icon": "heart",
   "helps": {
     "sv": "Samlar samtal, praktiska steg och eget stöd.",
     "en": "Gathers conversations, practical steps and support for you."
@@ -17,7 +20,6 @@
     "sv": "Stödet som finns skiljer sig mellan kommuner. Imorn ersätter inte vårdens eller kommunens bedömning.",
     "en": "The support available differs between municipalities. Imorn does not replace assessments by care providers or the municipality."
   },
-  "category": "health",
   "lifestages": [
     "midlife",
     "next-chapter",

@@ -31,6 +31,7 @@ import java.util.UUID
  * plan, and the anchor dates (which may stay unknown). Then the plan is built, deterministically, from the template.
  */
 data class NewChapterUiState(
+    /** Every template, those for the user's life stages first. */
     val templates: List<Template>,
     /** The templates made for the user's life stages; the gallery shows them first. */
     val suggestedTemplateIds: Set<String> = emptySet(),

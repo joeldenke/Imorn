@@ -7,6 +7,7 @@ import dev.zacsweers.metro.SingleIn
 import se.imorn.model.Today
 import java.time.Clock
 import java.time.LocalDate
+import java.time.LocalTime
 
 /**
  * The phone's own day, read from the phone's clock in the phone's own time zone. It is read fresh every time, so a
@@ -20,4 +21,6 @@ class DeviceToday internal constructor(private val clock: Clock) : Today {
     constructor() : this(Clock.systemDefaultZone())
 
     override fun now(): LocalDate = LocalDate.now(clock)
+
+    override fun hour(): Int = LocalTime.now(clock).hour
 }

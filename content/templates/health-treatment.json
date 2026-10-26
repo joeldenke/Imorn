@@ -1,14 +1,17 @@
 {
   "id": "health-treatment",
   "version": 1,
+  "order": 22,
   "title": {
     "sv": "Behandling",
     "en": "Treatment"
   },
-  "description": {
+  "summary": {
     "sv": "Förbered besök, behandling och tiden efteråt.",
     "en": "Prepare for appointments, treatment and the time afterwards."
   },
+  "category": "health",
+  "icon": "heart",
   "helps": {
     "sv": "Hjälper dig samla frågor, papper och stöd.",
     "en": "Helps you gather questions, papers and support."
@@ -17,7 +20,6 @@
     "sv": "Imorn ger inte medicinsk rådgivning. Kontakta vården vid frågor eller om något förändras.",
     "en": "Imorn does not provide medical advice. Contact your care provider with questions or if anything changes."
   },
-  "category": "health",
   "lifestages": [
     "building",
     "midlife",

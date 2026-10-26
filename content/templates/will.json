@@ -1,14 +1,17 @@
 {
   "id": "will",
   "version": 1,
+  "order": 31,
   "title": {
     "sv": "Testamente",
     "en": "A will"
   },
-  "description": {
+  "summary": {
     "sv": "Bestäm vad som ska hända och skriv det så att det håller.",
     "en": "Decide what should happen and write it so that it holds."
   },
+  "category": "finance-admin",
+  "icon": "sign",
   "helps": {
     "sv": "Hjälper dig tänka igenom, skriva och förvara.",
     "en": "Helps you think it through, write it and store it."
@@ -17,7 +20,6 @@
     "sv": "Ett testamente måste uppfylla formkraven i ärvdabalken. Kontrollera med jurist eller Sveriges Domstolar.",
     "en": "A will must meet the formal requirements in the Inheritance Code. Check with a lawyer or the Swedish Courts."
   },
-  "category": "finance-admin",
   "lifestages": [
     "midlife",
     "next-chapter"

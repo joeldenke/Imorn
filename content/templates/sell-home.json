@@ -1,19 +1,21 @@
 {
   "id": "sell-home",
   "version": 1,
+  "order": 3,
   "title": {
     "sv": "Sälja bostad",
     "en": "Selling a home"
   },
-  "description": {
-    "sv": "Från val av mäklare till papperen efter försäljningen.",
-    "en": "From choosing an estate agent to the paperwork afterwards."
+  "summary": {
+    "sv": "Från mäklaren till deklarationen året efter",
+    "en": "From the estate agent to next year's tax return"
   },
+  "category": "home",
+  "icon": "sign",
   "helps": {
     "sv": "Samla besluten, visningarna och kvittona på ett ställe.",
     "en": "Keep the decisions, viewings and receipts in one place."
   },
-  "category": "home",
   "lifestages": [
     "building",
     "midlife",
@@ -21,17 +23,25 @@
   ],
   "anchors": [
     {
-      "id": "anchor",
+      "id": "contract",
       "label": {
         "sv": "Kontraktsdag",
         "en": "Contract day"
+      },
+      "required": false
+    },
+    {
+      "id": "access",
+      "label": {
+        "sv": "Tillträde",
+        "en": "Handover day"
       },
       "required": false
     }
   ],
   "questions": [
     {
-      "id": "housing",
+      "id": "kind",
       "text": {
         "sv": "Vad säljer du?",
         "en": "What are you selling?"
@@ -41,17 +51,25 @@
           "id": "condo",
           "label": {
             "sv": "Bostadsrätt",
-            "en": "Owned flat"
+            "en": "An owned flat"
           }
         },
         {
           "id": "house",
           "label": {
             "sv": "Hus",
-            "en": "House"
+            "en": "A house"
           }
         }
       ]
+    },
+    {
+      "id": "buying",
+      "type": "bool",
+      "text": {
+        "sv": "Köper du en ny bostad samtidigt?",
+        "en": "Are you buying a new home at the same time?"
+      }
     }
   ],
   "phases": [
@@ -59,120 +77,101 @@
       "id": "prepare",
       "title": {
         "sv": "Förbereda",
-        "en": "Prepare"
+        "en": "Getting ready"
       },
       "steps": [
         {
-          "id": "agent",
+          "id": "choose-agent",
           "title": {
-            "sv": "Välj mäklare",
-            "en": "Choose an estate agent"
+            "sv": "Välj mäklare och jämför minst två",
+            "en": "Choose an estate agent and compare at least two"
           },
           "why": {
-            "sv": "Jämför arvode och avtal, och kontrollera att mäklaren är registrerad.",
-            "en": "Compare fees and contracts, and check that the agent is registered."
+            "sv": "Kolla att mäklaren är registrerad och fråga vad arvodet omfattar.",
+            "en": "Check that the agent is registered and ask what the fee covers."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -3
+            "anchor": "contract",
+            "offsetDays": -60
           },
           "links": [
             "fmi.start"
           ]
         },
         {
-          "id": "papers",
+          "id": "gather-papers",
           "title": {
-            "sv": "Samla papper om bostaden",
-            "en": "Gather the home's paperwork"
+            "sv": "Leta fram papperen från när du köpte",
+            "en": "Find the papers from when you bought"
           },
           "why": {
-            "sv": "Köp handlingar, kvitton på förbättringar och eventuella garantier.",
-            "en": "Purchase documents, receipts for improvements and any warranties."
+            "sv": "Köpekontraktet och kvitton på förbättringar behövs när vinsten räknas ut i deklarationen.",
+            "en": "The purchase contract and receipts for improvements are needed to work out the gain in the tax return."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -3
+            "anchor": "contract",
+            "offsetDays": -50
           },
           "links": [
             "skatteverket.bostad"
           ]
         },
         {
-          "id": "photos",
+          "id": "sale-prep",
           "title": {
-            "sv": "Förbered för foto och visning",
-            "en": "Prepare for photos and viewings"
+            "sv": "Gör i ordning bostaden inför fotografering",
+            "en": "Get the home ready for the photos"
           },
           "why": {
-            "sv": "Rensa ytor, laga det som stör och ta egna före-foton.",
-            "en": "Clear surfaces, fix what distracts and take your own before photos."
+            "sv": "Rensa, laga det lilla och låt ljuset komma in. Det du rensar nu slipper du flytta.",
+            "en": "Declutter, fix the small things and let the light in. What you clear out now you won't have to move."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -2
+            "anchor": "contract",
+            "offsetDays": -40
           },
           "photoPrompt": {
-            "sv": "Fota bostaden före försäljningen",
-            "en": "Photograph the home before selling"
+            "sv": "Spara ett foto av hemmet som det ser ut nu",
+            "en": "Keep a photo of the home as it looks now"
           }
         }
       ]
     },
     {
-      "id": "sell",
+      "id": "viewings",
       "title": {
-        "sv": "Sälja",
-        "en": "Sell"
+        "sv": "Visning och budgivning",
+        "en": "Viewings and bidding"
       },
       "steps": [
         {
           "id": "viewings",
           "title": {
-            "sv": "Håll visningar och budgivning",
-            "en": "Hold viewings and take bids"
+            "sv": "Visningar och budgivning",
+            "en": "Viewings and bidding"
           },
           "why": {
-            "sv": "Fråga mäklaren hur buden följs upp och vad som ingår.",
-            "en": "Ask the agent how bids are followed up and what is included."
+            "sv": "Mäklaren håller i visningarna och buden; du bestämmer vem du säljer till och när.",
+            "en": "The agent runs the viewings and the bids; you decide who to sell to and when."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -2
+            "anchor": "contract",
+            "offsetDays": -14
           }
         },
         {
-          "id": "contract",
+          "id": "sale-contract",
           "title": {
-            "sv": "Skriv köpekontrakt",
-            "en": "Sign the contract"
+            "sv": "Skriv köpekontrakt med köparen",
+            "en": "Sign the contract with the buyer"
           },
           "why": {
-            "sv": "Läs datum, handpenning och vad som lämnas kvar.",
-            "en": "Read the dates, deposit and what stays in the home."
+            "sv": "I kontraktet står tillträdesdagen, handpenningen och vad som följer med bostaden.",
+            "en": "The contract says the handover day, the deposit and what comes with the home."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -1
-          }
-        },
-        {
-          "id": "association",
-          "title": {
-            "sv": "Få köparen godkänd av föreningen",
-            "en": "Get the buyer approved by the association"
-          },
-          "why": {
-            "sv": "Bostadsrättsföreningen behöver godkänna köparen.",
-            "en": "The housing association needs to approve the buyer."
-          },
-          "at": {
-            "anchor": "anchor",
-            "offsetDays": -28
-          },
-          "when": {
-            "question": "housing",
-            "equals": "condo"
+            "anchor": "contract",
+            "offsetDays": 0
           }
         }
       ]
@@ -180,62 +179,230 @@
     {
       "id": "handover",
       "title": {
-        "sv": "Lämna över",
-        "en": "Hand over"
+        "sv": "Fram till tillträdet",
+        "en": "Up to the handover"
       },
       "steps": [
         {
-          "id": "utilities",
+          "id": "association-approval",
           "title": {
-            "sv": "Säg upp el, bredband och försäkring",
-            "en": "End electricity, broadband and insurance"
+            "sv": "Köparen godkänns av föreningen",
+            "en": "The association approves the buyer"
           },
           "why": {
-            "sv": "Stoppa från tillträdesdagen, inte tidigare.",
-            "en": "End them from completion day, not earlier."
+            "sv": "Mäklaren skickar oftast ansökan. Det kan ta några veckor.",
+            "en": "The agent usually sends the application. It can take a few weeks."
           },
           "at": {
-            "anchor": "anchor",
+            "anchor": "contract",
+            "offsetDays": 14
+          },
+          "when": {
+            "question": "kind",
+            "equals": "condo"
+          }
+        },
+        {
+          "id": "old-loan",
+          "title": {
+            "sv": "Be banken lösa lånet vid tillträdet",
+            "en": "Ask the bank to pay off the loan at the handover"
+          },
+          "why": {
+            "sv": "Banken och mäklaren ser till att köparens pengar går till ditt lån först.",
+            "en": "The bank and the agent make sure the buyer's money pays off your loan first."
+          },
+          "at": {
+            "anchor": "access",
+            "offsetDays": -30
+          }
+        },
+        {
+          "id": "subscriptions-off",
+          "title": {
+            "sv": "Säg upp el, bredband och försäkring från tillträdet",
+            "en": "Cancel electricity, broadband and insurance from the handover"
+          },
+          "at": {
+            "anchor": "access",
             "offsetDays": -14
           },
           "links": [
-            "energimarknadsbyran.start"
+            "energimarknadsbyran.start",
+            "konsumenternas.start"
           ]
         },
         {
-          "id": "cleaning",
+          "id": "water-waste",
           "title": {
-            "sv": "Flyttstäda och lämna nycklarna",
-            "en": "Clean and hand over the keys"
+            "sv": "Meddela kommunen vem som tar över vatten och sophämtning",
+            "en": "Tell the municipality who takes over water and waste collection"
+          },
+          "at": {
+            "anchor": "access",
+            "offsetDays": -14
+          },
+          "links": [
+            "kommun.start"
+          ],
+          "when": {
+            "question": "kind",
+            "equals": "house"
+          }
+        },
+        {
+          "id": "move-template",
+          "title": {
+            "sv": "Planera flytten",
+            "en": "Plan the move"
           },
           "why": {
-            "sv": "Läs av mätare och fota rummen tomma.",
-            "en": "Read the meters and photograph the empty rooms."
+            "sv": "Börja ett kapitel med mallen Flytta, så kommer flyttanmälan och packningen med.",
+            "en": "Start a chapter with the Moving template, and the change of address and packing come with it."
+          },
+          "at": {
+            "anchor": "access",
+            "offsetDays": -60
+          },
+          "links": [
+            "skatteverket.flytt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "access-day",
+      "title": {
+        "sv": "Tillträdesdagen",
+        "en": "Handover day"
+      },
+      "steps": [
+        {
+          "id": "final-cleaning",
+          "title": {
+            "sv": "Flyttstäda",
+            "en": "Move-out cleaning"
+          },
+          "why": {
+            "sv": "Glöm inte ugnen, kylen, fönstren och golvbrunnarna.",
+            "en": "Don't forget the oven, the fridge, the windows and the floor drains."
+          },
+          "at": {
+            "anchor": "access",
+            "offsetDays": -1
+          }
+        },
+        {
+          "id": "meters",
+          "title": {
+            "sv": "Läs av mätarna och lämna nycklarna",
+            "en": "Read the meters and hand over the keys"
+          },
+          "at": {
+            "anchor": "access",
+            "offsetDays": 0
           },
           "photoPrompt": {
-            "sv": "Fota tomma rum och mätare",
-            "en": "Photograph empty rooms and meters"
+            "sv": "Fota mätarställningarna",
+            "en": "Take a photo of the meter readings"
+          }
+        },
+        {
+          "id": "last-look",
+          "title": {
+            "sv": "En sista blick",
+            "en": "One last look"
+          },
+          "at": {
+            "anchor": "access",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Ta en bild av hemmet en sista gång",
+            "en": "Take a picture of the home one last time"
           }
         },
         {
           "id": "keep-papers",
           "title": {
-            "sv": "Spara alla försäljningspapper",
-            "en": "Keep all the sale paperwork"
+            "sv": "Spara kontraktet, likvidavräkningen och mäklarens faktura",
+            "en": "Keep the contract, the settlement statement and the agent's invoice"
           },
           "why": {
-            "sv": "Kontrakt, likvidavräkning och mäklarens arvode behövs till deklarationen.",
-            "en": "The contract, settlement and agent's fee are needed for your tax return."
+            "sv": "Allt behövs i deklarationen, och papperen kan behövas i flera år.",
+            "en": "All of it goes into the tax return, and the papers may be needed for years."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetDays": 7
-          },
-          "links": [
-            "skatteverket.bostad"
-          ]
+            "anchor": "access",
+            "offsetDays": 1
+          }
         }
       ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "sale-tax-return",
+      "title": {
+        "sv": "Deklarera försäljningen",
+        "en": "Declare the sale in your tax return"
+      },
+      "why": {
+        "sv": "Försäljningen ska med i deklarationen året efter det år kontraktet skrevs. Skatteverket förklarar hur.",
+        "en": "The sale goes into the tax return the year after the contract was signed. Skatteverket explains how."
+      },
+      "at": {
+        "anchor": "contract",
+        "nextYear": {
+          "month": 3
+        }
+      },
+      "links": [
+        "skatteverket.bostad"
+      ]
+    },
+    {
+      "id": "deferral",
+      "title": {
+        "sv": "Kolla om uppskov passar dig",
+        "en": "Check whether a deferral suits you"
+      },
+      "why": {
+        "sv": "Köper du en ny bostad kan du ibland skjuta upp skatten på vinsten. Läs villkoren före deklarationen.",
+        "en": "If you buy a new home you can sometimes defer the tax on the gain. Read the conditions before the tax return."
+      },
+      "at": {
+        "anchor": "contract",
+        "nextYear": {
+          "month": 2
+        }
+      },
+      "links": [
+        "skatteverket.bostad"
+      ],
+      "when": {
+        "question": "buying",
+        "isTrue": true
+      }
+    },
+    {
+      "id": "hidden-defects",
+      "title": {
+        "sv": "Behåll papperen från försäljningen",
+        "en": "Keep the papers from the sale"
+      },
+      "why": {
+        "sv": "Köparen kan höra av sig om fel långt efteråt. Spara besiktningen och kontraktet.",
+        "en": "The buyer can get in touch about defects long afterwards. Keep the inspection and the contract."
+      },
+      "at": {
+        "anchor": "access",
+        "offsetMonths": 12
+      },
+      "when": {
+        "question": "kind",
+        "equals": "house"
+      }
     }
   ]
 }

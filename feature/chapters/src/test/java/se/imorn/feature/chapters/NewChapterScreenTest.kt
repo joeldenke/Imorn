@@ -6,6 +6,7 @@ import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -35,7 +36,7 @@ class NewChapterScreenTest {
         id = "move",
         version = 1,
         title = both("Moving"),
-        description = both("Plan the move."),
+        summary = both("Plan the move."),
         helps = both("Keep track of the paperwork."),
         category = TemplateCategory.Home,
         anchors = listOf(TemplateAnchor("moveDay", both("Moving day"))),
@@ -76,7 +77,7 @@ class NewChapterScreenTest {
     fun choosingATemplateStartsThePlan() {
         var chosen: Template? = null
         show(start, onTemplate = { chosen = it })
-        compose.onNodeWithText("Moving").performClick()
+        compose.onNodeWithText("Moving").performScrollTo().performClick()
         assertEquals("move", chosen?.id)
     }
 
@@ -85,12 +86,12 @@ class NewChapterScreenTest {
         val baby = template.copy(
             id = "baby",
             title = both("A baby"),
-            description = both("The first year."),
+            summary = both("The first year."),
             category = TemplateCategory.Family,
         )
         show(start.copy(templates = listOf(template, baby), suggestedTemplateIds = emptySet()))
         compose.onNode(hasSetTextAction()).performTextInput("baby")
-        compose.onNodeWithText("A baby").assertIsDisplayed()
+        compose.onNodeWithText("A baby").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("Moving").assertDoesNotExist()
     }
 

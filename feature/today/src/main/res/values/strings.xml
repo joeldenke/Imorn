@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="today_screen_title">Imorn</string>
-    <!-- The start screen's title when the user gave a name, such as "Hi, Alex". -->
+    <string name="today_greeting_morning">Good morning</string>
+    <string name="today_greeting_day">Hello</string>
+    <string name="today_greeting_evening">Good evening</string>
+    <string name="today_greeting_night">Good night</string>
+    <!-- Under the countdown's big number, such as "19 / days to Moving day". %1$s is the anchor's name. -->
+    <plurals name="today_countdown">
+        <item quantity="one">day to %1$s</item>
+        <item quantity="other">days to %1$s</item>
+    </plurals>
+    <string name="today_mark_done">Mark %1$s as done</string>
+    <!-- A chapter's progress on its spine, such as "2/5". -->
+    <string name="today_chapter_fraction" translatable="false">%1$d/%2$d</string>
+    <string name="today_open_step">Open the step</string>
     <string name="today_empty_title">Nothing planned yet</string>
     <string name="today_empty_body">Start a chapter, such as a move, and Imorn shows you one thing at a time.</string>
     <string name="today_start_chapter">Start a chapter</string>
     <string name="today_new_chapter">New chapter</string>
     <string name="today_all_done">Nothing to do right now. Tomorrow is fine too.</string>
-    <!-- A step's chapter and day, such as "Moving to Gävle · Tomorrow". -->
-    <string name="today_item_meta">%1$s · %2$s</string>
     <string name="today_late">A little late</string>
     <string name="today_done">Done</string>
     <string name="today_tomorrow">Tomorrow</string>
     <string name="today_later">Later</string>
     <string name="today_chapters">Your chapters</string>
-    <string name="today_chapter_next">Next: %1$s</string>
     <string name="today_chapter_resting">Resting</string>
     <string name="today_chapter_closed">Finished</string>
-    <string name="today_chapter_nothing_left">Nothing left to do</string>
     <string name="today_chapter_no_steps">No steps yet</string>
 
     <string name="assistant_title">Assistant</string>

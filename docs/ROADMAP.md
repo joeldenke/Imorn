@@ -228,9 +228,9 @@ sätt att leverera samma data.
 - [ ] `:core:reminders` med WorkManager (samma mönster som Novila: ett engångsjobb, lägger nästa själv, inga exakta larm)
 - [ ] Notisbudget: sammanslagning per dag, tysta timmar, *Imorgon*-knapp i notisen
 - [ ] Försenat-flödet: Klart · Imorgon · Nytt datum · Gäller inte
-- [ ] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
+- [x] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
 - [ ] *Veckan som kommer* (valfri söndagsnotis)
-- [ ] Widget (Glance): nästa steg + snabbfoto
+- [x] Widget (Glance): nästa steg + snabbfoto
 - [x] Omstart, tidszoner, sommartid och ändrade ankare testade
 
 ### Fas 4 – Levande innehåll och mallbiblioteket
@@ -242,7 +242,8 @@ sätt att leverera samma data.
 - [x] Mallbibliotek med sök, kategorier och livsfaser
 - [ ] Mall-uppdateringar: länkar automatiskt, nya steg som förslag
 - [ ] Säsongstips
-- [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna
+- [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna (31 inbakade, utan
+      `reviewedAt` än)
 
 ### Fas 5 – Brevtolken
 **Mål:** vem som helst kan fota ett obegripligt brev och veta vad som behöver göras.

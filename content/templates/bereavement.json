@@ -1,14 +1,17 @@
 {
   "id": "bereavement",
   "version": 1,
+  "order": 15,
   "title": {
     "sv": "Någon har dött",
     "en": "Someone has died"
   },
-  "description": {
+  "summary": {
     "sv": "Ta det första lugnt. Sedan finns det papper som behöver göras.",
     "en": "Take the first part slowly. Then there is paperwork that needs doing."
   },
+  "category": "life-events",
+  "icon": "heart",
   "helps": {
     "sv": "En mjuk översikt över de första dagarna och tiden efter.",
     "en": "A gentle overview of the first days and the time after."
@@ -17,7 +20,6 @@
     "sv": "Det här är vanliga steg, inte juridisk rådgivning. Vid frågor om dödsbo och arv, kontakta Skatteverket eller en jurist.",
     "en": "These are usual steps, not legal advice. For questions about the estate and inheritance, contact Skatteverket or a lawyer."
   },
-  "category": "life-events",
   "lifestages": [
     "midlife",
     "next-chapter",

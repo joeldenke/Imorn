@@ -1,14 +1,17 @@
 {
   "id": "adoption",
   "version": 1,
+  "order": 14,
   "title": {
     "sv": "Adoptera",
     "en": "Adopting"
   },
-  "description": {
+  "summary": {
     "sv": "En lång process med samtal, utredning och väntan.",
     "en": "A long process with conversations, assessment and waiting."
   },
+  "category": "family",
+  "icon": "heart",
   "helps": {
     "sv": "Hjälper er hålla ihop stegen utan att lova en tidsplan.",
     "en": "Helps you keep the steps together without promising a timeline."
@@ -17,7 +20,6 @@
     "sv": "Adoption regleras av lag och myndighetsbedömningar. Imorn ersätter inte rådgivning från kommunen eller Socialstyrelsen.",
     "en": "Adoption is governed by law and official assessments. Imorn does not replace advice from the municipality or the National Board of Health and Welfare."
   },
-  "category": "family",
   "lifestages": [
     "building",
     "midlife"

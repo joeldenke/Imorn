@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.feature.onboarding)
     implementation(projects.feature.timeline)
     implementation(projects.feature.today)
+    implementation(projects.feature.widget)
 
     // Everything that contributes to the graph must be on the app's classpath, so Metro can find it.
     implementation(projects.core.coach)

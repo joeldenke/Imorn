@@ -1,19 +1,21 @@
 {
   "id": "personal-finance",
   "version": 1,
+  "order": 26,
   "title": {
     "sv": "Privatekonomi",
     "en": "Personal finances"
   },
-  "description": {
+  "summary": {
     "sv": "Få en tydlig bild av inkomster, utgifter och nästa steg.",
     "en": "Get a clear picture of income, expenses and the next step."
   },
+  "category": "finance-admin",
+  "icon": "sign",
   "helps": {
     "sv": "Hjälper dig göra en budget och hitta det som kan vänta.",
     "en": "Helps you make a budget and spot what can wait."
   },
-  "category": "finance-admin",
   "lifestages": [
     "first-home",
     "building",

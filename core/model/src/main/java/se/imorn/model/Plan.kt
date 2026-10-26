@@ -23,15 +23,15 @@ private fun Chapter.planned(step: Step) = PlannedStep(id, title, step, dateOf(st
  * chapter whose anchor is still unknown reads like the template. Long threads are left out; see [longThreads].
  */
 fun Chapter.upcoming(): List<PlannedStep> = steps
-    .filter { it.status == StepStatus.Open && !it.longThread }
+    .filter { it.status == StepStatus.Open && !isLongThread(it) }
     .map { planned(it) }
     .withIndex()
     .sortedWith(compareBy<IndexedValue<PlannedStep>>({ it.value.date == null }, { it.value.date }, { it.index }))
     .map { it.value }
 
-/** The open long threads, soonest first; those without a day last. */
+/** The open long threads, soonest first; those without a day last. See [isLongThread] for what counts. */
 fun Chapter.longThreads(): List<PlannedStep> = steps
-    .filter { it.status == StepStatus.Open && it.longThread }
+    .filter { it.status == StepStatus.Open && isLongThread(it) }
     .map { planned(it) }
     .sortedWith(compareBy<PlannedStep>({ it.date == null }, { it.date }))
 
@@ -150,6 +150,17 @@ fun Chapter.subflows(): List<Subflow> {
     }
     val grouped = phases.map { phase -> subflow(phase) { it.phaseId == phase.id } }
     return (grouped + subflow(null) { it.phaseId !in known }).filter { it.total > 0 }
+}
+
+/** How far along a chapter is: done steps out of those that apply, long threads left out, as in [subflows]. */
+data class Progress(val done: Int, val total: Int) {
+    /** From 0 to 1; a chapter without steps has come nowhere. */
+    val share: Float get() = if (total == 0) 0f else done.toFloat() / total
+}
+
+fun Chapter.progress(): Progress {
+    val flows = subflows()
+    return Progress(done = flows.sumOf { it.done }, total = flows.sumOf { it.total })
 }
 
 /** Rests, closes or wakes the chapter. A resting chapter keeps only its long threads in view. */

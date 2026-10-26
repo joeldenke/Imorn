@@ -1,14 +1,17 @@
 {
   "id": "start-business",
   "version": 1,
+  "order": 28,
   "title": {
     "sv": "Starta företag",
     "en": "Starting a business"
   },
-  "description": {
+  "summary": {
     "sv": "Från idé och kunder till registrering och första fakturan.",
     "en": "From idea and customers to registration and the first invoice."
   },
+  "category": "work-study",
+  "icon": "briefcase",
   "helps": {
     "sv": "Håller ordning på bolagsform, skatt, bank och bokföring.",
     "en": "Keeps track of company form, tax, bank and bookkeeping."
@@ -17,7 +20,6 @@
     "sv": "Skatteregler och bolagsformer ändras. Kontrollera hos Skatteverket, Bolagsverket och verksamt.se. Imorn ger inte skatterådgivning.",
     "en": "Tax rules and company forms change. Check with Skatteverket, Bolagsverket and verksamt.se. Imorn does not provide tax advice."
   },
-  "category": "work-study",
   "lifestages": [
     "building",
     "midlife"

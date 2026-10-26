@@ -9,6 +9,9 @@ beskrivning och nytta.
 > procentsatser och tak skrivs aldrig in i stegen – de ändras, och länken till källan gäller. Mallar beskriver
 > vanliga steg, aldrig "allt du måste göra".
 
+**I appen:** alla 31 mallar finns i `content/templates/`. *Nytt jobb / förlora jobbet* heter `job`; en fråga väljer
+vilket. Ingen mall har `reviewedAt` än.
+
 Förkortningar: **T** = ankardatum (flyttdag, tillträde, förlossning …). `T−6v` = sex veckor före.
 
 Biblioteket har **31 mallar**. `move` är den stora flyttmallen; de andra är medvetet kortare.
@@ -18,11 +21,11 @@ Biblioteket har **31 mallar**. `move` är den stora flyttmallen; de andra är me
 | Kategori | `category` | Mallar |
 | --- | --- | --- |
 | Hemmet | `home` | `buy-home`, `declutter`, `first-home`, `move`, `renovate`, `sell-home` |
-| Familjen | `family` | `adoption`, `child-moving-out`, `new-baby`, `pet`, `wedding` |
-| Arbete och studier | `work-study` | `drivers-license`, `graduation`, `job-loss`, `new-job`, `start-business`, `study` |
+| Familjen | `family` | `adoption`, `child-moving-out`, `baby`, `pet`, `wedding` |
+| Arbete och studier | `work-study` | `drivers-license`, `graduation`, `job-loss`, `job`, `start-business`, `study` |
 | Hälsa | `health` | `caring-for-relative`, `health-treatment` |
-| Livshändelser | `life-events` | `bereavement`, `divorce`, `funeral`, `move-abroad`, `new-in-sweden`, `travel` |
-| Ekonomi och vardag | `finance-admin` | `car`, `major-purchase`, `personal-finance`, `retirement`, `tax-year`, `will` |
+| Livshändelser | `life-events` | `bereavement`, `divorce`, `funeral`, `move-abroad`, `new-in-sweden`, `retire`, `travel` |
+| Ekonomi och vardag | `finance-admin` | `car`, `major-purchase`, `personal-finance`, `tax-year`, `will` |
 
 ## Mallarna
 
@@ -30,12 +33,12 @@ Biblioteket har **31 mallar**. `move` är den stora flyttmallen; de andra är me
 
 | Id | Svensk titel | Engelsk titel | Ankare | Steg | Frågor |
 | --- | --- | --- | --- | --- | --- |
-| `buy-home` | Köpa bostad | Buying a home | Tillträdesdag | 12 | 1 |
+| `buy-home` | Köpa bostad | Buying a home | Tillträdesdag | 14 | 2 |
 | `declutter` | Rensa hemma | Decluttering | Måldag | 8 | 0 |
-| `first-home` | Första egna hemmet | Your first home | Inflyttningsdag | 8 | 0 |
+| `first-home` | Första egna hemmet | Your first home | Inflyttningsdag | 12 | 2 |
 | `move` | Flytta | Moving | Flyttdag | 42 | 5 |
-| `renovate` | Renovera | Renovating | Startdag | 13 | 2 |
-| `sell-home` | Sälja bostad | Selling a home | Kontraktsdag | 9 | 1 |
+| `renovate` | Renovera | Renovating | Startdag | 15 | 3 |
+| `sell-home` | Sälja bostad | Selling a home | Kontraktsdag | 14 | 2 |
 
 ### Familjen
 
@@ -43,20 +46,20 @@ Biblioteket har **31 mallar**. `move` är den stora flyttmallen; de andra är me
 | --- | --- | --- | --- | --- | --- |
 | `adoption` | Adoptera | Adopting | Hemkomst | 8 | 0 |
 | `child-moving-out` | Barn flyttar ut | A child moving out | Flyttdag | 8 | 0 |
-| `new-baby` | Vänta barn | Expecting a baby | Beräknad förlossning | 10 | 1 |
+| `baby` | Vänta barn | Expecting a baby | Beräknad förlossning | 12 | 2 |
 | `pet` | Skaffa husdjur | Getting a pet | Inflyttningsdag | 9 | 1 |
-| `wedding` | Gifta sig | Getting married | Bröllopsdag | 9 | 0 |
+| `wedding` | Gifta sig | Getting married | Bröllopsdag | 9 | 2 |
 
 ### Arbete och studier
 
 | Id | Svensk titel | Engelsk titel | Ankare | Steg | Frågor |
 | --- | --- | --- | --- | --- | --- |
-| `drivers-license` | Ta körkort | Getting a driving licence | Uppkörning | 10 | 0 |
+| `drivers-license` | Ta körkort | Getting a driving licence | Uppkörning | 8 | 1 |
 | `graduation` | Ta examen | Graduating | Examensdag | 9 | 0 |
 | `job-loss` | Förlora jobbet | Losing your job | Sista arbetsdagen | 8 | 0 |
-| `new-job` | Nytt jobb | A new job | Första arbetsdagen | 9 | 0 |
+| `job` | Nytt jobb | A new job | Första arbetsdagen | 8 | 1 |
 | `start-business` | Starta företag | Starting a business | Startdag | 10 | 0 |
-| `study` | Börja studera | Starting to study | Terminsstart | 9 | 0 |
+| `study` | Börja studera | Starting to study | Terminsstart | 7 | 2 |
 
 ### Hälsa
 
@@ -73,17 +76,17 @@ Biblioteket har **31 mallar**. `move` är den stora flyttmallen; de andra är me
 | `divorce` | Skilja sig | Divorcing | Beslutsdag | 9 | 1 |
 | `funeral` | Begravning | A funeral | Begravningsdag | 9 | 0 |
 | `move-abroad` | Flytta utomlands | Moving abroad | Avresedag | 11 | 0 |
-| `new-in-sweden` | Ny i Sverige | New in Sweden | Ankomstdag | 9 | 0 |
+| `new-in-sweden` | Ny i Sverige | New in Sweden | Ankomstdag | 10 | 1 |
+| `retire` | Gå i pension | Retiring | Pensionsdag | 8 | 1 |
 | `travel` | Resa | Travelling | Avresedag | 10 | 0 |
 
 ### Ekonomi och vardag
 
 | Id | Svensk titel | Engelsk titel | Ankare | Steg | Frågor |
 | --- | --- | --- | --- | --- | --- |
-| `car` | Köpa bil | Buying a car | Hämtningsdag | 10 | 0 |
+| `car` | Köpa bil | Buying a car | Hämtningsdag | 9 | 1 |
 | `major-purchase` | Större köp | A major purchase | Köpdag | 8 | 0 |
 | `personal-finance` | Privatekonomi | Personal finances | Genomgångsdag | 8 | 0 |
-| `retirement` | Gå i pension | Retiring | Pensionsdag | 9 | 0 |
 | `tax-year` | Deklaration | Tax return | Deklarationsdag | 9 | 0 |
 | `will` | Testamente | A will | Signeringsdag | 9 | 0 |
 
@@ -138,8 +141,9 @@ Länkkortet i appen visar alltid organisation och domän.
 
 ## Så hänger en mall ihop
 
-- `description` och `helps` är galleriets korta texter: vad mallen är och vad den hjälper med. `note` är en
-  varsam notering som bara visas när den behövs (till exempel juridik eller sorg).
+- `summary`, `category` och `helps` är galleriets texter: en rad om vad mallen täcker, hyllan den hör till och
+  vad den hjälper med. `note` är en varsam notering som bara visas när den behövs (till exempel juridik eller sorg).
+- `order` och `icon` ger mallen sin plats och sitt märke i biblioteket.
 - `anchors` är datumen allt räknas från. Ett ankare får vara okänt; då får stegen inga datum men behåller
   mallens ordning.
 - `questions` är val (`options`) eller ja/nej (`bool`). Ett obesvarat villkor gömmer ingenting.

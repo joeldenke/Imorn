@@ -1,19 +1,21 @@
 {
   "id": "child-moving-out",
   "version": 1,
+  "order": 17,
   "title": {
     "sv": "Barn flyttar ut",
     "en": "A child moving out"
   },
-  "description": {
+  "summary": {
     "sv": "Förbered flytten och den nya vardagen, för både er och barnet.",
     "en": "Prepare the move and the new everyday life, for both you and your child."
   },
+  "category": "family",
+  "icon": "home",
   "helps": {
     "sv": "Hjälper er prata igenom, packa och hålla kontakten.",
     "en": "Helps you talk things through, pack and stay in touch."
   },
-  "category": "family",
   "lifestages": [
     "midlife"
   ],

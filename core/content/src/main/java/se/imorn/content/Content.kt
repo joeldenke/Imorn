@@ -89,12 +89,17 @@ enum class TemplateCategory {
 data class Template(
     val id: String,
     val version: Int,
+    /** Where the template comes in the library: lower first. Templates without one come last. */
+    val order: Int = Int.MAX_VALUE,
     /** The day the facts were last checked against the sources; null until reviewed. */
     val reviewedAt: String? = null,
     val title: Localized,
+    /** One short line under the title in the library, saying what the template covers. */
+    val summary: Localized = emptyMap(),
+    /** The shelf this template belongs to in the gallery. */
     val category: TemplateCategory,
-    /** One or two sentences for the gallery: what this project is. */
-    val description: Localized = emptyMap(),
+    /** The name of the template's icon in the app (`home`, `key` …); an unknown or missing one gets a plain mark. */
+    val icon: String? = null,
     /** A short summary of what the template helps with, shown once it is chosen. */
     val helps: Localized = emptyMap(),
     /** A gentle extra note for templates whose facts carry legal, medical or money weight. */

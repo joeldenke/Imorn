@@ -23,9 +23,9 @@ class ContentValidatorTest {
         id = "move",
         version = 1,
         title = both,
-        description = both,
-        helps = both,
+        summary = both,
         category = TemplateCategory.Home,
+        helps = both,
         anchors = listOf(TemplateAnchor("moveDay", both)),
         questions = listOf(
             Question("housing", both, options = listOf(Option("rental", both), Option("house", both))),
@@ -49,12 +49,12 @@ class ContentValidatorTest {
         assertEquals(listOf("Template move step address title has no en text"), found)
     }
 
-    @Test fun `the gallery texts and category are required`() {
-        val found = problems(template.copy(description = emptyMap(), helps = emptyMap()))
+    @Test fun `the gallery texts are required`() {
+        val found = problems(template.copy(summary = emptyMap(), helps = emptyMap()))
         assertEquals(
             listOf(
-                "Template move description has no sv text",
-                "Template move description has no en text",
+                "Template move summary has no sv text",
+                "Template move summary has no en text",
                 "Template move helps has no sv text",
                 "Template move helps has no en text",
             ),

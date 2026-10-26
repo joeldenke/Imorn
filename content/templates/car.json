@@ -1,14 +1,17 @@
 {
   "id": "car",
   "version": 1,
+  "order": 13,
   "title": {
-    "sv": "Köpa bil",
-    "en": "Buying a car"
+    "sv": "Köpa eller sälja bil",
+    "en": "Buying or selling a car"
   },
-  "description": {
-    "sv": "Från behov och provkörning till ägarbyte och första servicen.",
-    "en": "From need and test drive to change of ownership and first service."
+  "summary": {
+    "sv": "Historiken, avtalet, ägarbytet och försäkringen",
+    "en": "The history, the contract, the change of owner and the insurance"
   },
+  "category": "finance-admin",
+  "icon": "car",
   "helps": {
     "sv": "Samlar kontroll, papper, försäkring och ägande.",
     "en": "Gathers checks, paperwork, insurance and ownership."
@@ -17,7 +20,6 @@
     "sv": "Regler för ägarbyte, skatt och besiktning finns hos Transportstyrelsen. Kontrollera fordonet innan köp.",
     "en": "Rules for ownership, tax and inspection are at Transportstyrelsen. Check the vehicle before buying."
   },
-  "category": "finance-admin",
   "lifestages": [
     "first-home",
     "building",
@@ -25,209 +27,232 @@
   ],
   "anchors": [
     {
-      "id": "anchor",
+      "id": "deal",
       "label": {
-        "sv": "Hämtningsdag",
-        "en": "Pick-up day"
+        "sv": "Affären",
+        "en": "The deal"
       },
       "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "side",
+      "text": {
+        "sv": "Köper eller säljer du?",
+        "en": "Are you buying or selling?"
+      },
+      "options": [
+        {
+          "id": "buy",
+          "label": {
+            "sv": "Köper",
+            "en": "Buying"
+          }
+        },
+        {
+          "id": "sell",
+          "label": {
+            "sv": "Säljer",
+            "en": "Selling"
+          }
+        }
+      ]
     }
   ],
   "phases": [
     {
       "id": "before",
       "title": {
-        "sv": "Före",
-        "en": "Before"
+        "sv": "Före affären",
+        "en": "Before the deal"
       },
       "steps": [
         {
-          "id": "budget",
+          "id": "history",
           "title": {
-            "sv": "Räkna på hela kostnaden",
-            "en": "Work out the full cost"
+            "sv": "Kolla bilens historik",
+            "en": "Check the car's history"
           },
           "why": {
-            "sv": "Bränsle, försäkring, skatt, service och däck.",
-            "en": "Fuel, insurance, tax, servicing and tyres."
+            "sv": "Ägare, besiktning, körförbud och obetald skatt finns hos Transportstyrelsen.",
+            "en": "Owners, inspections, driving bans and unpaid tax are at Transportstyrelsen."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -3
+            "anchor": "deal",
+            "offsetDays": -14
+          },
+          "links": [
+            "transportstyrelsen.start"
+          ],
+          "when": {
+            "question": "side",
+            "equals": "buy"
           }
         },
         {
-          "id": "compare",
+          "id": "test-drive",
           "title": {
-            "sv": "Jämför bilar",
-            "en": "Compare cars"
+            "sv": "Provkör och titta noga",
+            "en": "Test drive and look carefully"
           },
           "why": {
-            "sv": "Kolla förbrukning, säkerhet och reservdelar.",
-            "en": "Check consumption, safety and parts."
+            "sv": "Ta med någon som kan bilar, eller låt en verkstad titta.",
+            "en": "Bring someone who knows cars, or let a garage have a look."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -2
+            "anchor": "deal",
+            "offsetDays": -7
           },
-          "links": [
-            "konsumenternas.start"
-          ]
+          "when": {
+            "question": "side",
+            "equals": "buy"
+          }
         },
         {
-          "id": "insurance",
+          "id": "ad",
           "title": {
-            "sv": "Kolla försäkring innan köpet",
-            "en": "Check insurance before buying"
-          },
-          "why": {
-            "sv": "Försäkringen kan skilja mycket mellan modeller.",
-            "en": "Insurance can vary a lot between models."
+            "sv": "Gör bilen fin och skriv annonsen",
+            "en": "Clean the car and write the ad"
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -1
+            "anchor": "deal",
+            "offsetDays": -21
           },
-          "links": [
-            "konsumenternas.start"
-          ]
+          "photoPrompt": {
+            "sv": "Fota bilen för annonsen",
+            "en": "Take photos of the car for the ad"
+          },
+          "when": {
+            "question": "side",
+            "equals": "sell"
+          }
+        },
+        {
+          "id": "papers-ready",
+          "title": {
+            "sv": "Ta fram registreringsbeviset och servicehistoriken",
+            "en": "Find the registration certificate and service history"
+          },
+          "at": {
+            "anchor": "deal",
+            "offsetDays": -14
+          },
+          "when": {
+            "question": "side",
+            "equals": "sell"
+          }
         }
       ]
     },
     {
-      "id": "buy",
+      "id": "deal",
       "title": {
-        "sv": "Köp",
-        "en": "Buy"
+        "sv": "Affären",
+        "en": "The deal"
       },
       "steps": [
         {
-          "id": "condition",
+          "id": "contract",
           "title": {
-            "sv": "Kontrollera bilen",
-            "en": "Check the car"
+            "sv": "Skriv ett köpeavtal",
+            "en": "Write a purchase agreement"
           },
           "why": {
-            "sv": "Provkör, fråga om servicehistorik och ta hjälp om du är osäker.",
-            "en": "Test drive, ask about service history and get help if unsure."
+            "sv": "Pris, skick och vad ni kommit överens om. Hallå konsument har mallar.",
+            "en": "Price, condition and what you agreed on. Hallå konsument has templates."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -1
+            "anchor": "deal",
+            "offsetDays": 0
           },
           "links": [
             "konsumentverket.hallakonsument"
           ]
         },
         {
-          "id": "contract",
+          "id": "owner-change",
           "title": {
-            "sv": "Skriv köpeavtal",
-            "en": "Sign the purchase agreement"
+            "sv": "Gör ägarbytet samma dag",
+            "en": "Register the change of owner the same day"
           },
           "why": {
-            "sv": "Läs vad som ingår och vad som inte gör det.",
-            "en": "Read what is included and what is not."
+            "sv": "Ägarbytet görs hos Transportstyrelsen. Gör det tillsammans innan ni skiljs.",
+            "en": "The change of owner is made at Transportstyrelsen. Do it together before you part."
           },
           "at": {
-            "anchor": "anchor",
-            "offsetMonths": -1
+            "anchor": "deal",
+            "offsetDays": 0
+          },
+          "hardDeadline": {
+            "anchor": "deal",
+            "offsetDays": 0
+          },
+          "links": [
+            "transportstyrelsen.start"
+          ]
+        },
+        {
+          "id": "insurance",
+          "title": {
+            "sv": "Försäkra bilen från första dagen",
+            "en": "Insure the car from day one"
+          },
+          "why": {
+            "sv": "Bilen ska ha trafikförsäkring så fort du äger den.",
+            "en": "The car needs third-party insurance as soon as you own it."
+          },
+          "at": {
+            "anchor": "deal",
+            "offsetDays": 0
+          },
+          "links": [
+            "konsumenternas.start"
+          ],
+          "when": {
+            "question": "side",
+            "equals": "buy"
           }
         },
         {
-          "id": "ownership",
+          "id": "cancel-insurance",
           "title": {
-            "sv": "Gör ägarbyte",
-            "en": "Change ownership"
-          },
-          "why": {
-            "sv": "Görs hos Transportstyrelsen. Både köpare och säljare behöver vara med.",
-            "en": "Done at Transportstyrelsen. Both buyer and seller need to take part."
+            "sv": "Säg upp försäkringen",
+            "en": "Cancel the insurance"
           },
           "at": {
-            "anchor": "anchor",
+            "anchor": "deal",
             "offsetDays": 1
           },
           "links": [
-            "transportstyrelsen.start"
-          ]
-        },
-        {
-          "id": "tax",
-          "title": {
-            "sv": "Kolla skatt och avgifter",
-            "en": "Check tax and fees"
-          },
-          "why": {
-            "sv": "Se vad som gäller för just den bilen.",
-            "en": "See what applies to that car."
-          },
-          "at": {
-            "anchor": "anchor",
-            "offsetDays": 7
-          },
-          "links": [
-            "transportstyrelsen.start"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "own",
-      "title": {
-        "sv": "Äg",
-        "en": "Own"
-      },
-      "steps": [
-        {
-          "id": "service",
-          "title": {
-            "sv": "Boka första servicen",
-            "en": "Book the first service"
-          },
-          "why": {
-            "sv": "Följ serviceintervallet i boken.",
-            "en": "Follow the service interval in the book."
-          },
-          "at": {
-            "anchor": "anchor",
-            "offsetDays": 30
+            "konsumenternas.start"
+          ],
+          "when": {
+            "question": "side",
+            "equals": "sell"
           }
         },
         {
-          "id": "parking",
+          "id": "new-car",
           "title": {
-            "sv": "Ordna parkering",
-            "en": "Arrange parking"
-          },
-          "why": {
-            "sv": "Kolla regler och avgifter där du bor.",
-            "en": "Check rules and fees where you live."
+            "sv": "Den nya bilen",
+            "en": "The new car"
           },
           "at": {
-            "anchor": "anchor",
-            "offsetDays": 7
-          },
-          "links": [
-            "kommun.start"
-          ]
-        },
-        {
-          "id": "photo",
-          "title": {
-            "sv": "Fota bilen",
-            "en": "Photograph the car"
-          },
-          "why": {
-            "sv": "Bra vid försäkring och framtida försäljning.",
-            "en": "Useful for insurance and a future sale."
+            "anchor": "deal",
+            "offsetDays": 0
           },
           "photoPrompt": {
-            "sv": "Fota bilen från flera håll",
-            "en": "Photograph the car from several angles"
+            "sv": "Spara ett foto av bilen",
+            "en": "Keep a photo of the car"
+          },
+          "when": {
+            "question": "side",
+            "equals": "buy"
           }
         }
       ]
     }
-  ]
+  ],
+  "longThreads": []
 }

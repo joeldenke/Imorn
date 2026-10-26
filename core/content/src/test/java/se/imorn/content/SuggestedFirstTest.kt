@@ -9,9 +9,9 @@ class SuggestedFirstTest {
         id = id,
         version = 1,
         title = mapOf(SWEDISH to id, ENGLISH to id),
-        description = mapOf(SWEDISH to id, ENGLISH to id),
-        helps = mapOf(SWEDISH to id, ENGLISH to id),
+        summary = mapOf(SWEDISH to id, ENGLISH to id),
         category = TemplateCategory.LifeEvents,
+        helps = mapOf(SWEDISH to id, ENGLISH to id),
         lifestages = stages.toList(),
     )
 

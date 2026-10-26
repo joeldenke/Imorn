@@ -1,19 +1,21 @@
 {
   "id": "declutter",
   "version": 1,
+  "order": 18,
   "title": {
     "sv": "Rensa hemma",
     "en": "Decluttering"
   },
-  "description": {
+  "summary": {
     "sv": "Ett rum i taget, utan att det blir ett nytt projekt som aldrig tar slut.",
     "en": "One room at a time, without it becoming another project that never ends."
   },
+  "category": "home",
+  "icon": "sprout",
   "helps": {
     "sv": "Hjälper dig sortera, lämna iväg och hålla undan.",
     "en": "Helps you sort, pass things on and keep surfaces clear."
   },
-  "category": "home",
   "lifestages": [
     "first-home",
     "building",

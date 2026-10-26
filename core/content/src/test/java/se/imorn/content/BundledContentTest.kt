@@ -2,16 +2,16 @@ package se.imorn.content
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import se.imorn.model.Chapter
 import se.imorn.model.dateOf
+import se.imorn.model.deadlineOf
 import se.imorn.model.next
 import java.io.File
 import java.time.LocalDate
 
-/** The pack in content/, as the app will ship it: it parses, validates, and the moving template plans sensibly. */
+/** The pack in content/, as the app will ship it: it parses, validates, and the templates plan sensibly. */
 class BundledContentTest {
     private val pack: ContentPack by lazy {
         val root = File(checkNotNull(System.getProperty("imorn.content")) { "imorn.content is not set" })
@@ -28,7 +28,66 @@ class BundledContentTest {
     }
 
     @Test fun `every template is in the pack under its file name`() {
-        assertNotNull(pack.template("move"))
+        val root = File(checkNotNull(System.getProperty("imorn.content")))
+        val names = File(root, "templates").listFiles { file -> file.extension == "json" }.orEmpty()
+            .map { it.nameWithoutExtension }
+        assertEquals(names.sorted(), pack.templates.map { it.id }.sorted())
+    }
+
+    @Test fun `the library starts with moving and every template has its own place`() {
+        assertEquals("move", pack.templates.first().id)
+        assertEquals(pack.templates.size, pack.templates.map { it.order }.toSet().size)
+    }
+
+    @Test fun `every template has a summary, an icon and steps without answers`() {
+        pack.templates.forEach { template ->
+            assertTrue(template.id, template.summary.isNotEmpty() && template.icon != null)
+            val chapter = template.instantiate(
+                chapterId = template.id,
+                language = SWEDISH,
+                answers = emptyMap(),
+                anchorDates = emptyMap(),
+                today = LocalDate.of(2026, 10, 21),
+            )
+            assertTrue(template.id, chapter.steps.size >= 5)
+        }
+    }
+
+    @Test fun `the baby's name has a hard deadline three months after the birth`() {
+        val chapter = pack.template("baby")!!.instantiate(
+            chapterId = "b",
+            language = SWEDISH,
+            answers = mapOf("married" to Answer.YesNo(true)),
+            anchorDates = mapOf("due" to LocalDate.of(2027, 5, 10), "birth" to LocalDate.of(2027, 5, 14)),
+            today = LocalDate.of(2026, 10, 21),
+        )
+        val ids = chapter.steps.map { it.id }
+        assertFalse("parenthood" in ids)
+        val name = chapter.steps.first { it.id == "name" }
+        assertEquals(LocalDate.of(2027, 8, 14), chapter.deadlineOf(name))
+    }
+
+    @Test fun `a new job hides what to do when a job ends`() {
+        val chapter = pack.template("job")!!.instantiate(
+            chapterId = "j",
+            language = ENGLISH,
+            answers = mapOf("change" to Answer.Choice("new")),
+            anchorDates = emptyMap(),
+            today = LocalDate.of(2026, 10, 21),
+        )
+        assertEquals(listOf("new"), chapter.phases.map { it.id })
+    }
+
+    @Test fun `selling a flat waits for the association, not the municipality`() {
+        val ids = pack.template("sell-home")!!.instantiate(
+            chapterId = "s",
+            language = SWEDISH,
+            answers = mapOf("kind" to Answer.Choice("condo"), "buying" to Answer.YesNo(false)),
+            anchorDates = emptyMap(),
+            today = LocalDate.of(2026, 10, 21),
+        ).steps.map { it.id }
+        assertTrue("association-approval" in ids && "sale-tax-return" in ids)
+        assertFalse("water-waste" in ids || "deferral" in ids || "hidden-defects" in ids)
     }
 
     @Test fun `the library covers every category`() {

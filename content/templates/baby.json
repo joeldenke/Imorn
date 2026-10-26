@@ -1,0 +1,329 @@
+{
+  "id": "baby",
+  "version": 1,
+  "order": 5,
+  "title": {
+    "sv": "Vänta barn",
+    "en": "Expecting a baby"
+  },
+  "summary": {
+    "sv": "Från barnmorskan till namnet och förskolan",
+    "en": "From the midwife to the name and preschool"
+  },
+  "category": "family",
+  "icon": "heart",
+  "helps": {
+    "sv": "Samlar det som behöver göras före och efter förlossningen.",
+    "en": "Gathers what needs doing before and after the birth."
+  },
+  "note": {
+    "sv": "Det här är vanliga steg, inte medicinsk rådgivning. Fråga barnmorskan eller BVC om det som känns osäkert.",
+    "en": "These are usual steps, not medical advice. Ask your midwife or child health centre about anything you are unsure of."
+  },
+  "lifestages": [
+    "building"
+  ],
+  "anchors": [
+    {
+      "id": "due",
+      "label": {
+        "sv": "Beräknad förlossning",
+        "en": "Due date"
+      },
+      "required": false
+    },
+    {
+      "id": "birth",
+      "label": {
+        "sv": "Födelsedag",
+        "en": "Birthday"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "married",
+      "type": "bool",
+      "text": {
+        "sv": "Är ni gifta?",
+        "en": "Are you married?"
+      }
+    },
+    {
+      "id": "first",
+      "type": "bool",
+      "text": {
+        "sv": "Är det ert första barn?",
+        "en": "Is it your first child?"
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "pregnancy",
+      "title": {
+        "sv": "Under graviditeten",
+        "en": "During the pregnancy"
+      },
+      "steps": [
+        {
+          "id": "midwife",
+          "title": {
+            "sv": "Kontakta barnmorskemottagningen",
+            "en": "Contact the antenatal clinic"
+          },
+          "why": {
+            "sv": "De följer graviditeten och svarar på frågorna. Du hittar närmaste på 1177.",
+            "en": "They follow the pregnancy and answer your questions. Find the nearest one on 1177."
+          },
+          "at": {
+            "anchor": "due",
+            "offsetMonths": -8
+          },
+          "links": [
+            "1177.start"
+          ]
+        },
+        {
+          "id": "bump",
+          "title": {
+            "sv": "En bild på magen",
+            "en": "A picture of the bump"
+          },
+          "at": {
+            "anchor": "due",
+            "offsetMonths": -4
+          },
+          "photoPrompt": {
+            "sv": "Spara en bild på magen",
+            "en": "Keep a picture of the bump"
+          }
+        },
+        {
+          "id": "parental-leave",
+          "title": {
+            "sv": "Berätta för arbetsgivaren när du vill vara ledig",
+            "en": "Tell your employer when you want leave"
+          },
+          "why": {
+            "sv": "Säg till minst två månader innan ledigheten börjar.",
+            "en": "Let them know at least two months before the leave starts."
+          },
+          "at": {
+            "anchor": "due",
+            "offsetMonths": -4
+          }
+        },
+        {
+          "id": "parenthood",
+          "title": {
+            "sv": "Bekräfta föräldraskapet",
+            "en": "Confirm parenthood"
+          },
+          "why": {
+            "sv": "Är ni inte gifta behöver den som inte föder bekräfta föräldraskapet. Det kan göras redan före födseln.",
+            "en": "If you aren't married, the parent not giving birth needs to confirm parenthood. It can be done before the birth."
+          },
+          "at": {
+            "anchor": "due",
+            "offsetMonths": -3
+          },
+          "links": [
+            "skatteverket.barn"
+          ],
+          "when": {
+            "question": "married",
+            "isTrue": false
+          }
+        },
+        {
+          "id": "plan-benefit",
+          "title": {
+            "sv": "Planera föräldrapenningen",
+            "en": "Plan the parental benefit"
+          },
+          "why": {
+            "sv": "Hur ni delar dagarna och när. Försäkringskassan har en planerare.",
+            "en": "How you share the days and when. Försäkringskassan has a planner."
+          },
+          "at": {
+            "anchor": "due",
+            "offsetMonths": -2
+          },
+          "links": [
+            "fk.start"
+          ]
+        },
+        {
+          "id": "gear",
+          "title": {
+            "sv": "Skaffa bilbarnstol, vagn och någonstans att sova",
+            "en": "Get a car seat, a pram and somewhere to sleep"
+          },
+          "why": {
+            "sv": "Begagnat går bra, utom bilbarnstolen om du inte vet dess historia.",
+            "en": "Second-hand is fine, except the car seat if you don't know its history."
+          },
+          "at": {
+            "anchor": "due",
+            "offsetDays": -42
+          },
+          "when": {
+            "question": "first",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "hospital-bag",
+          "title": {
+            "sv": "Packa BB-väskan",
+            "en": "Pack the hospital bag"
+          },
+          "at": {
+            "anchor": "due",
+            "offsetDays": -28
+          }
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "title": {
+        "sv": "När barnet har kommit",
+        "en": "After the baby arrives"
+      },
+      "steps": [
+        {
+          "id": "first-day-home",
+          "title": {
+            "sv": "Första dagen hemma",
+            "en": "The first day at home"
+          },
+          "at": {
+            "anchor": "birth",
+            "offsetDays": 3
+          },
+          "photoPrompt": {
+            "sv": "Spara ett foto från första dagen hemma",
+            "en": "Keep a photo from the first day at home"
+          }
+        },
+        {
+          "id": "bvc",
+          "title": {
+            "sv": "Boka första besöket på BVC",
+            "en": "Book the first visit to the child health centre"
+          },
+          "why": {
+            "sv": "BVC hör oftast av sig själva, men det är bra att veta vart man vänder sig.",
+            "en": "The centre usually gets in touch, but it's good to know where to turn."
+          },
+          "at": {
+            "anchor": "birth",
+            "offsetDays": 7
+          },
+          "links": [
+            "1177.start"
+          ]
+        },
+        {
+          "id": "name",
+          "title": {
+            "sv": "Anmäl barnets namn",
+            "en": "Register the baby's name"
+          },
+          "why": {
+            "sv": "Namnet ska anmälas till Skatteverket senast tre månader efter födseln.",
+            "en": "The name must be registered with Skatteverket within three months of the birth."
+          },
+          "at": {
+            "anchor": "birth",
+            "offsetMonths": 1
+          },
+          "hardDeadline": {
+            "anchor": "birth",
+            "offsetMonths": 3
+          },
+          "links": [
+            "skatteverket.barn"
+          ]
+        },
+        {
+          "id": "apply-benefit",
+          "title": {
+            "sv": "Ansök om föräldrapenning",
+            "en": "Apply for parental benefit"
+          },
+          "why": {
+            "sv": "Barnbidraget kommer av sig självt; föräldrapenningen söker ni.",
+            "en": "Child allowance comes automatically; you apply for parental benefit."
+          },
+          "at": {
+            "anchor": "birth",
+            "offsetMonths": 1
+          },
+          "links": [
+            "fk.start"
+          ]
+        },
+        {
+          "id": "passport",
+          "title": {
+            "sv": "Pass eller id-kort om ni ska resa",
+            "en": "A passport or ID card if you're travelling"
+          },
+          "why": {
+            "sv": "Även en bebis behöver eget pass.",
+            "en": "Even a baby needs their own passport."
+          },
+          "at": {
+            "anchor": "birth",
+            "offsetMonths": 2
+          },
+          "links": [
+            "polisen.pass"
+          ]
+        }
+      ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "preschool",
+      "title": {
+        "sv": "Ansök om förskoleplats",
+        "en": "Apply for a preschool place"
+      },
+      "why": {
+        "sv": "Kommunen behöver ofta flera månaders framförhållning.",
+        "en": "The municipality often needs several months' notice."
+      },
+      "at": {
+        "anchor": "birth",
+        "offsetMonths": 9
+      },
+      "links": [
+        "kommun.start"
+      ]
+    },
+    {
+      "id": "days-expire",
+      "title": {
+        "sv": "Kolla när föräldradagarna förfaller",
+        "en": "Check when the parental days expire"
+      },
+      "why": {
+        "sv": "Dagarna kan bara tas ut tills barnet når en viss ålder. Försäkringskassan visar hur många ni har kvar.",
+        "en": "The days can only be used until the child reaches a certain age. Försäkringskassan shows how many you have left."
+      },
+      "at": {
+        "anchor": "birth",
+        "offsetMonths": 36
+      },
+      "links": [
+        "fk.start"
+      ]
+    }
+  ]
+}

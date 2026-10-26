@@ -1,14 +1,17 @@
 {
   "id": "funeral",
   "version": 1,
+  "order": 20,
   "title": {
     "sv": "Begravning",
     "en": "A funeral"
   },
-  "description": {
+  "summary": {
     "sv": "Planera en begravning eller minnesstund i den takt som passar.",
     "en": "Plan a funeral or memorial at a pace that suits you."
   },
+  "category": "life-events",
+  "icon": "sun",
   "helps": {
     "sv": "Hjälper er samla valen kring ceremoni, plats och gäster.",
     "en": "Helps you gather the choices around ceremony, place and guests."
@@ -17,7 +20,6 @@
     "sv": "Kostnader och regler för begravning varierar. Fråga begravningsbyrån och kontrollera villkoren.",
     "en": "Funeral costs and rules vary. Ask the funeral home and check the terms."
   },
-  "category": "life-events",
   "lifestages": [
     "midlife",
     "next-chapter",

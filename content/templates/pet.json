@@ -1,14 +1,17 @@
 {
   "id": "pet",
   "version": 1,
+  "order": 27,
   "title": {
     "sv": "Skaffa husdjur",
     "en": "Getting a pet"
   },
-  "description": {
+  "summary": {
     "sv": "Förbered hemmet och vardagen innan djuret flyttar in.",
     "en": "Prepare your home and everyday life before the animal moves in."
   },
+  "category": "family",
+  "icon": "sprout",
   "helps": {
     "sv": "Hjälper dig tänka på tid, pengar, regler och första tiden.",
     "en": "Helps you think about time, money, rules and the first weeks."
@@ -17,7 +20,6 @@
     "sv": "Regler för djurhållning och märkning finns hos Jordbruksverket. Fråga veterinären om djurets hälsa.",
     "en": "Rules for keeping and identifying animals are at the Swedish Board of Agriculture. Ask the vet about the animal's health."
   },
-  "category": "family",
   "lifestages": [
     "first-home",
     "building",

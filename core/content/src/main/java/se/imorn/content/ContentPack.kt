@@ -13,10 +13,13 @@ data class ContentPack(val links: List<Link>, val templates: List<Template>) {
         /** Unknown keys are skipped, so a pack written for a newer app still reads. */
         private val json = Json { ignoreUnknownKeys = true }
 
-        /** Reads `links.json` and the files in `templates/`. Throws on a file that isn't valid JSON for the format. */
+        /**
+         * Reads `links.json` and the files in `templates/`, the templates in their [Template.order]. Throws on a file
+         * that isn't valid JSON for the format.
+         */
         fun parse(linksJson: String, templateJsons: List<String>): ContentPack = ContentPack(
             links = json.decodeFromString<LinkRegistry>(linksJson).links,
-            templates = templateJsons.map { json.decodeFromString<Template>(it) },
+            templates = templateJsons.map { json.decodeFromString<Template>(it) }.sortedBy { it.order },
         )
     }
 }
@@ -36,14 +39,14 @@ fun List<Template>.inCategory(category: TemplateCategory?): List<Template> =
     if (category == null) this else filter { it.category == category }
 
 /**
- * Templates whose title, description or helps contain [query] in [language], ignoring case and surrounding space.
+ * Templates whose title, summary or helps contain [query] in [language], ignoring case and surrounding space.
  * An empty query keeps everything. The order stays the same, so the gallery can keep suggestions first.
  */
 fun List<Template>.matching(query: String, language: String): List<Template> {
     val needle = query.trim().lowercase()
     if (needle.isEmpty()) return this
     return filter { template ->
-        listOf(template.title, template.description, template.helps).any { text ->
+        listOf(template.title, template.summary, template.helps).any { text ->
             text.text(language).lowercase().contains(needle)
         }
     }

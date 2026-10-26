@@ -28,6 +28,8 @@ class ChapterScreenTest {
         onShow: (ChapterView) -> Unit = {},
         onOpenEntry: (String) -> Unit = {},
         onAddNote: (String) -> Unit = {},
+        onFinishKeeping: () -> Unit = {},
+        onFinishClosing: () -> Unit = {},
         capture: Capture = Capture({}, {}, {}),
         chapter: Chapter = PreviewData.moving,
     ) {
@@ -49,6 +51,8 @@ class ChapterScreenTest {
                     onAddStep = {},
                     onAddNote = onAddNote,
                     onSetState = {},
+                    onFinishKeeping = onFinishKeeping,
+                    onFinishClosing = onFinishClosing,
                     onDelete = {},
                     contentPadding = PaddingValues(),
                 )
@@ -121,6 +125,27 @@ class ChapterScreenTest {
         compose.onNodeWithContentDescription("Add to the chapter").performClick()
         compose.onNodeWithText("Take a photo").performClick()
         assertEquals(1, photos)
+    }
+
+    @Test
+    fun finishingKeepsTrackOfWhatLiesFurtherAhead() {
+        var kept = 0
+        show(ChapterView.List, onFinishKeeping = { kept++ })
+        compose.onNodeWithContentDescription("More for this chapter").performClick()
+        compose.onNodeWithText("Finish it").performClick()
+        compose.onNodeWithText("There is 1 thing further ahead. Keep an eye on it?").assertExists()
+        compose.onNodeWithText("Yes, keep track").performClick()
+        assertEquals(1, kept)
+    }
+
+    @Test
+    fun finishingLetsTheThreadsGo() {
+        var closed = 0
+        show(ChapterView.List, onFinishClosing = { closed++ })
+        compose.onNodeWithContentDescription("More for this chapter").performClick()
+        compose.onNodeWithText("Finish it").performClick()
+        compose.onNodeWithText("No, let it go").performClick()
+        assertEquals(1, closed)
     }
 
     @Test

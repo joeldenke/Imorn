@@ -1,14 +1,17 @@
 {
   "id": "tax-year",
   "version": 1,
+  "order": 29,
   "title": {
     "sv": "Deklaration",
     "en": "Tax return"
   },
-  "description": {
+  "summary": {
     "sv": "Samla papperen, gå igenom och skicka in i tid.",
     "en": "Gather the papers, review and file in time."
   },
+  "category": "finance-admin",
+  "icon": "sign",
   "helps": {
     "sv": "Hjälper dig få med avdrag, försäljningar och kvitton.",
     "en": "Helps you include deductions, sales and receipts."
@@ -17,7 +20,6 @@
     "sv": "Imorn ger inte skatterådgivning. Kontrollera reglerna hos Skatteverket eller en rådgivare.",
     "en": "Imorn does not provide tax advice. Check the rules with Skatteverket or an adviser."
   },
-  "category": "finance-admin",
   "lifestages": [
     "first-home",
     "building",
