@@ -229,11 +229,11 @@ sätt att leverera samma data.
 - [ ] Notisbudget: sammanslagning per dag, tysta timmar, *Imorgon*-knapp i notisen – reglerna är klara och testade
   i `:core:notificationpolicy`; kvar: koppla in dem i `:core:reminders` och *Imorgon*-knappen i notisen
 - [ ] Försenat-flödet: Klart · Imorgon · Nytt datum · Gäller inte
-- [ ] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
+- [x] Långa trådar och vilande kapitel; *Längre fram* på startskärmen
 - [ ] *Veckan som kommer* (valfri söndagsnotis) – reglerna är klara i `:core:notificationpolicy` (av som standard);
   kvar: koppla in när `:core:reminders` finns
-- [ ] Widget (Glance): nästa steg + snabbfoto
-- [ ] Omstart, tidszoner, sommartid och ändrade ankare testade
+- [x] Widget (Glance): nästa steg + snabbfoto
+- [x] Omstart, tidszoner, sommartid och ändrade ankare testade
 
 ### Fas 4 – Levande innehåll och mallbiblioteket
 **Mål:** ägaren uppdaterar mallar och länkar utan ny app; biblioteket täcker livets vanligaste projekt.
@@ -241,10 +241,11 @@ sätt att leverera samma data.
 - [ ] Veckovis länkkontroll som öppnar issue
 - [ ] Appen: hämtning i bakgrunden (WorkManager, ETag, signaturkontroll, reserv till inbakat paket)
 - [ ] **Beslut:** `INTERNET`-behörigheten tillbaka, bara för innehållet (ägarens ok, badging, integritetspolicy)
-- [ ] Mallbibliotek med sök, kategorier och livsfaser
+- [x] Mallbibliotek med sök, kategorier och livsfaser
 - [ ] Mall-uppdateringar: länkar automatiskt, nya steg som förslag
 - [ ] Säsongstips
-- [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna
+- [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna (31 inbakade, utan
+      `reviewedAt` än)
 
 ### Fas 5 – Brevtolken
 **Mål:** vem som helst kan fota ett obegripligt brev och veta vad som behöver göras.

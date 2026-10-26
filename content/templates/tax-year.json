@@ -1,0 +1,218 @@
+{
+  "id": "tax-year",
+  "version": 1,
+  "order": 29,
+  "title": {
+    "sv": "Deklaration",
+    "en": "Tax return"
+  },
+  "summary": {
+    "sv": "Samla papperen, gå igenom och skicka in i tid.",
+    "en": "Gather the papers, review and file in time."
+  },
+  "category": "finance-admin",
+  "icon": "sign",
+  "helps": {
+    "sv": "Hjälper dig få med avdrag, försäljningar och kvitton.",
+    "en": "Helps you include deductions, sales and receipts."
+  },
+  "note": {
+    "sv": "Imorn ger inte skatterådgivning. Kontrollera reglerna hos Skatteverket eller en rådgivare.",
+    "en": "Imorn does not provide tax advice. Check the rules with Skatteverket or an adviser."
+  },
+  "lifestages": [
+    "first-home",
+    "building",
+    "midlife",
+    "next-chapter"
+  ],
+  "anchors": [
+    {
+      "id": "anchor",
+      "label": {
+        "sv": "Deklarationsdag",
+        "en": "Filing day"
+      },
+      "required": false
+    }
+  ],
+  "phases": [
+    {
+      "id": "collect",
+      "title": {
+        "sv": "Samla",
+        "en": "Gather"
+      },
+      "steps": [
+        {
+          "id": "income",
+          "title": {
+            "sv": "Samla inkomstuppgifter",
+            "en": "Gather income details"
+          },
+          "why": {
+            "sv": "Lön, pension, studiemedel och eventuell ersättning.",
+            "en": "Salary, pension, student finance and any benefits."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -30
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        },
+        {
+          "id": "deductions",
+          "title": {
+            "sv": "Kolla möjliga avdrag",
+            "en": "Check possible deductions"
+          },
+          "why": {
+            "sv": "Resor, räntor och andra poster. Läs vad som gäller.",
+            "en": "Travel, interest and other items. Read what applies."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -30
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        },
+        {
+          "id": "sales",
+          "title": {
+            "sv": "Samla papper om försäljningar",
+            "en": "Gather papers for sales"
+          },
+          "why": {
+            "sv": "Bostad, värdepapper eller annat som du sålt.",
+            "en": "A home, securities or anything else you sold."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -30
+          },
+          "links": [
+            "skatteverket.bostad"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "file",
+      "title": {
+        "sv": "Lämna",
+        "en": "File"
+      },
+      "steps": [
+        {
+          "id": "login",
+          "title": {
+            "sv": "Logga in och öppna deklarationen",
+            "en": "Log in and open the return"
+          },
+          "why": {
+            "sv": "Kontrollera att uppgifterna stämmer.",
+            "en": "Check that the details are correct."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        },
+        {
+          "id": "review",
+          "title": {
+            "sv": "Gå igenom varje del",
+            "en": "Review each section"
+          },
+          "why": {
+            "sv": "Ändra det som saknas och spara kvitton.",
+            "en": "Change what is missing and keep receipts."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -14
+          }
+        },
+        {
+          "id": "submit",
+          "title": {
+            "sv": "Skicka in i tid",
+            "en": "Submit in time"
+          },
+          "why": {
+            "sv": "Kolla datumet på din deklaration, det kan skilja.",
+            "en": "Check the date on your return; it can differ."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": -7
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "after",
+      "title": {
+        "sv": "Efter",
+        "en": "After"
+      },
+      "steps": [
+        {
+          "id": "decision",
+          "title": {
+            "sv": "Läs beslutet",
+            "en": "Read the decision"
+          },
+          "why": {
+            "sv": "Kolla att det stämmer med det du skickade in.",
+            "en": "Check that it matches what you filed."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 30
+          }
+        },
+        {
+          "id": "payment",
+          "title": {
+            "sv": "Betala eller få pengar",
+            "en": "Pay or receive money"
+          },
+          "why": {
+            "sv": "Kolla datum och kontonummer.",
+            "en": "Check the date and account number."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 45
+          }
+        },
+        {
+          "id": "save",
+          "title": {
+            "sv": "Spara underlaget",
+            "en": "Keep the paperwork"
+          },
+          "why": {
+            "sv": "Bra att ha om något frågas senare.",
+            "en": "Good to have if something is questioned later."
+          },
+          "at": {
+            "anchor": "anchor",
+            "offsetDays": 45
+          }
+        }
+      ]
+    }
+  ]
+}

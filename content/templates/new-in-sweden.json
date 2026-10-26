@@ -1,0 +1,267 @@
+{
+  "id": "new-in-sweden",
+  "version": 1,
+  "order": 10,
+  "title": {
+    "sv": "Ny i Sverige",
+    "en": "New in Sweden"
+  },
+  "summary": {
+    "sv": "Personnummer, id, bank och vård",
+    "en": "Personal number, ID, bank and healthcare"
+  },
+  "category": "life-events",
+  "icon": "globe",
+  "helps": {
+    "sv": "Samlar myndigheter, vård, arbete och vardag på ett ställe.",
+    "en": "Gathers authorities, healthcare, work and everyday life in one place."
+  },
+  "note": {
+    "sv": "Reglerna beror på ditt medborgarskap och varför du flyttat hit. Kontrollera med Migrationsverket och Skatteverket.",
+    "en": "The rules depend on your citizenship and why you moved here. Check with the Swedish Migration Agency and Skatteverket."
+  },
+  "lifestages": [
+    "new-in-sweden"
+  ],
+  "anchors": [
+    {
+      "id": "arrival",
+      "label": {
+        "sv": "Ankomst",
+        "en": "Arrival"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "kids",
+      "type": "bool",
+      "text": {
+        "sv": "Har du barn med dig?",
+        "en": "Do you have children with you?"
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "register",
+      "title": {
+        "sv": "Bli folkbokförd",
+        "en": "Getting registered"
+      },
+      "steps": [
+        {
+          "id": "residence",
+          "title": {
+            "sv": "Kolla vad ditt uppehållstillstånd betyder",
+            "en": "Check what your residence status means"
+          },
+          "why": {
+            "sv": "Det avgör vad du har rätt till. Migrationsverket förklarar.",
+            "en": "It decides what you are entitled to. Migrationsverket explains."
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetDays": 0
+          },
+          "links": [
+            "migrationsverket.start"
+          ]
+        },
+        {
+          "id": "folkbokforing",
+          "title": {
+            "sv": "Anmäl flytt till Sverige",
+            "en": "Register your move to Sweden"
+          },
+          "why": {
+            "sv": "Ska du bo här minst ett år blir du folkbokförd och får ett personnummer.",
+            "en": "If you'll live here for at least a year you are registered and get a personal identity number."
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetDays": 7
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        },
+        {
+          "id": "id-card",
+          "title": {
+            "sv": "Skaffa id-kort",
+            "en": "Get an ID card"
+          },
+          "why": {
+            "sv": "Skatteverkets id-kort visar vem du är när du har fått personnummer.",
+            "en": "Skatteverket's ID card shows who you are once you have a personal number."
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetMonths": 1
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "everyday",
+      "title": {
+        "sv": "Vardagen",
+        "en": "Everyday life"
+      },
+      "steps": [
+        {
+          "id": "bank",
+          "title": {
+            "sv": "Öppna ett bankkonto och skaffa BankID",
+            "en": "Open a bank account and get BankID"
+          },
+          "why": {
+            "sv": "Med BankID loggar du in hos myndigheter, banker och vården.",
+            "en": "With BankID you log in to agencies, banks and healthcare."
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetMonths": 1
+          }
+        },
+        {
+          "id": "mailbox",
+          "title": {
+            "sv": "Skaffa en digital brevlåda",
+            "en": "Get a digital mailbox"
+          },
+          "why": {
+            "sv": "Många myndigheter skickar sina brev dit.",
+            "en": "Many agencies send their letters there."
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetMonths": 2
+          },
+          "links": [
+            "minameddelanden.start"
+          ]
+        },
+        {
+          "id": "healthcare",
+          "title": {
+            "sv": "Hitta din vårdcentral",
+            "en": "Find your health centre"
+          },
+          "why": {
+            "sv": "På 1177 finns vård på många språk, och telefonnumret 1177 svarar dygnet runt.",
+            "en": "1177 has healthcare information in many languages, and the number 1177 answers around the clock."
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetMonths": 1
+          },
+          "links": [
+            "1177.start"
+          ]
+        },
+        {
+          "id": "fk",
+          "title": {
+            "sv": "Kolla vad Försäkringskassan kan hjälpa till med",
+            "en": "Check what Försäkringskassan can help with"
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetMonths": 1
+          },
+          "links": [
+            "fk.start"
+          ]
+        },
+        {
+          "id": "school",
+          "title": {
+            "sv": "Ordna skola eller förskola för barnen",
+            "en": "Arrange school or preschool for the children"
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetDays": 14
+          },
+          "links": [
+            "kommun.start"
+          ],
+          "when": {
+            "question": "kids",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "sfi",
+          "title": {
+            "sv": "Börja läsa svenska för invandrare",
+            "en": "Start Swedish for immigrants"
+          },
+          "why": {
+            "sv": "Kommunen har sfi, gratis. Du söker hos kommunen där du bor.",
+            "en": "The municipality offers SFI for free. You apply to the municipality where you live."
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetMonths": 1
+          },
+          "links": [
+            "kommun.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "title": {
+        "sv": "Hemma",
+        "en": "At home"
+      },
+      "steps": [
+        {
+          "id": "first-photo",
+          "title": {
+            "sv": "Första veckan",
+            "en": "The first week"
+          },
+          "at": {
+            "anchor": "arrival",
+            "offsetDays": 7
+          },
+          "photoPrompt": {
+            "sv": "Spara ett foto från första veckan",
+            "en": "Keep a photo from the first week"
+          }
+        }
+      ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "first-tax-return",
+      "title": {
+        "sv": "Deklarera för första gången",
+        "en": "File your first tax return"
+      },
+      "why": {
+        "sv": "Skatteverket skickar deklarationen på våren. Ofta räcker det att kolla och godkänna.",
+        "en": "Skatteverket sends the tax return in spring. Often it's enough to check and approve it."
+      },
+      "at": {
+        "anchor": "arrival",
+        "nextYear": {
+          "month": 3
+        }
+      },
+      "links": [
+        "skatteverket.start"
+      ]
+    }
+  ]
+}

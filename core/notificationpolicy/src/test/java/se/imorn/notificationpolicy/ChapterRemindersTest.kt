@@ -24,7 +24,7 @@ class ChapterRemindersTest {
             Step(
                 "address",
                 "Report your move",
-                date = LocalDate.of(2027, 4, 2),
+                date = LocalDate.of(2027, 3, 6),
                 hardDeadline = RelativeTime.Days("moveDay", 7),
             ),
             Step("boxes", "Get boxes"),
@@ -39,7 +39,7 @@ class ChapterRemindersTest {
         val reminders = moving().reminders()
         assertEquals(listOf("van", "address"), reminders.map { it.stepId })
         assertEquals(
-            listOf(LocalDate.of(2027, 2, 28), LocalDate.of(2027, 4, 2)),
+            listOf(LocalDate.of(2027, 2, 28), LocalDate.of(2027, 3, 6)),
             reminders.map { it.day },
         )
     }

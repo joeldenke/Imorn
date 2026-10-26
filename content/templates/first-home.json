@@ -1,0 +1,328 @@
+{
+  "id": "first-home",
+  "version": 1,
+  "order": 6,
+  "title": {
+    "sv": "Första egna boendet",
+    "en": "Your first home"
+  },
+  "summary": {
+    "sv": "Kontraktet, elen, försäkringen och första kvällen",
+    "en": "The lease, the electricity, the insurance and the first evening"
+  },
+  "category": "home",
+  "icon": "sprout",
+  "helps": {
+    "sv": "En enkel start för den som gör det här första gången.",
+    "en": "A simple start for the first time you do this."
+  },
+  "lifestages": [
+    "first-home"
+  ],
+  "anchors": [
+    {
+      "id": "moveIn",
+      "label": {
+        "sv": "Inflyttning",
+        "en": "Moving-in day"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "kind",
+      "text": {
+        "sv": "Hur ska du bo?",
+        "en": "How will you live?"
+      },
+      "options": [
+        {
+          "id": "rental",
+          "label": {
+            "sv": "Hyresrätt med förstahandskontrakt",
+            "en": "A rented flat with your own lease"
+          }
+        },
+        {
+          "id": "sublet",
+          "label": {
+            "sv": "I andra hand",
+            "en": "A sublet"
+          }
+        },
+        {
+          "id": "student",
+          "label": {
+            "sv": "Studentbostad",
+            "en": "Student housing"
+          }
+        }
+      ]
+    },
+    {
+      "id": "studies",
+      "type": "bool",
+      "text": {
+        "sv": "Pluggar du?",
+        "en": "Are you studying?"
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "find",
+      "title": {
+        "sv": "Hitta och skriv på",
+        "en": "Finding and signing"
+      },
+      "steps": [
+        {
+          "id": "housing-queue",
+          "title": {
+            "sv": "Ställ dig i bostadskön",
+            "en": "Join the housing queue"
+          },
+          "why": {
+            "sv": "Kötiden räknas från dagen du ställer dig, så det lönar sig att börja tidigt.",
+            "en": "Queue time counts from the day you join, so it pays to start early."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetMonths": -6
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "read-lease",
+          "title": {
+            "sv": "Läs kontraktet innan du skriver på",
+            "en": "Read the lease before you sign"
+          },
+          "why": {
+            "sv": "Kolla hyran, vad som ingår, uppsägningstiden och vem du hyr av. Hyr du i andra hand behöver hyresvärden ha godkänt det.",
+            "en": "Check the rent, what's included, the notice period and who you rent from. For a sublet, the landlord must have approved it."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": -30
+          },
+          "links": [
+            "konsumentverket.hallakonsument"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "setup",
+      "title": {
+        "sv": "Ordna det praktiska",
+        "en": "Sorting out the practical things"
+      },
+      "steps": [
+        {
+          "id": "electricity",
+          "title": {
+            "sv": "Teckna elavtal",
+            "en": "Get an electricity contract"
+          },
+          "why": {
+            "sv": "Ingår inte elen i hyran behöver du ett eget avtal från första dagen.",
+            "en": "If electricity isn't in the rent you need your own contract from day one."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": -21
+          },
+          "links": [
+            "energimarknadsbyran.start",
+            "elpriskollen.start"
+          ]
+        },
+        {
+          "id": "home-insurance",
+          "title": {
+            "sv": "Teckna hemförsäkring",
+            "en": "Get home insurance"
+          },
+          "why": {
+            "sv": "Den skyddar dina saker och dig om något händer, till exempel en vattenläcka.",
+            "en": "It protects your things, and you, if something happens, such as a water leak."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": -14
+          },
+          "links": [
+            "konsumenternas.start"
+          ]
+        },
+        {
+          "id": "broadband",
+          "title": {
+            "sv": "Kolla bredbandet",
+            "en": "Check the broadband"
+          },
+          "why": {
+            "sv": "Ibland ingår det i hyran. Annars: jämför innan du binder dig.",
+            "en": "Sometimes it's included in the rent. Otherwise, compare before you commit."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": -14
+          }
+        },
+        {
+          "id": "address-change",
+          "title": {
+            "sv": "Gör flyttanmälan",
+            "en": "Report your move"
+          },
+          "why": {
+            "sv": "Tidigast fyra veckor före och senast en vecka efter flytten.",
+            "en": "No earlier than four weeks before and no later than a week after the move."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": -14
+          },
+          "hardDeadline": {
+            "anchor": "moveIn",
+            "offsetDays": 7
+          },
+          "links": [
+            "skatteverket.flytt"
+          ]
+        },
+        {
+          "id": "housing-allowance",
+          "title": {
+            "sv": "Kolla om du kan få bostadsbidrag",
+            "en": "Check whether you can get housing allowance"
+          },
+          "why": {
+            "sv": "Unga och studenter kan ibland få bidrag till hyran. Försäkringskassan räknar.",
+            "en": "Young people and students can sometimes get help with the rent. Försäkringskassan does the maths."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": -7
+          },
+          "links": [
+            "fk.start"
+          ]
+        },
+        {
+          "id": "csn-address",
+          "title": {
+            "sv": "Ge CSN din nya adress",
+            "en": "Give CSN your new address"
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": 0
+          },
+          "links": [
+            "csn.start"
+          ],
+          "when": {
+            "question": "studies",
+            "isTrue": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "living",
+      "title": {
+        "sv": "Bo",
+        "en": "Living"
+      },
+      "steps": [
+        {
+          "id": "basics",
+          "title": {
+            "sv": "Skaffa det du behöver första veckan",
+            "en": "Get what you need the first week"
+          },
+          "why": {
+            "sv": "Säng, lampa, handduk, tallrik, kastrull, toapapper, diskmedel. Resten kan vänta.",
+            "en": "A bed, a lamp, a towel, a plate, a pot, toilet paper and washing-up liquid. The rest can wait."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Gör en enkel budget",
+            "en": "Make a simple budget"
+          },
+          "why": {
+            "sv": "Hyra, el, försäkring, mat och abonnemang. Då vet du vad som blir kvar.",
+            "en": "Rent, electricity, insurance, food and subscriptions. Then you know what's left."
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": 7
+          },
+          "links": [
+            "konsumentverket.hallakonsument"
+          ]
+        },
+        {
+          "id": "safety",
+          "title": {
+            "sv": "Testa brandvarnaren",
+            "en": "Test the smoke alarm"
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": 1
+          }
+        },
+        {
+          "id": "first-evening",
+          "title": {
+            "sv": "Första kvällen hemma",
+            "en": "The first evening at home"
+          },
+          "at": {
+            "anchor": "moveIn",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Spara ett foto från första kvällen",
+            "en": "Keep a photo from the first evening"
+          }
+        }
+      ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "first-tax-return",
+      "title": {
+        "sv": "Deklarera för första gången",
+        "en": "File your first tax return"
+      },
+      "why": {
+        "sv": "Skatteverket skickar deklarationen på våren. Ofta räcker det att kolla och godkänna.",
+        "en": "Skatteverket sends the tax return in spring. Often it's enough to check and approve it."
+      },
+      "at": {
+        "anchor": "moveIn",
+        "nextYear": {
+          "month": 3
+        }
+      },
+      "links": [
+        "skatteverket.start"
+      ]
+    }
+  ]
+}

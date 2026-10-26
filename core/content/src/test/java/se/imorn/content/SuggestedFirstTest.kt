@@ -5,8 +5,15 @@ import org.junit.Test
 import se.imorn.model.LifeStage
 
 class SuggestedFirstTest {
-    private fun template(id: String, vararg stages: String) =
-        Template(id = id, version = 1, title = mapOf(SWEDISH to id, ENGLISH to id), lifestages = stages.toList())
+    private fun template(id: String, vararg stages: String) = Template(
+        id = id,
+        version = 1,
+        title = mapOf(SWEDISH to id, ENGLISH to id),
+        summary = mapOf(SWEDISH to id, ENGLISH to id),
+        category = TemplateCategory.LifeEvents,
+        helps = mapOf(SWEDISH to id, ENGLISH to id),
+        lifestages = stages.toList(),
+    )
 
     private val templates = listOf(
         template("pension", "next-chapter"),

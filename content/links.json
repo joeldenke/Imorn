@@ -475,6 +475,122 @@
         "sv": "digital brevlåda",
         "en": "digital mailbox"
       }
+    },
+    {
+      "id": "antagning.start",
+      "org": "Antagning.se",
+      "kind": "authority",
+      "url": "https://www.antagning.se/",
+      "fallbackUrl": "https://www.antagning.se/",
+      "title": {
+        "sv": "Sök till högskolan",
+        "en": "Apply to university"
+      },
+      "searchHint": {
+        "sv": "anmälan, sista ansökningsdag",
+        "en": "application, deadline"
+      }
+    },
+    {
+      "id": "trafikverket.korprov",
+      "org": "Trafikverket",
+      "kind": "authority",
+      "url": "https://www.trafikverket.se/",
+      "fallbackUrl": "https://www.trafikverket.se/",
+      "title": {
+        "sv": "Boka kunskapsprov och körprov",
+        "en": "Book the theory and driving tests"
+      },
+      "searchHint": {
+        "sv": "boka prov, körkort",
+        "en": "book test, driving licence"
+      }
+    },
+    {
+      "id": "migrationsverket.start",
+      "org": "Migrationsverket",
+      "kind": "authority",
+      "url": "https://www.migrationsverket.se/",
+      "fallbackUrl": "https://www.migrationsverket.se/",
+      "title": {
+        "sv": "Migrationsverket",
+        "en": "Swedish Migration Agency"
+      },
+      "searchHint": {
+        "sv": "uppehållstillstånd",
+        "en": "residence permit"
+      }
+    },
+    {
+      "id": "bolagsverket.start",
+      "org": "Bolagsverket",
+      "kind": "authority",
+      "url": "https://www.bolagsverket.se/",
+      "title": {
+        "sv": "Bolagsverket",
+        "en": "Swedish Companies Registration Office"
+      },
+      "searchHint": {
+        "sv": "registrera företag, årsredovisning",
+        "en": "register a company, annual report"
+      }
+    },
+    {
+      "id": "trafikverket.start",
+      "org": "Trafikverket",
+      "kind": "authority",
+      "url": "https://www.trafikverket.se/",
+      "title": {
+        "sv": "Trafikverket",
+        "en": "Swedish Transport Administration"
+      },
+      "searchHint": {
+        "sv": "vägar, tåg, trafik",
+        "en": "roads, trains, traffic"
+      }
+    },
+    {
+      "id": "socialstyrelsen.start",
+      "org": "Socialstyrelsen",
+      "kind": "authority",
+      "url": "https://www.socialstyrelsen.se/",
+      "title": {
+        "sv": "Socialstyrelsen",
+        "en": "National Board of Health and Welfare"
+      },
+      "searchHint": {
+        "sv": "adoption, vård, socialtjänst",
+        "en": "adoption, healthcare, social services"
+      }
+    },
+    {
+      "id": "jordbruksverket.start",
+      "org": "Jordbruksverket",
+      "kind": "authority",
+      "url": "https://www.jordbruksverket.se/",
+      "title": {
+        "sv": "Jordbruksverket",
+        "en": "Swedish Board of Agriculture"
+      },
+      "searchHint": {
+        "sv": "djurhållning, märkning av djur",
+        "en": "animal keeping, animal identification"
+      }
+    },
+    {
+      "id": "ud.start",
+      "org": "Utrikesdepartementet",
+      "kind": "authority",
+      "url": "https://www.regeringen.se/",
+      "fallbackUrl": "https://www.swedenabroad.se/",
+      "title": {
+        "sv": "Utrikesdepartementet",
+        "en": "Ministry for Foreign Affairs"
+      },
+      "searchHint": {
+        "sv": "reseråd, utlandsmyndigheter",
+        "en": "travel advice, embassies"
+      }
     }
   ]
 }

@@ -3,19 +3,30 @@ package se.imorn.designsystem.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
@@ -25,7 +36,7 @@ import java.time.LocalDate
 
 private const val MILLIS_PER_DAY = 86_400_000L
 
-/** A secondary action beside the screen's [ImornButton]: outlined, so the main action is the one that stands out. */
+/** A secondary action beside the screen's [ImornButton]: a soft pill, so the main action is the one that stands out. */
 @Composable
 fun ImornSecondaryButton(
     text: String,
@@ -33,8 +44,18 @@ fun ImornSecondaryButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    OutlinedButton(onClick = onClick, modifier = modifier, enabled = enabled) {
-        Text(text = text)
+    Button(
+        onClick = onClick,
+        modifier = modifier.heightIn(min = ButtonHeight),
+        enabled = enabled,
+        shape = CircleShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = ImornTheme.colors.surfaceVariant,
+            contentColor = ImornTheme.colors.onSurface,
+        ),
+        contentPadding = PaddingValues(horizontal = ImornTheme.spacing.lg),
+    ) {
+        Text(text = text, style = ImornTheme.typography.titleSmall)
     }
 }
 
@@ -71,10 +92,13 @@ fun ImornChoiceCard(
         },
         shape = ImornTheme.shapes.medium,
         colors = CardDefaults.cardColors(
-            containerColor = if (selected) colors.primaryContainer else ImornTheme.surfaces.card,
-            contentColor = if (selected) colors.onPrimaryContainer else colors.onSurface,
+            containerColor = if (selected) colors.secondaryContainer else ImornTheme.surfaces.card,
+            contentColor = if (selected) colors.onSecondaryContainer else colors.onSurface,
         ),
-        border = BorderStroke(if (selected) 2.dp else 1.dp, if (selected) colors.primary else colors.outline),
+        border = BorderStroke(
+            if (selected) 2.dp else 1.dp,
+            if (selected) colors.onBackground else ImornTheme.surfaces.cardOutline,
+        ),
     ) {
         Column(
             modifier = Modifier.padding(ImornTheme.spacing.md),
@@ -119,4 +143,51 @@ fun ImornDatePickerDialog(
     ) {
         DatePicker(state = state)
     }
+}
+
+/**
+ * How far along something is, such as a subflow's steps: a thin bar in the color of the present, on a quiet track.
+ * [progress] is from 0 to 1. Decorative to TalkBack: say the numbers in text next to it.
+ */
+@Composable
+fun ImornProgressBar(progress: Float, modifier: Modifier = Modifier) {
+    LinearProgressIndicator(
+        progress = { progress.coerceIn(0f, 1f) },
+        modifier = modifier
+            .fillMaxWidth()
+            .height(6.dp)
+            .clearAndSetSemantics { },
+        color = ImornTheme.colors.secondary,
+        trackColor = ImornTheme.colors.surfaceVariant,
+        strokeCap = StrokeCap.Round,
+        gapSize = 0.dp,
+        drawStopIndicator = {},
+    )
+}
+
+/**
+ * A small choice in a row, such as a template category: one of many, selected or not. The text is the caller's
+ * string, so categories stay translated with the rest of the screen.
+ */
+@Composable
+fun ImornFilterChip(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = ImornTheme.colors
+    FilterChip(
+        selected = selected,
+        onClick = onClick,
+        label = { Text(text = text) },
+        modifier = modifier,
+        shape = ImornTheme.shapes.small,
+        colors = FilterChipDefaults.filterChipColors(
+            containerColor = ImornTheme.surfaces.card,
+            labelColor = colors.onSurface,
+            selectedContainerColor = colors.primaryContainer,
+            selectedLabelColor = colors.onPrimaryContainer,
+        ),
+    )
 }

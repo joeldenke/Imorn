@@ -28,13 +28,13 @@ data class ImornShapes(
     val extraLarge: CornerBasedShape,
 )
 
-// Corner radius from the base 14 dp: soft, never pill-shaped except where Material asks for it.
+// Soft, generous corners, like rounded book covers: cards at 24 dp, the big blocks at 32 dp.
 internal val ImornCorners = ImornShapes(
     extraSmall = RoundedCornerShape(6.dp),
-    small = RoundedCornerShape(10.dp),
-    medium = RoundedCornerShape(14.dp),
-    large = RoundedCornerShape(20.dp),
-    extraLarge = RoundedCornerShape(28.dp),
+    small = RoundedCornerShape(12.dp),
+    medium = RoundedCornerShape(24.dp),
+    large = RoundedCornerShape(28.dp),
+    extraLarge = RoundedCornerShape(32.dp),
 )
 
 internal fun ImornShapes.toMaterial() = Shapes(

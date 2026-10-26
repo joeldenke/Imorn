@@ -1,9 +1,20 @@
 {
   "id": "move",
   "version": 2,
+  "order": 1,
   "title": {
     "sv": "Flytta",
     "en": "Moving"
+  },
+  "summary": {
+    "sv": "Från uppsägningen till första frukosten",
+    "en": "From giving notice to the first breakfast"
+  },
+  "category": "home",
+  "icon": "home",
+  "helps": {
+    "sv": "Håller koll på uppsägning, flyttfirma, adressändring och första natten.",
+    "en": "Keeps track of notice, movers, address changes and the first night."
   },
   "lifestages": [
     "first-home",

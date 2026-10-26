@@ -6,16 +6,22 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
-// Imorn's palette, "Gryning": the sky just before the sun comes up. A calm night indigo for the future and the
-// overview, a warm apricot for what happens along the way, and a rose for memories.
+// Imorn's palette, "Gryning", on warm paper: the bookshelf look. A deep indigo for the future and the overview, a
+// soft apricot for what happens now, and a rose for memories, on a cream ground with ink-dark text.
 // Every value here is referenced through ImornTheme.colors, never hardcoded in features.
 
-val Indigo40 = Color(0xFF3A4BA8)
-val Indigo80 = Color(0xFFBAC3FF)
-val Apricot40 = Color(0xFF8B5000)
-val Apricot80 = Color(0xFFFFB77A)
-val Rose40 = Color(0xFF8E4A63)
-val Rose80 = Color(0xFFFFB0C9)
+val Indigo40 = Color(0xFF2E3A8C)
+val Indigo80 = Color(0xFFB9C1F2)
+val Apricot40 = Color(0xFF9A4F12)
+val Apricot80 = Color(0xFFFFB98A)
+val Rose40 = Color(0xFFA04A6C)
+val Rose80 = Color(0xFFF2A9C3)
+
+/** Ink: the text and the strongest buttons on paper. */
+val Ink = Color(0xFF22201C)
+
+/** Paper: the ground, and the text on ink. */
+val Paper = Color(0xFFFAF6F0)
 
 // Brand colors outside the Material scheme. Night is the launcher icon's plate (res/values/colors.xml,
 // ic_launcher_background, must match); Dawn is the rising sun, for brand moments such as onboarding.
@@ -62,8 +68,8 @@ data class ImornSurfaceColors(
     val cardOutline: Color,
 )
 
-internal val ImornLightSurfaces = ImornSurfaceColors(card = Color.White, cardOutline = Color(0xFFE4E1E9))
-internal val ImornDarkSurfaces = ImornSurfaceColors(card = Color(0xFF1F1F25), cardOutline = Color(0xFF303036))
+internal val ImornLightSurfaces = ImornSurfaceColors(card = Color.White, cardOutline = Color(0xFFEDE4D8))
+internal val ImornDarkSurfaces = ImornSurfaceColors(card = Color(0xFF211F27), cardOutline = Color(0xFF34313B))
 
 /** Picks Imorn's roles from a scheme, so they also follow dynamic color when it's on. */
 internal fun ColorScheme.toImornColors() = ImornColors(
@@ -95,76 +101,76 @@ internal fun ColorScheme.toImornColors() = ImornColors(
 // navigation bars, text fields), and an unset role falls back to Material's purple baseline.
 internal val ImornLightColors = lightColorScheme(
     primary = Indigo40,
-    onPrimary = Color.White,
-    primaryContainer = Color(0xFFDEE0FF),
-    onPrimaryContainer = Color(0xFF00115A),
+    onPrimary = Paper,
+    primaryContainer = Color(0xFFDDE0F4),
+    onPrimaryContainer = Color(0xFF141B52),
     inversePrimary = Indigo80,
     secondary = Apricot40,
     onSecondary = Color.White,
-    secondaryContainer = Color(0xFFFFDCC2),
-    onSecondaryContainer = Color(0xFF2E1500),
+    secondaryContainer = Color(0xFFFFD8B5),
+    onSecondaryContainer = Ink,
     tertiary = Rose40,
     onTertiary = Color.White,
-    tertiaryContainer = Color(0xFFFFD9E3),
-    onTertiaryContainer = Color(0xFF3A0720),
+    tertiaryContainer = Color(0xFFF6D3E0),
+    onTertiaryContainer = Color(0xFF3A1626),
     error = Color(0xFFBA1A1A),
     onError = Color.White,
     errorContainer = Color(0xFFFFDAD6),
     onErrorContainer = Color(0xFF410002),
-    background = Color(0xFFFBF8FD),
-    onBackground = Color(0xFF1B1B21),
-    surface = Color(0xFFFBF8FD),
-    onSurface = Color(0xFF1B1B21),
-    surfaceVariant = Color(0xFFE3E1EC),
-    onSurfaceVariant = Color(0xFF46464F),
+    background = Paper,
+    onBackground = Ink,
+    surface = Paper,
+    onSurface = Ink,
+    surfaceVariant = Color(0xFFE7DCCD),
+    onSurfaceVariant = Color(0xFF645D56),
     surfaceTint = Indigo40,
-    surfaceBright = Color(0xFFFBF8FD),
-    surfaceDim = Color(0xFFDBD9DE),
+    surfaceBright = Paper,
+    surfaceDim = Color(0xFFE2D8CA),
     surfaceContainerLowest = Color.White,
-    surfaceContainerLow = Color(0xFFF5F2F7),
-    surfaceContainer = Color(0xFFEFEDF1),
-    surfaceContainerHigh = Color(0xFFEAE7EC),
-    surfaceContainerHighest = Color(0xFFE4E1E6),
-    inverseSurface = Color(0xFF303036),
-    inverseOnSurface = Color(0xFFF2EFF4),
-    outline = Color(0xFF767680),
-    outlineVariant = Color(0xFFC6C5D0),
+    surfaceContainerLow = Color(0xFFF5EFE7),
+    surfaceContainer = Color(0xFFEFE7DC),
+    surfaceContainerHigh = Color(0xFFE9E0D3),
+    surfaceContainerHighest = Color(0xFFE2D8CA),
+    inverseSurface = Ink,
+    inverseOnSurface = Paper,
+    outline = Color(0xFF8E857A),
+    outlineVariant = Color(0xFFDDD3C6),
 )
 
 internal val ImornDarkColors = darkColorScheme(
     primary = Indigo80,
-    onPrimary = Color(0xFF08218A),
-    primaryContainer = Color(0xFF22378F),
-    onPrimaryContainer = Color(0xFFDEE0FF),
+    onPrimary = Color(0xFF1A2266),
+    primaryContainer = Indigo40,
+    onPrimaryContainer = Color(0xFFDDE0F4),
     inversePrimary = Indigo40,
     secondary = Apricot80,
-    onSecondary = Color(0xFF4A2800),
-    secondaryContainer = Color(0xFF6A3C00),
-    onSecondaryContainer = Color(0xFFFFDCC2),
+    onSecondary = Color(0xFF4A2400),
+    secondaryContainer = Color(0xFF6B3A12),
+    onSecondaryContainer = Color(0xFFFFE3CC),
     tertiary = Rose80,
-    onTertiary = Color(0xFF561D35),
-    tertiaryContainer = Color(0xFF72334B),
-    onTertiaryContainer = Color(0xFFFFD9E3),
+    onTertiary = Color(0xFF4F1631),
+    tertiaryContainer = Color(0xFF6E2E4A),
+    onTertiaryContainer = Color(0xFFFFD9E6),
     error = Color(0xFFFFB4AB),
     onError = Color(0xFF690005),
     errorContainer = Color(0xFF93000A),
     onErrorContainer = Color(0xFFFFDAD6),
-    background = Color(0xFF131318),
-    onBackground = Color(0xFFE4E1E9),
-    surface = Color(0xFF131318),
-    onSurface = Color(0xFFE4E1E9),
-    surfaceVariant = Color(0xFF46464F),
-    onSurfaceVariant = Color(0xFFC6C5D0),
+    background = Color(0xFF15141B),
+    onBackground = Color(0xFFF1ECE4),
+    surface = Color(0xFF15141B),
+    onSurface = Color(0xFFF1ECE4),
+    surfaceVariant = Color(0xFF3A3640),
+    onSurfaceVariant = Color(0xFFCFC7BD),
     surfaceTint = Indigo80,
-    surfaceBright = Color(0xFF39383F),
-    surfaceDim = Color(0xFF131318),
-    surfaceContainerLowest = Color(0xFF0E0E13),
-    surfaceContainerLow = Color(0xFF1B1B21),
-    surfaceContainer = Color(0xFF1F1F25),
-    surfaceContainerHigh = Color(0xFF2A292F),
-    surfaceContainerHighest = Color(0xFF35343A),
-    inverseSurface = Color(0xFFE4E1E9),
-    inverseOnSurface = Color(0xFF303036),
-    outline = Color(0xFF90909A),
-    outlineVariant = Color(0xFF46464F),
+    surfaceBright = Color(0xFF3B3842),
+    surfaceDim = Color(0xFF15141B),
+    surfaceContainerLowest = Color(0xFF100F14),
+    surfaceContainerLow = Color(0xFF1C1B22),
+    surfaceContainer = Color(0xFF242229),
+    surfaceContainerHigh = Color(0xFF2D2B33),
+    surfaceContainerHighest = Color(0xFF37343D),
+    inverseSurface = Color(0xFFF1ECE4),
+    inverseOnSurface = Color(0xFF22201C),
+    outline = Color(0xFF8E877E),
+    outlineVariant = Color(0xFF45414B),
 )

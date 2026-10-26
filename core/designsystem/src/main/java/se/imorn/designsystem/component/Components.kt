@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
@@ -95,7 +98,7 @@ fun ImornCard(
     }
 }
 
-/** The app's primary action button. */
+/** The app's primary action: an ink pill, big enough for the thumb. */
 @Composable
 fun ImornButton(
     text: String,
@@ -103,10 +106,23 @@ fun ImornButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    Button(onClick = onClick, modifier = modifier, enabled = enabled) {
-        Text(text = text)
+    Button(
+        onClick = onClick,
+        modifier = modifier.heightIn(min = ButtonHeight),
+        enabled = enabled,
+        shape = CircleShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = ImornTheme.colors.onBackground,
+            contentColor = ImornTheme.colors.background,
+        ),
+        contentPadding = PaddingValues(horizontal = ImornTheme.spacing.lg),
+    ) {
+        Text(text = text, style = ImornTheme.typography.titleSmall)
     }
 }
+
+/** How tall the app's buttons are: easy to hit, also with big text. */
+internal val ButtonHeight = 52.dp
 
 /** Text with a required style from [ImornTheme.typography], so text never falls back to Material's defaults. */
 @Composable
@@ -115,8 +131,16 @@ fun ImornText(
     style: TextStyle,
     modifier: Modifier = Modifier,
     color: Color = ImornTheme.colors.onSurface,
+    maxLines: Int = Int.MAX_VALUE,
 ) {
-    Text(text = text, style = style, color = color, modifier = modifier)
+    Text(
+        text = text,
+        style = style,
+        color = color,
+        modifier = modifier,
+        maxLines = maxLines,
+        overflow = TextOverflow.Ellipsis,
+    )
 }
 
 /** Body text that follows the app typography and color. */

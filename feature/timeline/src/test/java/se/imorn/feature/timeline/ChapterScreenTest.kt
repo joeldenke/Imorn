@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import se.imorn.designsystem.theme.ImornTheme
+import se.imorn.model.Chapter
 import se.imorn.ui.Capture
 import se.imorn.ui.PreviewData
 
@@ -27,18 +28,21 @@ class ChapterScreenTest {
         onShow: (ChapterView) -> Unit = {},
         onOpenEntry: (String) -> Unit = {},
         onAddNote: (String) -> Unit = {},
+        onFinishKeeping: () -> Unit = {},
+        onFinishClosing: () -> Unit = {},
         capture: Capture = Capture({}, {}, {}),
+        chapter: Chapter = PreviewData.moving,
     ) {
         compose.setContent {
             ImornTheme {
                 ChapterScreen(
                     state = ChapterUiState(
-                        PreviewData.moving,
+                        chapter,
                         PreviewData.TODAY,
                         view,
                         PreviewData.kept.map(::KeptEntry),
                     ),
-                    chapter = PreviewData.moving,
+                    chapter = chapter,
                     capture = capture,
                     onShow = onShow,
                     onOpenStep = onOpenStep,
@@ -47,11 +51,19 @@ class ChapterScreenTest {
                     onAddStep = {},
                     onAddNote = onAddNote,
                     onSetState = {},
+                    onFinishKeeping = onFinishKeeping,
+                    onFinishClosing = onFinishClosing,
                     onDelete = {},
                     contentPadding = PaddingValues(),
                 )
             }
         }
+    }
+
+    @Test
+    fun aBlankChapterInvitesTheFirstStep() {
+        show(ChapterView.List, chapter = PreviewData.moving.copy(steps = emptyList(), phases = emptyList()))
+        compose.onNodeWithText("No steps yet. Add the first thing you need to do.").assertExists()
     }
 
     @Test
@@ -74,7 +86,9 @@ class ChapterScreenTest {
     fun aStepOpensFromTheList() {
         val opened = mutableListOf<String>()
         show(ChapterView.List, onOpenStep = { opened += it })
-        compose.onNodeWithText("Report your move").performClick()
+        // Paperwork starts closed (the next step is in Packing): open it, then the step.
+        compose.onNodeWithText("Paperwork").performScrollTo().performClick()
+        compose.onNodeWithText("Report your move").performScrollTo().performClick()
         assertEquals(listOf("address-change"), opened)
     }
 
@@ -114,6 +128,27 @@ class ChapterScreenTest {
     }
 
     @Test
+    fun finishingKeepsTrackOfWhatLiesFurtherAhead() {
+        var kept = 0
+        show(ChapterView.List, onFinishKeeping = { kept++ })
+        compose.onNodeWithContentDescription("More for this chapter").performClick()
+        compose.onNodeWithText("Finish it").performClick()
+        compose.onNodeWithText("There is 1 thing further ahead. Keep an eye on it?").assertExists()
+        compose.onNodeWithText("Yes, keep track").performClick()
+        assertEquals(1, kept)
+    }
+
+    @Test
+    fun finishingLetsTheThreadsGo() {
+        var closed = 0
+        show(ChapterView.List, onFinishClosing = { closed++ })
+        compose.onNodeWithContentDescription("More for this chapter").performClick()
+        compose.onNodeWithText("Finish it").performClick()
+        compose.onNodeWithText("No, let it go").performClick()
+        assertEquals(1, closed)
+    }
+
+    @Test
     fun theQuickAddWritesANote() {
         val notes = mutableListOf<String>()
         show(ChapterView.List, onAddNote = { notes += it })
@@ -122,5 +157,16 @@ class ChapterScreenTest {
         compose.onNodeWithText("What do you want to remember?").performTextInput("Keys in the blue box")
         compose.onNodeWithText("Save").performClick()
         assertEquals(listOf("Keys in the blue box"), notes)
+    }
+
+    @Test
+    fun eachSubflowShowsItsProgressAndWhatIsNext() {
+        show(ChapterView.List)
+        // Plan: both steps done.
+        compose.onNodeWithText("All 2 done").assertExists()
+        // Paperwork is closed, so it says what is next instead of listing it.
+        compose.onNodeWithText("Next: Report your move", substring = true).assertExists()
+        compose.onNodeWithText("Paperwork").performScrollTo().performClick()
+        compose.onNodeWithText("Next: Report your move", substring = true).assertDoesNotExist()
     }
 }

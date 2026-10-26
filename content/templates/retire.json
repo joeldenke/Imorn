@@ -1,0 +1,226 @@
+{
+  "id": "retire",
+  "version": 1,
+  "order": 11,
+  "title": {
+    "sv": "Gå i pension",
+    "en": "Retiring"
+  },
+  "summary": {
+    "sv": "Överblicken, ansökan och sista arbetsdagen",
+    "en": "The overview, the application and the last working day"
+  },
+  "category": "life-events",
+  "icon": "sun",
+  "helps": {
+    "sv": "Samlar pension, papper, försäkring och den nya vardagen.",
+    "en": "Gathers pension, paperwork, insurance and the new everyday life."
+  },
+  "note": {
+    "sv": "Pensionsregler och skatter ändras. Kontrollera hos Pensionsmyndigheten och Skatteverket.",
+    "en": "Pension rules and taxes change. Check with the Swedish Pensions Agency and Skatteverket."
+  },
+  "lifestages": [
+    "next-chapter"
+  ],
+  "anchors": [
+    {
+      "id": "pension",
+      "label": {
+        "sv": "Första pensionsmånaden",
+        "en": "First month of pension"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "employed",
+      "type": "bool",
+      "text": {
+        "sv": "Är du anställd i dag?",
+        "en": "Are you employed today?"
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "overview",
+      "title": {
+        "sv": "Överblick",
+        "en": "Overview"
+      },
+      "steps": [
+        {
+          "id": "minpension",
+          "title": {
+            "sv": "Se hela din pension på ett ställe",
+            "en": "See your whole pension in one place"
+          },
+          "why": {
+            "sv": "Allmän pension, tjänstepension och privat sparande, med en prognos.",
+            "en": "State pension, workplace pension and private savings, with a forecast."
+          },
+          "at": {
+            "anchor": "pension",
+            "offsetMonths": -12
+          },
+          "links": [
+            "minpension.start"
+          ]
+        },
+        {
+          "id": "when",
+          "title": {
+            "sv": "Bestäm när och hur mycket",
+            "en": "Decide when and how much"
+          },
+          "why": {
+            "sv": "Du kan ta ut hela eller delar, och vänta med vissa delar. Pensionsmyndigheten förklarar.",
+            "en": "You can take all or part, and wait with some parts. Pensionsmyndigheten explains."
+          },
+          "at": {
+            "anchor": "pension",
+            "offsetMonths": -9
+          },
+          "links": [
+            "pensionsmyndigheten.start"
+          ]
+        },
+        {
+          "id": "housing-supplement",
+          "title": {
+            "sv": "Kolla om du kan få bostadstillägg",
+            "en": "Check whether you can get a housing supplement"
+          },
+          "at": {
+            "anchor": "pension",
+            "offsetMonths": -3
+          },
+          "links": [
+            "pensionsmyndigheten.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "apply",
+      "title": {
+        "sv": "Ansöka",
+        "en": "Applying"
+      },
+      "steps": [
+        {
+          "id": "apply-state",
+          "title": {
+            "sv": "Ansök om allmän pension",
+            "en": "Apply for the state pension"
+          },
+          "why": {
+            "sv": "Ansök några månader innan du vill ha första utbetalningen.",
+            "en": "Apply a few months before you want the first payment."
+          },
+          "at": {
+            "anchor": "pension",
+            "offsetMonths": -4
+          },
+          "links": [
+            "pensionsmyndigheten.start"
+          ]
+        },
+        {
+          "id": "apply-occupational",
+          "title": {
+            "sv": "Ansök om tjänstepensionen",
+            "en": "Apply for the workplace pension"
+          },
+          "why": {
+            "sv": "Den kommer från ett annat bolag än den allmänna. minPension visar vilket.",
+            "en": "It comes from another company than the state pension. minPension shows which."
+          },
+          "at": {
+            "anchor": "pension",
+            "offsetMonths": -4
+          },
+          "links": [
+            "minpension.start"
+          ]
+        },
+        {
+          "id": "tell-employer",
+          "title": {
+            "sv": "Säg till arbetsgivaren",
+            "en": "Tell your employer"
+          },
+          "at": {
+            "anchor": "pension",
+            "offsetMonths": -4
+          },
+          "when": {
+            "question": "employed",
+            "isTrue": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "last-day",
+      "title": {
+        "sv": "Sista arbetsdagen",
+        "en": "The last working day"
+      },
+      "steps": [
+        {
+          "id": "last-day",
+          "title": {
+            "sv": "Sista arbetsdagen",
+            "en": "The last working day"
+          },
+          "at": {
+            "anchor": "pension",
+            "offsetDays": -1
+          },
+          "photoPrompt": {
+            "sv": "Spara ett foto från sista dagen",
+            "en": "Keep a photo from the last day"
+          },
+          "when": {
+            "question": "employed",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "next",
+          "title": {
+            "sv": "Vad vill du göra nu?",
+            "en": "What do you want to do now?"
+          },
+          "why": {
+            "sv": "Flytta till mindre, skriva framtidsfullmakt eller något helt annat. Ett nytt kapitel kan börja här.",
+            "en": "Move somewhere smaller, write a power of attorney, or something else entirely. A new chapter can start here."
+          },
+          "at": {
+            "anchor": "pension",
+            "offsetMonths": 1
+          }
+        }
+      ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "first-payment",
+      "title": {
+        "sv": "Kolla att första utbetalningen stämmer",
+        "en": "Check that the first payment is right"
+      },
+      "at": {
+        "anchor": "pension",
+        "offsetMonths": 1
+      },
+      "links": [
+        "pensionsmyndigheten.start"
+      ]
+    }
+  ]
+}

@@ -60,23 +60,44 @@ class PlanTest {
         assertEquals(false, chapter.steps.last().fromTemplate)
     }
 
-    @Test fun `the list groups open steps by phase in plan order, own steps last`() {
-        val chapter = moving().complete("notice", LocalDate.of(2026, 12, 1)).withOwnStep(Step("own-1", "Call grandma"))
-        val groups = chapter.upcomingByPhase()
-        assertEquals(listOf("plan", "papers", null), groups.map { it.phase?.id })
-        assertEquals(listOf("book-van", "boxes"), groups[0].steps.ids)
-        assertEquals(listOf("address"), groups[1].steps.ids)
-        assertEquals(listOf("own-1"), groups[2].steps.ids)
+    @Test fun `a step can be renamed`() {
+        val chapter = moving().withStepTitle("address", "Tell the new landlord")
+        assertEquals("Tell the new landlord", chapter.steps.first { it.id == "address" }.title)
     }
 
-    @Test fun `a phase with nothing left disappears from the list`() {
-        val chapter = moving().complete("address", LocalDate.of(2027, 2, 1))
-        assertEquals(listOf("plan"), chapter.upcomingByPhase().map { it.phase?.id })
+    @Test(expected = IllegalArgumentException::class)
+    fun `a step cannot have a blank name`() {
+        moving().withStepTitle("address", "  ")
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun `an own step cannot reuse an id`() {
         moving().withOwnStep(Step("boxes", "Boxes again"))
+    }
+
+    @Test fun `a step moves among the steps in its own phase`() {
+        val chapter = moving()
+        assertTrue(chapter.canMoveStep("notice", earlier = true))
+        assertEquals(
+            listOf("notice", "book-van", "boxes"),
+            chapter.moveStep("notice", earlier = true).steps.filter { it.phaseId == "plan" }.map { it.id },
+        )
+        assertEquals(
+            listOf("book-van", "boxes", "notice"),
+            chapter.moveStep("notice", earlier = false).steps.filter { it.phaseId == "plan" }.map { it.id },
+        )
+    }
+
+    @Test fun `the edge of a phase cannot move further`() {
+        val chapter = moving()
+        assertTrue(!chapter.canMoveStep("book-van", earlier = true))
+        assertTrue(!chapter.canMoveStep("boxes", earlier = false))
+        assertEquals(chapter, chapter.moveStep("book-van", earlier = true))
+    }
+
+    @Test fun `a removed step leaves the plan`() {
+        val chapter = moving().withoutStep("notice")
+        assertTrue(chapter.steps.none { it.id == "notice" })
     }
 
     @Test(expected = IllegalArgumentException::class)

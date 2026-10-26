@@ -1,0 +1,246 @@
+{
+  "id": "study",
+  "version": 1,
+  "order": 9,
+  "title": {
+    "sv": "Börja plugga",
+    "en": "Starting university"
+  },
+  "summary": {
+    "sv": "Ansökan, CSN, boendet och första terminen",
+    "en": "The application, student finance, housing and the first term"
+  },
+  "category": "work-study",
+  "icon": "book",
+  "helps": {
+    "sv": "Hjälper dig få plats, pengar och vardag att gå ihop.",
+    "en": "Helps you get a place, funding and everyday life to fit together."
+  },
+  "lifestages": [
+    "first-home"
+  ],
+  "anchors": [
+    {
+      "id": "start",
+      "label": {
+        "sv": "Terminsstart",
+        "en": "Start of term"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "csn",
+      "type": "bool",
+      "text": {
+        "sv": "Ska du söka studiemedel?",
+        "en": "Will you apply for student finance?"
+      }
+    },
+    {
+      "id": "moving",
+      "type": "bool",
+      "text": {
+        "sv": "Behöver du flytta för studierna?",
+        "en": "Do you need to move for your studies?"
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "apply",
+      "title": {
+        "sv": "Söka",
+        "en": "Applying"
+      },
+      "steps": [
+        {
+          "id": "application",
+          "title": {
+            "sv": "Sök till utbildningen",
+            "en": "Apply for the programme"
+          },
+          "why": {
+            "sv": "Sista dagen att söka är ofta långt före terminsstarten. Kolla datumet.",
+            "en": "The deadline is often long before the start of term. Check the date."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetMonths": -6
+          },
+          "links": [
+            "antagning.start"
+          ]
+        },
+        {
+          "id": "csn-apply",
+          "title": {
+            "sv": "Ansök om studiemedel",
+            "en": "Apply for student finance"
+          },
+          "why": {
+            "sv": "Sök i god tid så att pengarna kommer när terminen börjar.",
+            "en": "Apply in good time so the money arrives when term starts."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetMonths": -2
+          },
+          "links": [
+            "csn.start"
+          ],
+          "when": {
+            "question": "csn",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "answer-offer",
+          "title": {
+            "sv": "Tacka ja till platsen",
+            "en": "Accept your place"
+          },
+          "why": {
+            "sv": "Svarar du inte i tid kan platsen gå till någon annan.",
+            "en": "If you don't answer in time, the place can go to someone else."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetMonths": -2
+          },
+          "links": [
+            "antagning.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "housing",
+      "title": {
+        "sv": "Boende",
+        "en": "Housing"
+      },
+      "steps": [
+        {
+          "id": "student-housing",
+          "title": {
+            "sv": "Ställ dig i kö till studentbostad",
+            "en": "Join the student housing queue"
+          },
+          "why": {
+            "sv": "I många studentstäder är kön lång, så börja så tidigt du kan.",
+            "en": "In many student towns the queue is long, so start as early as you can."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetMonths": -6
+          },
+          "links": [
+            "kommun.start"
+          ],
+          "when": {
+            "question": "moving",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "first-home-template",
+          "title": {
+            "sv": "Planera första egna boendet",
+            "en": "Plan your first home"
+          },
+          "why": {
+            "sv": "Börja ett kapitel med mallen Första egna boendet, så kommer el och försäkring med.",
+            "en": "Start a chapter with the Your first home template, and electricity and insurance come with it."
+          },
+          "at": {
+            "anchor": "start",
+            "offsetMonths": -1
+          },
+          "when": {
+            "question": "moving",
+            "isTrue": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "term",
+      "title": {
+        "sv": "Terminen",
+        "en": "The term"
+      },
+      "steps": [
+        {
+          "id": "register",
+          "title": {
+            "sv": "Registrera dig på kurserna",
+            "en": "Register for your courses"
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "first-day",
+          "title": {
+            "sv": "Första dagen",
+            "en": "The first day"
+          },
+          "at": {
+            "anchor": "start",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Spara ett foto från första dagen",
+            "en": "Keep a photo from the first day"
+          }
+        }
+      ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "results",
+      "title": {
+        "sv": "Kolla att studieresultaten räcker för CSN",
+        "en": "Check that your results are enough for CSN"
+      },
+      "why": {
+        "sv": "CSN kontrollerar resultaten innan nästa termin.",
+        "en": "CSN checks your results before the next term."
+      },
+      "at": {
+        "anchor": "start",
+        "offsetMonths": 5
+      },
+      "links": [
+        "csn.start"
+      ],
+      "when": {
+        "question": "csn",
+        "isTrue": true
+      }
+    },
+    {
+      "id": "csn-next-year",
+      "title": {
+        "sv": "Ansök om studiemedel för nästa läsår",
+        "en": "Apply for student finance for next year"
+      },
+      "at": {
+        "anchor": "start",
+        "offsetMonths": 10
+      },
+      "links": [
+        "csn.start"
+      ],
+      "when": {
+        "question": "csn",
+        "isTrue": true
+      }
+    }
+  ]
+}

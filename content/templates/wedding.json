@@ -1,0 +1,256 @@
+{
+  "id": "wedding",
+  "version": 1,
+  "order": 7,
+  "title": {
+    "sv": "Gifta sig",
+    "en": "Getting married"
+  },
+  "summary": {
+    "sv": "Hindersprövningen, dagen och namnet efteråt",
+    "en": "The marriage licence, the day and the name afterwards"
+  },
+  "category": "family",
+  "icon": "rings",
+  "helps": {
+    "sv": "Håll koll på hindersprövning, platser, gäster och namnbyte.",
+    "en": "Keep track of the marriage check, venues, guests and name change."
+  },
+  "note": {
+    "sv": "Reglerna för vigsel och namnförändring kan ändras. Kontrollera hos Skatteverket.",
+    "en": "The rules for marriage and name changes can change. Check with Skatteverket."
+  },
+  "lifestages": [
+    "building",
+    "midlife"
+  ],
+  "anchors": [
+    {
+      "id": "wedding",
+      "label": {
+        "sv": "Bröllopsdag",
+        "en": "Wedding day"
+      },
+      "required": false
+    }
+  ],
+  "questions": [
+    {
+      "id": "newName",
+      "type": "bool",
+      "text": {
+        "sv": "Ska någon av er byta efternamn?",
+        "en": "Will either of you change surname?"
+      }
+    },
+    {
+      "id": "guests",
+      "type": "bool",
+      "text": {
+        "sv": "Blir det en fest med gäster?",
+        "en": "Will there be a party with guests?"
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "plan",
+      "title": {
+        "sv": "Planera",
+        "en": "Plan"
+      },
+      "steps": [
+        {
+          "id": "officiant",
+          "title": {
+            "sv": "Bestäm vem som viger er",
+            "en": "Decide who marries you"
+          },
+          "why": {
+            "sv": "En präst eller annan förrättare i ett trossamfund, eller en borgerlig vigselförrättare via kommunen.",
+            "en": "A priest or officiant from a faith community, or a civil officiant through the municipality."
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetMonths": -8
+          },
+          "links": [
+            "kommun.start"
+          ]
+        },
+        {
+          "id": "venue",
+          "title": {
+            "sv": "Boka platsen",
+            "en": "Book the venue"
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetMonths": -8
+          },
+          "when": {
+            "question": "guests",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "guest-list",
+          "title": {
+            "sv": "Gör gästlistan och skicka ut en spara-datumet",
+            "en": "Make the guest list and send a save-the-date"
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetMonths": -6
+          },
+          "when": {
+            "question": "guests",
+            "isTrue": true
+          }
+        },
+        {
+          "id": "budget",
+          "title": {
+            "sv": "Gör en budget ni båda kan stå för",
+            "en": "Make a budget you can both stand behind"
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetMonths": -6
+          }
+        },
+        {
+          "id": "prenup",
+          "title": {
+            "sv": "Prata om äktenskapsförord",
+            "en": "Talk about a prenuptial agreement"
+          },
+          "why": {
+            "sv": "Ett förord ska registreras hos Skatteverket för att gälla.",
+            "en": "A prenup must be registered with Skatteverket to be valid."
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetMonths": -3
+          },
+          "links": [
+            "skatteverket.start"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "papers",
+      "title": {
+        "sv": "Papper",
+        "en": "Paperwork"
+      },
+      "steps": [
+        {
+          "id": "hindersprovning",
+          "title": {
+            "sv": "Ansök om hindersprövning",
+            "en": "Apply for the marriage licence"
+          },
+          "why": {
+            "sv": "Den gäller bara en begränsad tid, så gör den inte för tidigt. Skatteverket säger hur länge.",
+            "en": "It's only valid for a limited time, so don't apply too early. Skatteverket says how long."
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetMonths": -2
+          },
+          "links": [
+            "skatteverket.hindersprovning"
+          ]
+        },
+        {
+          "id": "witnesses",
+          "title": {
+            "sv": "Be två vittnen",
+            "en": "Ask two witnesses"
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetMonths": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "day",
+      "title": {
+        "sv": "Dagen",
+        "en": "The day"
+      },
+      "steps": [
+        {
+          "id": "rings",
+          "title": {
+            "sv": "Hämta ringarna",
+            "en": "Pick up the rings"
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetDays": -7
+          }
+        },
+        {
+          "id": "the-day",
+          "title": {
+            "sv": "Bröllopsdagen",
+            "en": "The wedding day"
+          },
+          "at": {
+            "anchor": "wedding",
+            "offsetDays": 0
+          },
+          "photoPrompt": {
+            "sv": "Spara ett foto från dagen",
+            "en": "Keep a photo from the day"
+          }
+        }
+      ]
+    }
+  ],
+  "longThreads": [
+    {
+      "id": "name-change",
+      "title": {
+        "sv": "Byt efternamn",
+        "en": "Change your surname"
+      },
+      "why": {
+        "sv": "Anmäl det till Skatteverket. Sedan pass, id-kort, bank och jobb.",
+        "en": "Register it with Skatteverket. Then your passport, ID card, bank and work."
+      },
+      "at": {
+        "anchor": "wedding",
+        "offsetDays": 14
+      },
+      "links": [
+        "skatteverket.start",
+        "polisen.pass"
+      ],
+      "when": {
+        "question": "newName",
+        "isTrue": true
+      }
+    },
+    {
+      "id": "anniversary",
+      "title": {
+        "sv": "Ett år",
+        "en": "One year"
+      },
+      "at": {
+        "anchor": "wedding",
+        "offsetMonths": 12
+      },
+      "photoPrompt": {
+        "sv": "Spara ett foto från första bröllopsdagen",
+        "en": "Keep a photo from your first anniversary"
+      }
+    }
+  ]
+}

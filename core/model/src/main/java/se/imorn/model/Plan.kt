@@ -23,15 +23,15 @@ private fun Chapter.planned(step: Step) = PlannedStep(id, title, step, dateOf(st
  * chapter whose anchor is still unknown reads like the template. Long threads are left out; see [longThreads].
  */
 fun Chapter.upcoming(): List<PlannedStep> = steps
-    .filter { it.status == StepStatus.Open && !it.longThread }
+    .filter { it.status == StepStatus.Open && !isLongThread(it) }
     .map { planned(it) }
     .withIndex()
     .sortedWith(compareBy<IndexedValue<PlannedStep>>({ it.value.date == null }, { it.value.date }, { it.index }))
     .map { it.value }
 
-/** The open long threads, soonest first; those without a day last. */
+/** The open long threads, soonest first; those without a day last. See [isLongThread] for what counts. */
 fun Chapter.longThreads(): List<PlannedStep> = steps
-    .filter { it.status == StepStatus.Open && it.longThread }
+    .filter { it.status == StepStatus.Open && isLongThread(it) }
     .map { planned(it) }
     .sortedWith(compareBy<PlannedStep>({ it.date == null }, { it.date }))
 
@@ -76,24 +76,91 @@ fun Chapter.notApplicable(stepId: String): Chapter =
 /** The user's own day for the step, or null to count from its anchor again. "Tomorrow" is `today + 1`. */
 fun Chapter.withStepDate(stepId: String, date: LocalDate?): Chapter = updateStep(stepId) { it.copy(date = date) }
 
+/** The user's own name for the step. A blank name is not a name, so it is ignored. */
+fun Chapter.withStepTitle(stepId: String, title: String): Chapter {
+    require(title.isNotBlank()) { "A step needs a name" }
+    return updateStep(stepId) { it.copy(title = title.trim()) }
+}
+
+/** The step's nearest neighbour in the same phase, or null at the edge. */
+private fun Chapter.stepNeighbour(stepId: String, earlier: Boolean): Int? {
+    val index = steps.indexOfFirst { it.id == stepId }
+    if (index < 0) return null
+    val phaseId = steps[index].phaseId
+    return if (earlier) {
+        (index - 1 downTo 0).firstOrNull { steps[it].phaseId == phaseId }
+    } else {
+        (index + 1 until steps.size).firstOrNull { steps[it].phaseId == phaseId }
+    }
+}
+
+/** True when [moveStep] would change the plan: the step has a neighbour in its own phase. */
+fun Chapter.canMoveStep(stepId: String, earlier: Boolean): Boolean = stepNeighbour(stepId, earlier) != null
+
+/** Moves the step one place earlier or later among the steps in its own phase. */
+fun Chapter.moveStep(stepId: String, earlier: Boolean): Chapter {
+    val index = steps.indexOfFirst { it.id == stepId }
+    if (index < 0) return this
+    val target = stepNeighbour(stepId, earlier) ?: return this
+    val reordered = steps.toMutableList()
+    val step = reordered.removeAt(index)
+    reordered.add(target, step)
+    return copy(steps = reordered)
+}
+
+/** Removes the step from the plan. Photos and notes kept with it stay in the chapter's story. */
+fun Chapter.withoutStep(stepId: String): Chapter {
+    require(steps.any { it.id == stepId }) { "No step $stepId in chapter $id" }
+    return copy(steps = steps.filterNot { it.id == stepId })
+}
+
 /** Adds the user's own step at the end of the plan. */
 fun Chapter.withOwnStep(step: Step): Chapter {
     require(steps.none { it.id == step.id }) { "Step ${step.id} already exists in chapter $id" }
     return copy(steps = steps + step.copy(fromTemplate = false))
 }
 
-/** A group in the list view: a phase and its open steps, or steps without a known phase when [phase] is null. */
-data class PhaseGroup(val phase: Phase?, val steps: List<PlannedStep>)
+/**
+ * A subflow of the chapter, such as *Mortgage and down payment* or *Subscriptions*: a phase with how far along it
+ * is. [open] is what waits, in [upcoming]'s order, and [next] the first of it. Steps that don't apply count for
+ * nothing; [phase] is null for the user's own steps.
+ */
+data class Subflow(val phase: Phase?, val done: Int, val total: Int, val open: List<PlannedStep>) {
+    val next: PlannedStep? get() = open.firstOrNull()
+    val finished: Boolean get() = open.isEmpty()
+}
 
 /**
- * The open steps as the list shows them: by phase in the plan's order, each in [upcoming]'s order, then the steps
- * without a known phase (the user's own). Empty groups are left out, and so are long threads; see [longThreads].
+ * The chapter as subflows, in the plan's order, then the user's own steps. A subflow is there when it has a step
+ * that applies, also when every step is done, so the chapter shows what is behind it too. Long threads are left
+ * out, as in [upcoming]; see [longThreads].
  */
-fun Chapter.upcomingByPhase(): List<PhaseGroup> {
+fun Chapter.subflows(): List<Subflow> {
     val upcoming = upcoming()
     val known = phases.map { it.id }.toSet()
-    val grouped = phases.map { phase -> PhaseGroup(phase, upcoming.filter { it.step.phaseId == phase.id }) }
-    return (grouped + PhaseGroup(null, upcoming.filter { it.step.phaseId !in known })).filter { it.steps.isNotEmpty() }
+    val counted = steps.filter { it.status != StepStatus.NotApplicable && !it.longThread }
+    fun subflow(phase: Phase?, belongs: (Step) -> Boolean): Subflow {
+        val mine = counted.filter(belongs)
+        return Subflow(
+            phase = phase,
+            done = mine.count { it.status == StepStatus.Done },
+            total = mine.size,
+            open = upcoming.filter { belongs(it.step) },
+        )
+    }
+    val grouped = phases.map { phase -> subflow(phase) { it.phaseId == phase.id } }
+    return (grouped + subflow(null) { it.phaseId !in known }).filter { it.total > 0 }
+}
+
+/** How far along a chapter is: done steps out of those that apply, long threads left out, as in [subflows]. */
+data class Progress(val done: Int, val total: Int) {
+    /** From 0 to 1; a chapter without steps has come nowhere. */
+    val share: Float get() = if (total == 0) 0f else done.toFloat() / total
+}
+
+fun Chapter.progress(): Progress {
+    val flows = subflows()
+    return Progress(done = flows.sumOf { it.done }, total = flows.sumOf { it.total })
 }
 
 /** Rests, closes or wakes the chapter. A resting chapter keeps only its long threads in view. */

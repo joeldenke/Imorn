@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="template_blank">Start from a blank project</string>
+    <string name="template_blank_body">Just a name. You add the steps yourself.</string>
+    <string name="template_blank_help">A blank project is just yours: name it, then add the first step. You can change everything later.</string>
+    <string name="template_blank_name">Project name</string>
+    <string name="template_blank_create">Create project</string>
+    <string name="template_search">Search projects</string>
+    <string name="template_category_all">All</string>
+    <string name="template_category_home">Home</string>
+    <string name="template_category_family">Family</string>
+    <string name="template_category_work_study">Work and study</string>
+    <string name="template_category_health">Health</string>
+    <string name="template_category_life_events">Life events</string>
+    <string name="template_category_finance_admin">Money and paperwork</string>
+    <string name="template_none">No projects match. Try another word or category.</string>
+    <string name="template_suggested">Suggested for you</string>
+    <string name="template_all">All projects</string>
+    <string name="template_helps">What this helps with</string>
+    <string name="template_gallery_note">The templates are starting points. You can change the steps as you go.</string>
     <string name="new_chapter_title">New chapter</string>
     <string name="new_chapter_what">What is happening?</string>
+    <string name="new_chapter_what_body">Pick what fits best. A few questions shape the plan, and you can always add your own steps.</string>
+    <!-- Where in starting a chapter the user is: the questions, then the dates. -->
+    <string name="new_chapter_step_of">Step %1$d of %2$d</string>
     <string name="new_chapter_progress">Question %1$d of %2$d</string>
     <string name="new_chapter_yes">Yes</string>
     <string name="new_chapter_no">No</string>
