@@ -70,6 +70,7 @@ Ett kapitel är **en enda tidslinje** med en lysande **nu-linje** i mitten:
 | **Minne** | Foto, anteckning, röstanteckning, före/efter-par | "Sista kvällen i gamla lägenheten" |
 | **Papper** | Dokument, kvitto, kontrakt, inskannat brev – privat som standard | Köpekontrakt, offert, brev från Försäkringskassan |
 | **Lång tråd** | Ett steg långt fram, som överlever att kapitlet är "klart" | Deklarera försäljningen i maj nästa år |
+| **Återkommande steg** | Ett steg som kommer tillbaka (varje år i en månad, eller ett ankare + 12 månader); när det bockas av läggs nästa gång | Byta till vinterdäck varje oktober, service varje år |
 | **Länk** | En referens till myndighet eller tjänst, hämtad ur länkregistret | Skatteverket – flyttanmälan |
 
 ### Relativ tid och ankare
@@ -163,6 +164,15 @@ försäkringar och abonnemang i januari, rensa förråd på våren. Varje tips k
 Rekommendationerna är deterministiska regler i innehållspaketet (livsfas × säsong × befintliga kapitel), testade –
 ingen modell gissar vad du borde göra.
 
+**Nordiskt klimat:** användaren kan välja sin landsdel (norra, mellersta eller södra Sverige; ingen plats och ingen
+behörighet). Säsongsstegen förskjuts efter den: vinterkitet i bilen (filt, varningstriangel, skrapa, startkablar,
+mössa och vantar) och vinterdäcken kommer i september i Kiruna och i november i Malmö. Zonerna och förskjutningen är
+data i innehållspaketet, testade som resten.
+
+**Vädret** (senare, beslut 8): med en prognos från SMHI:s öppna data kan ett steg som redan finns dyka upp i rätt
+stund – "Det blir −18 i natt. Lägg filten i bilen." Vädret väljer bara *när* ett befintligt steg eller tips visas,
+aldrig nya steg, och prognosen hämtas för landsdelen eller en ort användaren väljer, aldrig för telefonens plats.
+
 ---
 
 ## 5. Innehållssystemet – mallar och länkar som lever
@@ -234,6 +244,13 @@ sätt att leverera samma data.
   kvar: koppla in när `:core:reminders` finns
 - [x] Widget (Glance): nästa steg + snabbfoto
 - [x] Omstart, tidszoner, sommartid och ändrade ankare testade
+- [ ] Återkommande steg i `:core:model` och mallformatet (`repeat`: varje år i en månad, eller ankare + N månader);
+      ett avbockat steg lägger nästa gång, deterministiskt och testat
+- [ ] *Lägg i kalendern* på ett steg: kalenderappen öppnas ifylld (`CalendarContract`, `ACTION_INSERT`), användaren
+      sparar själv – ingen behörighet
+- [ ] Kalendersynk (beslut 7): Imorn håller stegen i en kalender användaren väljer och flyttar dem när ankaret
+      flyttas. Väljs en kalender som redan delas med familjen ser alla stegen, utan konto i Imorn (mellansteg före
+      fas 7). Bara skrivning, aldrig läsning av andra händelser
 
 ### Fas 4 – Levande innehåll och mallbiblioteket
 **Mål:** ägaren uppdaterar mallar och länkar utan ny app; biblioteket täcker livets vanligaste projekt.
@@ -243,7 +260,11 @@ sätt att leverera samma data.
 - [ ] **Beslut:** `INTERNET`-behörigheten tillbaka, bara för innehållet (ägarens ok, badging, integritetspolicy)
 - [x] Mallbibliotek med sök, kategorier och livsfaser
 - [ ] Mall-uppdateringar: länkar automatiskt, nya steg som förslag
-- [ ] Säsongstips
+- [ ] Säsongstips, med landsdelen (klimatzon) som förskjuter höstens och vårens steg
+- [ ] Mallen **Bilen** (äga en bil: däckbyten, vinterkit, service, besiktning, skatt och försäkring som
+      återkommande steg), se [templates.md](templates.md)
+- [ ] **Beslut:** väderprognos från SMHI (kräver `INTERNET`, samma beslut som innehållet), som bara väljer när
+      bilens och hemmets vädersteg visas
 - [ ] De första 15 mallarna från [templates.md](templates.md), granskade mot källorna (31 inbakade, utan
       `reviewedAt` än)
 
@@ -266,7 +287,8 @@ sätt att leverera samma data.
 ### Fas 7 – Familjen
 **Mål:** livsprojekt görs sällan ensam.
 - [ ] **Beslut:** konto (Firebase Auth med Google och lösenordsnyckel), Firestore + Cloud Storage, region i EU
-- [ ] Dela kapitel: Läsare / Medhjälpare / Ägare, inbjudningslänk, återkalla
+- [ ] Dela kapitel: Läsare / Medhjälpare / Ägare, inbjudningslänk, återkalla (före kontot räcker en delad kalender,
+      fas 3, för att hålla koll tillsammans; fas 6 ger en kopia av kapitlet som fil)
 - [ ] Tilldela steg till personer, notis till den som fått steget
 - [ ] Separata delningsnivåer: minnen delas, papper aldrig utan uttryckligt val per dokument
 - [ ] Synk med offline-först och konfliktregler (sista skrivning per fält; avbockning vinner)
@@ -296,6 +318,8 @@ Samma ryggrad som i dag (Metro, Navigation 3, en ViewModel per skärm, tillstån
 | `:core:database` | Android | Room, DAO:er, migrationer, repositories |
 | `:core:media` | Android | Foton, miniatyrer, privat lagring, städning |
 | `:core:reminders` | Android | WorkManager, notiser, kanaler |
+| `:core:calendar` | Android | *Lägg i kalendern* och kalendersynk (fas 3) |
+| `:core:weather` | ren Kotlin + Android | Klimatzonerna (ren Kotlin) och SMHI-prognosen (fas 4, efter beslut 8) |
 | `:core:contentsync` | Android | Hämta och verifiera innehållspaket (fas 4) |
 | `:core:capture` | Android | Dokumentskanner, textigenkänning (fas 5) |
 | `:feature:today` | feature | *Imorgon* |
@@ -311,7 +335,7 @@ Regler som följer med från Novila:
 - Planen är alltid deterministisk. Gemini Nano **förklarar** (assistentens kommentar, brevets innebörd) men
   **bestämmer aldrig** steg, datum eller belopp.
 - Inga hårdkodade texter; mallarnas texter kommer ur innehållspaketet, appens egna ur `strings.xml`.
-- Nya behörigheter (`INTERNET`, `CAMERA`, `POST_NOTIFICATIONS`) kräver ägarens ok och syns i badging.
+- Nya behörigheter (`INTERNET`, `CAMERA`, `POST_NOTIFICATIONS`, `WRITE_CALENDAR`) kräver ägarens ok och syns i badging.
 
 ---
 
@@ -325,6 +349,8 @@ Regler som följer med från Novila:
 | 4 | Konto och moln för familjen | Firebase Auth + Firestore + Storage i EU-region; utvärdera ändpunktskryptering för papper | Fas 7 |
 | 5 | Juridisk ton | Mallar är "vanliga steg", aldrig "allt du måste". Fast text: *Imorn ersätter inte rådgivning.* | Fas 1 |
 | 6 | Vem granskar innehållet | Ägaren + en checklista per mall (källa, datum, granskad av); `reviewedAt` i varje mall | Fas 4 |
+| 7 | `WRITE_CALENDAR` för kalendersynk | Ja, frågas först när användaren slår på synken; aldrig `READ_CALENDAR`. *Lägg i kalendern* kommer först och behöver ingen behörighet | Fas 3 |
+| 8 | Väderprognos | SMHI:s öppna data över samma `INTERNET` som innehållet, för landsdelen eller en vald ort, aldrig `ACCESS_*_LOCATION`. Klimatzonerna utan prognos kommer först | Fas 4 |
 
 ---
 

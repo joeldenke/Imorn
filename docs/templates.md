@@ -149,3 +149,29 @@ Länkkortet i appen visar alltid organisation och domän.
 - `questions` är val (`options`) eller ja/nej (`bool`). Ett obesvarat villkor gömmer ingenting.
 - `phases` blir delflöden i listan. `longThreads` ligger under *Längre fram* och följer med när kapitlet vilar.
 - `retired` behålls för evigt: användarens kapitel refererar till steg-id, inte till radnummer.
+
+## Nästa mallar
+
+### Bilen
+Att äga en bil, år efter år. Ett vilande kapitel som vaknar när det är dags; stegen är återkommande (se
+`ROADMAP.md`, fas 3) och höstens och vårens förskjuts efter landsdelen. `car` i katalogen är *Köpa bil*; den här
+mallen handlar om att äga den.
+Frågor: *Byter du däck själv eller på verkstad?* · *Har bilen ett serviceavtal?* Ankare: **B** = besiktning senast
+(står på Transportstyrelsens sida och i brevet), **S** = nästa service (okänt är okej).
+
+| Delflöde | Steg | När | Länkar |
+| --- | --- | --- | --- |
+| Hösten | Boka däckbytet *(om verkstad)* | varje år, sep (norr) – okt (söder) | – |
+| | Byt till vinterdäck, kolla mönsterdjupet **[foto]** | varje år, okt (norr) – nov (söder) | `transportstyrelsen.start` |
+| | Lägg vinterkitet i bilen: filt, varningstriangel, skrapa, startkablar, mössa och vantar | varje år, med däcken | `krisinformation.start` |
+| | Fyll på spolarvätska för vintern, kolla batteriet | varje år, med däcken | – |
+| Våren | Byt till sommardäck, tvätta bort saltet | varje år, apr (söder) – maj (norr) | – |
+| Underhållet | Service | S, sedan varje år | – |
+| | Besiktning | B−4v, sedan varje år | `transportstyrelsen.start` |
+| | Fordonsskatten, se över försäkringen | varje år | `transportstyrelsen.start`, `konsumenternas.start` |
+
+Vinterdäck krävs vid vinterväglag 1 dec–31 mars; tidsgränserna och mönsterdjupet länkas, de skrivs inte in.
+Med väderprognosen (beslut 8) kan vinterkitet komma tillbaka vid den första riktigt kalla natten.
+
+### Hemmet
+Återkommande hemunderhåll: brandvarnare, sotning, hängrännor och vattenavstängning inför vintern.
