@@ -30,10 +30,6 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: screenshots-${{ github.event.issue.number || github.ref }}
-  cancel-in-progress: false
-
 jobs:
   record:
     name: Record ${{ inputs.what || (startsWith(github.event.comment.body, '/record-schemas') && 'schemas') || (startsWith(github.event.comment.body, '/record-badging') && 'badging') || 'screenshots' }}
@@ -44,6 +40,12 @@ jobs:
         startsWith(github.event.comment.body, '/record-badging') ||
         startsWith(github.event.comment.body, '/record-schemas')) &&
        contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association))
+    # On the job, not the workflow: every comment on any issue or PR starts this workflow, and a workflow-level
+    # group would let an ordinary comment replace a queued /record-* run. Never cancelled, since the job pushes to
+    # the branch; a second command on the same PR waits for the first.
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event.issue.number || github.ref }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

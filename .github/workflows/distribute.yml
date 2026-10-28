@@ -1,5 +1,5 @@
 # Sends the debug app (se.imorn.debug) to testers via Firebase App Distribution on every push to
-# main, i.e. every merged PR (or when run manually from the Actions tab). The release build (R8) is built too,
+# main, i.e. every merged PR that changes more than docs (or when run manually from the Actions tab). The release build (R8) is built too,
 # so R8 problems show up at merge; it is signed only when the release key exists. Release notes list every change
 # since the last successful distribution.
 #
@@ -20,14 +20,20 @@ name: Distribute to testers
 on:
   push:
     branches: [main]
+    # Docs-only merges change nothing in the APK; their commits are listed in the next distribution's notes.
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
   workflow_dispatch:
 
 permissions:
   contents: read
 
-# Never run two distributions at once; queue them instead of cancelling.
+# Never run two distributions at once, and never cancel one: a cancelled run could cut off the Firebase upload.
+# One group for every ref (manual runs on a branch upload too). GitHub keeps one run waiting: when several merges
+# land during a distribution, only the newest waits, and its release notes still cover the ones it replaced.
 concurrency:
-  group: distribute
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 env:
