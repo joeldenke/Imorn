@@ -1,6 +1,6 @@
 # Firebase
 
-Imorn uses Firebase only for **App Distribution**: every push to `main` builds the debug APK and sends it to testers.
+Imorn uses Firebase only for **App Distribution**: every push to `main` that changes more than docs builds the debug APK and sends it to testers.
 There are **no JSON files** anywhere — no `google-services.json` and no service account key. GitHub Actions signs in
 to Google Cloud with **Workload Identity Federation** and gets short-lived tokens; nothing long-lived is stored.
 

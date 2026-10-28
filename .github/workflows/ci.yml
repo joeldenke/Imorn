@@ -9,6 +9,9 @@
 #   - Build: the debug APK and its badging check.
 # "Lint, test and build" collects them and is the required status check in branch protection, so nothing red can
 # be merged.
+# A PR that only touches docs (docs/, *.md) skips the three Gradle jobs: "Changes" decides, and "Lint, test and
+# build" still reports, so the required check never hangs (a workflow-level paths filter would leave it pending).
+# Concurrency, triggers, caching and why runners are GitHub-hosted: docs/ci.md.
 name: CI
 
 on:
@@ -23,13 +26,47 @@ on:
 permissions:
   contents: read
 
+# One run per PR (or per branch for workflow_dispatch), keyed on the workflow name so other workflows never share
+# the group. A new push cancels the PR's superseded run. Runs on main are never cancelled: each saves the Gradle
+# cache PRs restore, and every merged commit gets a result. They queue instead.
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'push' }}
 
 jobs:
+  # Whether the PR touches anything the build reads. Only docs (docs/ and Markdown files) means no: no Gradle task
+  # reads them. Pushes to main and manual runs always build. Any doubt (an API error, a PR at the 3000-file limit
+  # of the files API) means yes.
+  changes:
+    name: Changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: read # list the PR's files
+    outputs:
+      code: ${{ steps.diff.outputs.code }}
+    steps:
+      - id: diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          code=true
+          if [ -n "$PR_NUMBER" ] && files=$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" \
+              --jq '.[].filename'); then
+            count=$(printf '%s\n' "$files" | grep -c . || true)
+            if [ "$count" -gt 0 ] && [ "$count" -lt 3000 ] \
+                && ! printf '%s\n' "$files" | grep -qvE '^docs/|\.md$'; then
+              code=false
+              echo "::notice title=Docs only::No file the build reads changed, so lint, tests and build are skipped."
+            fi
+          fi
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
   lint:
     name: Format and lint
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -58,6 +95,8 @@ jobs:
 
   test:
     name: Tests
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -198,6 +237,8 @@ jobs:
 
   build:
     name: Build
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -274,19 +315,22 @@ jobs:
         if: failure()
         uses: ./.github/actions/annotate-gradle-failures
 
-  # The single required check: green only when every job above is green.
+  # The single required check: green only when every job above is green, or skipped because the PR is docs only.
   check:
     name: Lint, test and build
     if: always()
-    needs: [lint, test, build]
+    needs: [changes, lint, test, build]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - name: All jobs passed
         env:
           RESULTS: ${{ toJSON(needs) }}
+          CODE: ${{ needs.changes.outputs.code }}
         run: |
-          failed=$(jq -r 'to_entries[] | select(.value.result != "success") | "\(.key): \(.value.result)"' <<<"$RESULTS")
+          failed=$(jq -r --arg code "$CODE" 'to_entries[]
+            | select(.value.result != "success" and ($code != "false" or .key == "changes" or .value.result != "skipped"))
+            | "\(.key): \(.value.result)"' <<<"$RESULTS")
           if [ -n "$failed" ]; then
             while IFS= read -r line; do echo "::error title=CI job not green::$line"; done <<<"$failed"
             exit 1

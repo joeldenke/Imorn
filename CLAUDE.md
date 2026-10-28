@@ -122,7 +122,12 @@ Strängar och ikoner ligger i modulen som använder dem; det flera moduler anvä
   och `:app:lintDebug`, alla moduler), Tests (`test verifyAndRecordRoborazziDebug koverXmlReportCoverage`) och Build
   (`:app:assembleDebug :app:checkDebugBadging`); kontrollen *Lint, test and build* samlar dem och är den som krävs.
   CI körs bara på PR:er mot `main` och på `main`, inte på en branch utan PR. Gemensamma steg ligger i
-  `.github/actions/`. Bygg aldrig egen cachelogik.
+  `.github/actions/`. Bygg aldrig egen cachelogik. En PR som bara ändrar dokumentation (`docs/`, `*.md`) hoppar
+  över Gradle-jobben men får ändå en grön kontroll. Concurrency, triggers och cache förklaras i
+  [docs/ci.md](docs/ci.md): concurrency-grupper börjar med workflowens namn, CI avbryter en PR:s gamla körning,
+  och distributionen köar och avbryts aldrig.
+- **Bara GitHub-hostade runners.** Repot är publikt, så en PR från en fork kör sin kod i CI; på en egen runner
+  skulle den köra på vår maskin. Ingen self-hosted runner här (Novilas Hive-runner gäller bara Novila).
 - Kan din miljö inte nå Google Maven: öppna PR:en, följ körningen och rätta tills den är grön. Säg aldrig att något
   fungerar utan grönt CI.
 - När PR:en mergas skickar `Distribute to testers` (`distribute.yml`) debug-APK:n (`se.imorn.debug`) via Firebase
