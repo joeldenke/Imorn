@@ -50,6 +50,8 @@ internal fun Project.configureBadging(components: ApplicationAndroidComponentsEx
     components.onVariants { variant ->
         val name = variant.name.replaceFirstChar { it.uppercase() }
         val generate = tasks.register<GenerateBadgingTask>("generate${name}Badging") {
+            group = BADGING_GROUP
+            description = "Dumps the ${variant.name} APK's badging and exported components."
             apk.set(variant.artifacts.get(SingleArtifact.APK))
             apkLoader.set(variant.artifacts.getBuiltArtifactsLoader())
             mergedManifest.set(variant.artifacts.get(SingleArtifact.MERGED_MANIFEST))
@@ -59,6 +61,7 @@ internal fun Project.configureBadging(components: ApplicationAndroidComponentsEx
         val goldenDir = layout.projectDirectory.dir("badging")
         val goldenName = "${variant.name}-badging.txt"
         val update = tasks.register<Copy>("update${name}Badging") {
+            group = BADGING_GROUP
             description = "Saves the ${variant.name} APK's badging as the reviewed reference."
             from(generate.flatMap { it.badging })
             into(goldenDir)
@@ -76,6 +79,8 @@ internal fun Project.configureBadging(components: ApplicationAndroidComponentsEx
         }
     }
 }
+
+private const val BADGING_GROUP = "badging"
 
 @DisableCachingByDefault(because = "Runs aapt2 from the local SDK; fast enough to rerun.")
 abstract class GenerateBadgingTask : DefaultTask() {
