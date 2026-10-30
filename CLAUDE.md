@@ -167,10 +167,19 @@ Misstag som redan har gjorts i Novila, med samma bygge. Gör dem inte här.
 - **GitHub API:** GraphQL och `gh pr create` fungerar inte i molnsessioner. Använd REST eller GitHub-MCP:n.
 
 ## Googles Android-skills
+Repot aktiverar pluginet `android-skills` från github.com/android/skills via `.claude/settings.json`.
 Använd rätt skill innan du ändrar respektive område: `agp-9-upgrade` (bygget, AGP/Kotlin/KSP), `edge-to-edge`
 (nya skärmar, listor, FAB:ar, textfält), `testing-setup`, `navigation-3`, `adaptive`,
 `jetpack-compose-performance`, `r8-analyzer`, `android-permissions-security` (före nya behörigheter, t.ex. kamera
 och notiser), `play-policy-insights` och `glance-canonical-layouts` (widgeten i Fas 3).
+
+## Gradles skills
+Repot aktiverar också pluginet `gradle-skills` från github.com/gradle/gradle-skills
+(`gradle-skills:gradle-best-practices` och `gradle-skills:gradle-wrapper-upgrade`):
+- `gradle-best-practices` för att granska bygget mot Gradles best practices och rätta det som hittas. Reglerna under
+  *Gradle-bygget* går före: ett förslag som bryter mot dem (t.ex. Isolated Projects) tas inte.
+- `gradle-wrapper-upgrade` när Gradle-versionen höjs (wrappern med checksumma), ihop med `agp-9-upgrade` när AGP,
+  Kotlin eller KSP följer med.
 
 ## Gradle-bygget
 - Varje modul använder convention plugins: `imorn.android.application` (bara `:app`), `imorn.android.feature`

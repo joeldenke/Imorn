@@ -1,0 +1,20 @@
+{
+  "extraKnownMarketplaces": {
+    "android-skills": {
+      "source": {
+        "source": "github",
+        "repo": "android/skills"
+      }
+    },
+    "gradle-skills": {
+      "source": {
+        "source": "github",
+        "repo": "gradle/gradle-skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "android-skills@android-skills": true,
+    "gradle-skills@gradle-skills": true
+  }
+}
