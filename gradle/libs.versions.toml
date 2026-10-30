@@ -4,13 +4,13 @@ kotlin = "2.4.21"
 composeBom = "2026.09.00"
 # Material 3 1.5 (beta) ahead of the BOM, for the expressive and adaptive components the
 # design system builds on (flexible app bars, button groups, unified bottom sheet state).
-material3 = "1.5.0-beta01"
+material3 = "1.5.0-beta02"
 androidxCore = "1.19.1"
 androidxActivity = "1.13.0"
 androidxLifecycle = "2.11.0"
 navigation3 = "1.2.0"
 # Local storage, sealed with a key from the Android Keystore (datastore-tink), as in Novila. See PreferencesStore.
-datastore = "1.3.0-rc01"
+datastore = "1.3.0"
 # Tink, the encryption library DataStore's serializer builds on. Pinned to the version datastore-tink
 # 1.3.0-rc01 depends on, so the API used here and the transitive one cannot drift apart.
 tink = "1.24.0"
