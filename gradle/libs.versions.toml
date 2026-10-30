@@ -1,5 +1,5 @@
 [versions]
-agp = "9.4.0"
+agp = "9.4.1"
 kotlin = "2.4.21"
 composeBom = "2026.09.00"
 # Material 3 1.5 (beta) ahead of the BOM, for the expressive and adaptive components the
@@ -24,7 +24,7 @@ metro = "1.4.5"
 # Haze: real-time blur behind glass panels (dev.chrisbanes.haze), only in :core:designsystem's dawn scene. Blur on
 # Android 12+, a translucent tint below. See ImornDawnScene.
 haze = "2.0.1"
-kotlinxSerialization = "1.11.0"
+kotlinxSerialization = "1.12.0"
 kotlinxCoroutines = "1.11.0"
 # Gemini Nano on the device through AICore, for the assistant's message. See GeminiNanoLanguageModel.
 mlkitGenaiPrompt = "1.0.0-beta2"
