@@ -16,5 +16,19 @@
   "enabledPlugins": {
     "android-skills@android-skills": true,
     "gradle-skills@gradle-skills": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/read-guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
