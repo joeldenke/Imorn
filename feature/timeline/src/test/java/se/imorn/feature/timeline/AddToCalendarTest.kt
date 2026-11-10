@@ -1,13 +1,14 @@
 package se.imorn.feature.timeline
 
+import android.app.Activity
 import android.content.Intent
 import android.provider.CalendarContract
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import se.imorn.ui.PreviewData
 import java.time.LocalDate
@@ -53,17 +54,18 @@ class AddToCalendarTest {
 
     @Test
     fun aStepWithADayOpensTheCalendarApp() {
-        val app = RuntimeEnvironment.getApplication()
-        app.addToCalendar(state)
-        val started = shadowOf(app).nextStartedActivity
+        // From an activity, as in the app: the step screen's own context.
+        val activity = Robolectric.buildActivity(Activity::class.java).setup().get()
+        activity.addToCalendar(state)
+        val started = shadowOf(activity).nextStartedActivity
         assertEquals(Intent.ACTION_INSERT, started.action)
         assertEquals(step.title, started.getStringExtra(CalendarContract.Events.TITLE))
     }
 
     @Test
     fun aStepWithoutADayOpensNothing() {
-        val app = RuntimeEnvironment.getApplication()
-        app.addToCalendar(state.copy(date = null))
-        assertNull(shadowOf(app).nextStartedActivity)
+        val activity = Robolectric.buildActivity(Activity::class.java).setup().get()
+        activity.addToCalendar(state.copy(date = null))
+        assertNull(shadowOf(activity).nextStartedActivity)
     }
 }
