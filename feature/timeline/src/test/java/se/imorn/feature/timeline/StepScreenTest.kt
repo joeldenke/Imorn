@@ -39,6 +39,7 @@ class StepScreenTest {
         state: StepUiState,
         onDone: () -> Unit = {},
         onReopen: () -> Unit = {},
+        onAddToCalendar: () -> Unit = {},
         onTakePhoto: () -> Unit = {},
         onRename: (String) -> Unit = {},
         onMoveEarlier: () -> Unit = {},
@@ -54,6 +55,7 @@ class StepScreenTest {
                     onReopen = onReopen,
                     onTomorrow = {},
                     onSetDate = {},
+                    onAddToCalendar = onAddToCalendar,
                     onNotApplicable = {},
                     onSaveNote = {},
                     onRename = onRename,
@@ -89,6 +91,26 @@ class StepScreenTest {
         show(open, onDone = { done = true })
         compose.onNodeWithText("Done").performClick()
         assertEquals(true, done)
+    }
+
+    @Test
+    fun anOpenStepWithADayCanBePutInTheCalendar() {
+        var added = false
+        show(open, onAddToCalendar = { added = true })
+        compose.onNodeWithText("Add to calendar").performScrollTo().performClick()
+        assertEquals(true, added)
+    }
+
+    @Test
+    fun aStepWithoutADayIsNotOfferedTheCalendar() {
+        show(open.copy(date = null))
+        compose.onNodeWithText("Add to calendar").assertDoesNotExist()
+    }
+
+    @Test
+    fun aDoneStepIsNotOfferedTheCalendar() {
+        show(open.copy(step = step.copy(status = StepStatus.Done, doneOn = PreviewData.TODAY)))
+        compose.onNodeWithText("Add to calendar").assertDoesNotExist()
     }
 
     @Test

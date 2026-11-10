@@ -64,6 +64,8 @@
     <string name="step_tomorrow">Tomorrow</string>
     <string name="step_choose_date">Choose a day</string>
     <string name="step_follow_plan">Follow the plan</string>
+    <string name="step_add_to_calendar">Add to calendar</string>
+    <string name="step_no_calendar">There is no calendar app on this phone.</string>
     <string name="step_not_applicable">Doesn\'t apply</string>
     <string name="step_reopen">Not done after all</string>
     <string name="step_note">Note</string>

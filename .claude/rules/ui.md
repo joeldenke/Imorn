@@ -36,6 +36,7 @@ läs den själv innan du planerar en ändring här. Allt i `CLAUDE.md` gäller o
   nu-bandet (`story`: avbockade steg med sina foton och anteckningar) och *Papper*, snabb-+ (fota,
   välj foto, steg, anteckning, papper), egna steg, och vila, avsluta och radera i ett blad bakom *Mer*), ett steg (`StepScreen`: när, varför, länkkort som alltid
   visar organisation och domän, anteckning, stegets foton, *Klart* med foto-uppmaningen, *Imorgon*, eget datum,
+  *Lägg i kalendern* (`AddToCalendar.kt`: kalenderappen öppnas ifylld med `ACTION_INSERT`, ingen behörighet) och
   *Gäller inte*) och något sparat (`EntryScreen`: fotot, anteckningen eller pappret, PDF:er sida för sida med
   `PdfRenderer` i appen, radera). ViewModels med ruttens id (`@AssistedInject`, `assistedMetroViewModel`).
   Varje feature äger sin navigation (`navigation/`): `@Serializable`-rutter (`NavKey`) och
