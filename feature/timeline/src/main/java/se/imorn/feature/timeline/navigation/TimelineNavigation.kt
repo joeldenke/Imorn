@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
@@ -17,6 +18,7 @@ import se.imorn.feature.timeline.EntryScreen
 import se.imorn.feature.timeline.EntryViewModel
 import se.imorn.feature.timeline.StepScreen
 import se.imorn.feature.timeline.StepViewModel
+import se.imorn.feature.timeline.addToCalendar
 import se.imorn.ui.rememberCapture
 
 /** A chapter: its plan as a list or a timeline around the now-line. */
@@ -85,6 +87,7 @@ fun EntryProviderScope<NavKey>.timelineEntries(
         }
         if (state == null) return@entry
         val capture = rememberCapture(onPhoto = viewModel::keepPhoto, onPaper = viewModel::keepPhoto)
+        val context = LocalContext.current
         StepScreen(
             state = state,
             language = LocalConfiguration.current.locales[0].language,
@@ -92,6 +95,7 @@ fun EntryProviderScope<NavKey>.timelineEntries(
             onReopen = viewModel::reopen,
             onTomorrow = viewModel::tomorrow,
             onSetDate = viewModel::setDate,
+            onAddToCalendar = { context.addToCalendar(state) },
             onNotApplicable = viewModel::notApplicable,
             onSaveNote = viewModel::saveNote,
             onRename = viewModel::rename,

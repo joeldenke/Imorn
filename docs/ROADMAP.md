@@ -246,7 +246,7 @@ sätt att leverera samma data.
 - [x] Omstart, tidszoner, sommartid och ändrade ankare testade
 - [ ] Återkommande steg i `:core:model` och mallformatet (`repeat`: varje år i en månad, eller ankare + N månader);
       ett avbockat steg lägger nästa gång, deterministiskt och testat
-- [ ] *Lägg i kalendern* på ett steg: kalenderappen öppnas ifylld (`CalendarContract`, `ACTION_INSERT`), användaren
+- [x] *Lägg i kalendern* på ett steg: kalenderappen öppnas ifylld (`CalendarContract`, `ACTION_INSERT`), användaren
       sparar själv – ingen behörighet
 - [ ] Kalendersynk (beslut 7): Imorn håller stegen i en kalender användaren väljer och flyttar dem när ankaret
       flyttas. Väljs en kalender som redan delas med familjen ser alla stegen, utan konto i Imorn (mellansteg före

@@ -48,6 +48,7 @@ import java.time.LocalDate
 /**
  * A step, stateless: when, why, where to do it (link cards that always show the organisation and its domain, so the
  * user sees where they go), a note, and the answers. Links open in the browser; the app itself needs no network.
+ * *Add to calendar* opens the calendar app filled in, where the user saves the event.
  */
 @Composable
 fun StepScreen(
@@ -57,6 +58,7 @@ fun StepScreen(
     onReopen: () -> Unit,
     onTomorrow: () -> Unit,
     onSetDate: (LocalDate?) -> Unit,
+    onAddToCalendar: () -> Unit,
     onNotApplicable: () -> Unit,
     onSaveNote: (String) -> Unit,
     onRename: (String) -> Unit,
@@ -126,6 +128,10 @@ fun StepScreen(
                             onClick = { onSetDate(null) },
                         )
                     }
+                }
+                // Only a step with a day can be put in the calendar.
+                if (state.date != null) {
+                    ImornTextButton(text = stringResource(R.string.step_add_to_calendar), onClick = onAddToCalendar)
                 }
                 ImornTextButton(text = stringResource(R.string.step_not_applicable), onClick = onNotApplicable)
             } else {
@@ -296,6 +302,7 @@ private fun StepPreview() {
             onReopen = {},
             onTomorrow = {},
             onSetDate = {},
+            onAddToCalendar = {},
             onNotApplicable = {},
             onSaveNote = {},
             onRename = {},
@@ -330,6 +337,7 @@ private fun StepDonePreview() {
             onReopen = {},
             onTomorrow = {},
             onSetDate = {},
+            onAddToCalendar = {},
             onNotApplicable = {},
             onSaveNote = {},
             onRename = {},
